@@ -22,11 +22,14 @@ import javafx.scene.shape.Rectangle;
 import java.io.File;
 import java.io.InputStream;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class HelloController {
     ImageView imageView = new ImageView("img.png");
-    ImageView imageView1 = new ImageView("img.png");
+
     @FXML
     private GridPane gridMap;
 
@@ -46,11 +49,15 @@ public class HelloController {
                 ImageView imageView = new ImageView(dog);
                 imageView.setFitWidth(32);
                 imageView.setFitHeight(32);
+                imageView.setId("wall");
                 gridMap.add(imageView,i,j);
             }
         }
-        Rectangle b = new Rectangle(32,16,Color.BLACK);
+        Set<String> ids = new HashSet<>();
+        ids.add("wall");
+        ids.add("cell");
+        System.out.println(ids.size());
+        Rectangle b = new Rectangle(32,32,Color.GOLD);
         actorMap.add(b, 0, 0);
     }
-
 }

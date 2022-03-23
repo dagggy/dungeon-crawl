@@ -14,7 +14,6 @@ public class MapLoader {
         int height = scanner.nextInt();
 
         scanner.nextLine(); // empty line
-
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
@@ -33,11 +32,11 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+//                            new Skeleton(cell);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+//                            map.setPlayer(new Player(cell));
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
