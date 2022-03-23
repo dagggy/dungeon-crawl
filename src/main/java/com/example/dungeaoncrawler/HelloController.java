@@ -28,7 +28,8 @@ public class HelloController {
     ImageView imageView = new ImageView("img.png");
     ImageView imageView1 = new ImageView("img.png");
 
-    ImageView whatever = ImageHandler.getTile(3, 2);
+
+
 
     @FXML
     private GridPane gridMap;
@@ -41,17 +42,23 @@ public class HelloController {
 
     @FXML
     void printMap(ActionEvent event) {
-        Image dog = new Image("img.png");
+//        Image tileset = new Image("tiles.png");
+        ImageHandler imageHandler = new ImageHandler();
+        Image dog = new Image("mapObjects.png", 543 * 2, 543 * 2, true, false);
+        ImageView whatever = imageHandler.getTile(dog, 4, 2);
+
         gridMap.setHgap(0);
         gridMap.setVgap(0);
         for (int i = 0; i < gridMap.getColumnCount(); i++) {
             for (int j = 0; j < gridMap.getRowCount(); j++) {
-                ImageView imageView = new ImageView(dog);
+                ImageView imageView = imageHandler.getTile(dog, 4, 2);
                 imageView.setFitWidth(32);
                 imageView.setFitHeight(32);
                 gridMap.add(imageView,i,j);
             }
         }
+        Rectangle b = new Rectangle(32,16,Color.BLACK);
         actorMap.add(whatever, 0, 0);
+        System.out.println(actorMap.getChildren());
     }
 }
