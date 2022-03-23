@@ -1,13 +1,28 @@
 package com.example.dungeaoncrawler;
 
+import com.example.dungeaoncrawler.logic.Cell;
+import com.example.dungeaoncrawler.logic.CellType;
+import com.example.dungeaoncrawler.logic.GameMap;
+import com.example.dungeaoncrawler.logic.MapLoader;
+import com.example.dungeaoncrawler.logic.actors.Player;
+import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.io.File;
+import java.io.InputStream;
+import java.time.Instant;
+import java.util.Scanner;
 
 public class HelloController {
     ImageView imageView = new ImageView("img.png");
@@ -34,7 +49,7 @@ public class HelloController {
                 ImageView imageView = new ImageView(dog);
                 imageView.setFitWidth(32);
                 imageView.setFitHeight(32);
-                gridMap.add(imageView, i, j);
+                gridMap.add(imageView,i,j);
             }
         }
         actorMap.add(whatever, 0, 0);
