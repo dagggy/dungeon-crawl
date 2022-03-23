@@ -35,9 +35,8 @@ public class Cell implements Drawable {
         return gameMap.getCell(x + dx, y + dy);
     }
 
-    @Override
-    public String getTileName() {
-        return type.getTileName();
+    public int[] getCellImageCoords() {
+        return type.getCellImageCoords();
     }
 
     public int getX() {
@@ -46,5 +45,10 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+    }
+
+    @Override
+    public String getTileName() {
+        return this.type.getTileName();
     }
 }
