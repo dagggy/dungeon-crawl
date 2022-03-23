@@ -34,6 +34,9 @@ public class HelloController {
     private Button printButton;
 
     @FXML
+    private GridPane actorMap;
+
+    @FXML
     void printMap(ActionEvent event) {
         Image dog = new Image("img.png");
         gridMap.setHgap(0);
@@ -46,5 +49,8 @@ public class HelloController {
                 gridMap.add(imageView,i,j);
             }
         }
+        Rectangle b = new Rectangle(32,16,Color.BLACK);
+        actorMap.add(b, 0, 0);
     }
+
 }
