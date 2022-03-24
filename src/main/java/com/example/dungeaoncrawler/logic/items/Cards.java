@@ -9,18 +9,71 @@ public class Cards extends Items{
     private CardRarity rarity;
     private int points;
     private String description;
+    private int value;
 
 
-    public Cards(String img, String name, Position position, CardsType cardsType, int cardCost, CardRarity cardRarity, String description) {
+    public Cards(String img, String name, Position position, CardsType cardsType, CardRarity cardRarity) {
         super(img, name, position);
         this.cardsType = cardsType;
-        this.cardCost = cardCost;
         this.rarity  = cardRarity;
-        this.description = description;
+        this.cardCost = setCardCost();
+        this.value = getCardValue();
+        this.description = CardsCreator.setDescription(cardsType, value);
     }
 
     public void use() {
 
+    }
+
+    private int setCardCost(){
+        switch (rarity){
+            case RARE -> {return 6;}
+            case COMMON -> {return 3;}
+            case MYTHIC -> {return 9;}
+        }
+        return 1;
+    }
+
+    private int getCardValue(){
+        switch (cardsType){
+            case HEAL, POISON,DISPELL -> getTimeValue(rarity);
+            case ARMOR,ATTACK,DECREASE_ARMOR,SPELL,RESISTANCE -> getValue(rarity);
+            default -> { return 1;
+            }
+        }
+        return 1;
+    }
+
+    private int getTimeValue(CardRarity rarity){
+        if (rarity.equals(CardRarity.COMMON)) return CardsCreator.setCardValue(CardsCreator.commonPoison);
+        else if (rarity.equals(CardRarity.RARE)) return CardsCreator.setCardValue(CardsCreator.rarePoison);
+        else return CardsCreator.setCardValue(CardsCreator.mythicPoison);
+    }
+
+    private int getValue(CardRarity rarity){
+        if (rarity.equals(CardRarity.COMMON)) return CardsCreator.setCardValue(CardsCreator.commonDamage);
+        else if (rarity.equals(CardRarity.RARE)) return CardsCreator.setCardValue(CardsCreator.rareDamage);
+        else return CardsCreator.setCardValue(CardsCreator.mythicDamage);
+    }
+
+    public CardsType getCardsType() {
+        return cardsType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public int getCardCost() {

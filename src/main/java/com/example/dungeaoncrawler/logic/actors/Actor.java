@@ -14,9 +14,10 @@ public abstract class Actor implements Drawable {
     private Stun stun;
     private int resistance;
     private int armor;
+    private int power;
 
 
-    public Actor(Cell cell, int health, int resistance, int armor) {
+    public Actor(int health, int resistance, int armor) {
 //        this.cell = cell;
         this.health = health;
         this.resistance = resistance;
@@ -24,6 +25,23 @@ public abstract class Actor implements Drawable {
         this.heal = null;
         this.poisone = null;
         this.stun = null;
+        power = 1;
+    }
+
+    public Poisone getPoisone() {
+        return poisone;
+    }
+
+    public void setPoisone(Poisone poisone) {
+        this.poisone = poisone;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
     }
 
     public int getHealth() {
