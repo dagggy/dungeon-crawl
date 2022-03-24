@@ -91,6 +91,9 @@ public abstract class Actor implements Drawable {
     public void setArmor(int armor) {
         this.armor = armor;
     }
+
+    public void endFight() {
+    }
 }
 
 //    public void move(int dx, int dy) {

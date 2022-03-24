@@ -1,10 +1,7 @@
 package com.example.dungeaoncrawler.logic.actors;
 
-import com.example.dungeaoncrawler.logic.Cell;
-import com.example.dungeaoncrawler.logic.Position;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
-import com.example.dungeaoncrawler.logic.items.CardsCreator;
 import com.example.dungeaoncrawler.logic.items.CardsType;
 
 import java.util.ArrayList;
@@ -16,6 +13,7 @@ public class Player extends Actor {
     private int lvl;
     private int exp;
     ArrayList<Cards> deck = new ArrayList<>();
+    ArrayList<Cards> playingDeck;
 
     public Player(int health, int resistance, int armor, int getCards) {
         super(health, resistance, armor);
@@ -24,6 +22,14 @@ public class Player extends Actor {
         exp = 0;
         dice = 3;
         setStartingDeck();
+    }
+
+    public void endFight(){
+        playingDeck = new ArrayList<>(deck);
+        setArmor(0);
+        setHeal(null);
+        setPoisone(null);
+        setResistance(0);
     }
 
     public String getTileName() {
@@ -69,7 +75,7 @@ public class Player extends Actor {
         else return CardRarity.MYTHIC;
     }
 
-    public int getGetCards() {
+    public int getCards() {
         return getCards;
     }
 
@@ -107,6 +113,14 @@ public class Player extends Actor {
 
     public void addCardToDeck(Cards card) {
         deck.add(card);
+    }
+
+    public ArrayList<Cards> getPlayingDeck() {
+        return playingDeck;
+    }
+
+    public void setPlayingDeck(ArrayList<Cards> playingDeck) {
+        this.playingDeck = playingDeck;
     }
 }
 //    Cards(String img, String name, Position position, CardsType cardsType, CardRarity cardRarity)

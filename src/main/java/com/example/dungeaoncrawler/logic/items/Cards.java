@@ -7,7 +7,6 @@ public class Cards extends Items{
     private final CardsType cardsType;
     private int cardCost;
     private CardRarity rarity;
-    private int points;
     private String description;
     private int value;
 
@@ -36,12 +35,14 @@ public class Cards extends Items{
 
     private int getCardValue(){
         switch (cardsType){
-            case HEAL, POISON,DISPELL -> getTimeValue(rarity);
-            case ARMOR,ATTACK,DECREASE_ARMOR,SPELL,RESISTANCE -> getValue(rarity);
-            default -> { return 1;
+            case HEAL, POISON,DISPELL -> {
+                return getTimeValue(rarity);
             }
+            case ARMOR,ATTACK,DECREASE_ARMOR,SPELL,RESISTANCE -> {
+                return getValue(rarity);
+            }
+            default -> { return 1;}
         }
-        return 1;
     }
 
     private int getTimeValue(CardRarity rarity){
@@ -90,13 +91,5 @@ public class Cards extends Items{
 
     public void setRarity(CardRarity rarity) {
         this.rarity = rarity;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 }

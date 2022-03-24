@@ -11,8 +11,8 @@ public abstract class CardsCreator {
     public static int[] rarePoison = {2,4};
     public static int[] mythicPoison = {5,8};
 
-    public static int setCardValue(int[] cardsRare) {
-        return ThreadLocalRandom.current().nextInt(cardsRare[0], cardsRare[1]);
+    public static int setCardValue(int[] cardsDamage) {
+        return ThreadLocalRandom.current().nextInt(cardsDamage[0], cardsDamage[1]);
     }
 
     public static String setDescription(CardsType cardsType, int value){
