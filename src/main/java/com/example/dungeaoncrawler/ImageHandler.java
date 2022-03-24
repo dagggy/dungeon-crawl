@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import java.io.File;
 
 public class ImageHandler {
-    public ImageView getTile (Image tileset, int x, int y) {
+    public static ImageView getTile (Image tileset, int x, int y) {
         int tileWidth = 32;
         int tileSpacing = 2;
         Rectangle2D croppedArea = new Rectangle2D(x*(tileWidth + tileSpacing), y*(tileWidth + tileSpacing), tileWidth, tileWidth);

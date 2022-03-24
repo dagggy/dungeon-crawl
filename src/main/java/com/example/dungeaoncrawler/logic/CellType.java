@@ -3,7 +3,8 @@ package com.example.dungeaoncrawler.logic;
 public enum CellType {
     EMPTY(0, 0, "empty"),
     FLOOR(2, 0, "floor"),
-    WALL(6, 11, "wall");
+    WALL(6, 11, "wall"),
+    DOOR(8, 10, "door");
 
     private final int x;
     private final int y;
