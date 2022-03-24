@@ -4,9 +4,9 @@ public class Poisone {
     private int rounds;
     private int loseLife;
 
-    public Poisone(int rounds, int gainLife) {
+    public Poisone(int rounds, int loseLife) {
         this.rounds = rounds;
-        this.loseLife = gainLife;
+        this.loseLife = loseLife;
     }
 
     public int getRounds() {
@@ -14,6 +14,7 @@ public class Poisone {
     }
 
     public int getGainLife() {
+
         return loseLife;
     }
 
@@ -21,7 +22,7 @@ public class Poisone {
         this.rounds = rounds;
     }
 
-    public void setGainLife(int gainLife) {
-        this.loseLife = gainLife;
+    public void setGainLife(int loseLife) {
+        this.loseLife = loseLife;
     }
 }

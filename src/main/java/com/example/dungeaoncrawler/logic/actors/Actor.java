@@ -1,19 +1,20 @@
 package com.example.dungeaoncrawler.logic.actors;
 
-import com.example.dungeaoncrawler.logic.Cell;
 import com.example.dungeaoncrawler.logic.Drawable;
 import com.example.dungeaoncrawler.logic.status.Heal;
 import com.example.dungeaoncrawler.logic.status.Poisone;
-import com.example.dungeaoncrawler.logic.status.Stun;
+
+import java.util.ArrayList;
 
 public abstract class Actor implements Drawable {
     //    private Cell cell;
     private int health = 10;
-    private Heal heal;
-    private Poisone poisone;
-    private Stun stun;
+    private ArrayList <Heal> heal;
+    private ArrayList <Poisone> poisone;
+    private int stun;
     private int resistance;
     private int armor;
+    private int dispell;
     private int power;
 
 
@@ -22,18 +23,19 @@ public abstract class Actor implements Drawable {
         this.health = health;
         this.resistance = resistance;
         this.armor = armor;
-        this.heal = null;
-        this.poisone = null;
-        this.stun = null;
+        this.heal = new ArrayList<>();
+        this.poisone = new ArrayList<>();
+        this.stun = 0;
         power = 1;
+        dispell=0;
     }
 
-    public Poisone getPoisone() {
+    public ArrayList <Poisone> getPoisone() {
         return poisone;
     }
 
     public void setPoisone(Poisone poisone) {
-        this.poisone = poisone;
+        this.poisone.add(poisone);
     }
 
     public int getPower() {
@@ -52,28 +54,20 @@ public abstract class Actor implements Drawable {
         this.health = health;
     }
 
-    public Heal getHeal() {
+    public ArrayList <Heal> getHeal() {
         return heal;
     }
 
     public void setHeal(Heal heal) {
-        this.heal = heal;
+        this.heal.add(heal);
     }
 
-    public Poisone getPoison() {
-        return poisone;
-    }
-
-    public void setPoison(Poisone poisone) {
-        this.poisone = poisone;
-    }
-
-    public Stun getStun() {
+    public int getStun() {
         return stun;
     }
 
-    public void setStun(Stun stun) {
-        this.stun = stun;
+    public void setStun(int stun) {
+        this.stun += stun;
     }
 
     public int getResistance() {
@@ -81,7 +75,7 @@ public abstract class Actor implements Drawable {
     }
 
     public void setResistance(int resistance) {
-        this.resistance = resistance;
+        this.resistance += resistance;
     }
 
     public int getArmor() {
@@ -92,7 +86,23 @@ public abstract class Actor implements Drawable {
         this.armor = armor;
     }
 
-    public void endFight() {
+    public void takeDamage(int damage) {
+        if (damage>armor) {
+            health -= damage - armor;
+            armor = 0;
+        } else armor -= damage;
+    }
+
+    public void takeMagicDamage(int damage){
+        if (dispell>0) dispell -=1;
+        else if (damage>resistance) {
+            health -= damage - resistance;
+            resistance = 0;
+        } else resistance -= damage;
+    }
+
+    public void setDispell(int dispell) {
+        this.dispell += dispell;
     }
 }
 

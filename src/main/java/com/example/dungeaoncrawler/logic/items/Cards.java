@@ -26,8 +26,8 @@ public class Cards extends Items{
 
     private int setCardCost(){
         switch (rarity){
-            case RARE -> {return 6;}
             case COMMON -> {return 3;}
+            case RARE -> {return 6;}
             case MYTHIC -> {return 9;}
         }
         return 1;
