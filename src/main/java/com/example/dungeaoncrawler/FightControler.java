@@ -1,4 +1,4 @@
-package com.example.dungeaoncrawler.fight;
+package com.example.dungeaoncrawler;
 
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Player;
@@ -6,31 +6,77 @@ import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.status.Heal;
 import com.example.dungeaoncrawler.logic.status.Poisone;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.Transition;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Fight {
+public class FightControler {
     Player player;
     Skeleton opponent;
+    boolean roll = false;
+    private int sumDiceRoll;
+    private ArrayList<Cards> hand = new ArrayList<>();
 
-    public Fight(Player player, Skeleton opponent) {
-        this.player = player;
-        this.opponent = opponent;
+    public void initialize(){
+        player = new Player(20,0,0,4);
+        opponent = new Skeleton(10, 2, 5);
+    }
+
+    @FXML
+    private HBox cardsField;
+
+    public void setCardsField(){
+        cardsField.setVisible(true);
+    }
+
+    @FXML
+    void printSumDice(MouseEvent event) {
+    if (!roll) {
+        int sumRolled = rollDice(3);
+        setDiceSum("You rolled "+ sumRolled);
+        roll = true;
+    }
+}
+    public void setFightMassage(String massage){
+        FightMassage.setText(massage);
+    }
+
+
+    @FXML
+    void playCard(MouseEvent event) {
+        AnchorPane source = (AnchorPane) event.getSource();
+        System.out.println(Integer.parseInt(source.toString().replaceAll("[^0-9.]", "")));
+        source.setOpacity(0.2);
+    }
+
+    public Label getDiceSum() {
+        return diceSum;
     }
 
     public void playGame() {
-        player.endFight();
-            System.out.println(player.getPlayingDeck().size());
+//            System.out.println(player.getPlayingDeck().size());
         for (int i = 0; i < 4; i++) {
 //        while (skeleton.getHealth() > 0){
             playermove(player, opponent);
         }
     }
+
     private void playermove(Actor player, Actor opponent){
         ArrayList<Cards> hand = drawRandomCards((Player) player);
         int roll = rollDice(((Player) player).getDice());
+        displayMassage(roll);
         printHand(hand);
         if (canPlayCard(roll, hand)) {
             int cardNumber = getUserInput();
@@ -38,12 +84,16 @@ public class Fight {
         }
     }
 
+    private void displayMassage(int roll){
+        diceSum.setText("You have rolled " + roll);
+    }
+
     private void playCard(Actor player, Actor opponent, int cardIndex, ArrayList<Cards> hand, int roll){
-            if (hand.get(cardIndex).getCardCost()>=roll){
-                resolveCardEffect(player, opponent, hand.get(cardIndex));
-            } else {
-                System.out.println("You dont have point action to play this card");
-            }
+        if (hand.get(cardIndex).getCardCost()>=roll){
+            resolveCardEffect(player, opponent, hand.get(cardIndex));
+        } else {
+            System.out.println("You dont have point action to play this card");
+        }
     }
 
     private void resolveCardEffect(Actor player, Actor opponent, Cards card){
@@ -92,25 +142,26 @@ public class Fight {
                 deck.remove(index);
             }
         }
-        System.out.println("hand size " + hand.size());
-        System.out.println("deck size " + deck.size());
         return hand;
     }
 
     private int rollDice(int dices){
         Random random = new Random();
         int diceSum = 0;
+        String message = "";
         for (int i = 0; i < dices; i++) {
             int score = random.nextInt(6)+1;
             diceSum += score;
-            System.out.println((i+1) + ". Dice roll = " + score);
+            message += (i+1) + ". Dice roll = " + score + "\n";
         }
-        System.out.println("--------------------");
-        System.out.println("Throws value: " + diceSum);
-        System.out.println();
+        message += "You rolled " + diceSum;
+        setFightMassage(message);
         return diceSum;
     }
 
+    public void setDiceSum(String text){
+        diceSum.setText(text);
+    }
     private void printHand(ArrayList<Cards> hand){
         System.out.println();
         System.out.println("PLAYER HAND");
@@ -130,4 +181,99 @@ public class Fight {
         int number = scanner.nextInt();
         return number;
     }
+
+
+
+
+
+
+
+    @FXML
+    private Label FightMassage;
+
+    @FXML
+    private ListView<?> PlayerInventory;
+
+    @FXML
+    private ListView<?> PlayerInventory1;
+
+    @FXML
+    private ListView<?> PlayerStatus;
+
+    @FXML
+    private ListView<?> PlayerStatus1;
+
+    @FXML
+    private AnchorPane card0;
+
+    @FXML
+    private AnchorPane card1;
+
+    @FXML
+    private AnchorPane card2;
+
+    @FXML
+    private AnchorPane card3;
+
+    @FXML
+    private Label card1Cost;
+
+    @FXML
+    private Label card1Cost1;
+
+    @FXML
+    private Label card1Cost2;
+
+    @FXML
+    private Label card1Cost3;
+
+    @FXML
+    private ImageView card1background;
+
+    @FXML
+    private ImageView card1background1;
+
+    @FXML
+    private ImageView card1background2;
+
+    @FXML
+    private ImageView card1background3;
+
+    @FXML
+    private Label cardDescription1;
+
+    @FXML
+    private Label cardDescription11;
+
+    @FXML
+    private Label cardDescription12;
+
+    @FXML
+    private Label cardDescription13;
+
+    @FXML
+    private ImageView cardImage1;
+
+    @FXML
+    private ImageView cardImage2;
+
+    @FXML
+    private ImageView cardImage3;
+
+    @FXML
+    private ImageView cardImage4;
+
+    @FXML
+    private ImageView playerImage;
+
+    @FXML
+    private ImageView playerImage1;
+
+    @FXML
+    private ImageView windowBackground;
+
+    @FXML
+    private Label diceSum;
+
+
 }

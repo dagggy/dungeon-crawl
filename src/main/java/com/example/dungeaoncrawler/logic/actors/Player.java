@@ -22,6 +22,7 @@ public class Player extends Actor {
         exp = 0;
         dice = 3;
         setStartingDeck();
+        setPlayingDeck(deck);
     }
 
     public void endFight(){

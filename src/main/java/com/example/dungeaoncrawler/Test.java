@@ -1,6 +1,13 @@
 package com.example.dungeaoncrawler;
 
+import com.example.dungeaoncrawler.fight.Fight;
+import com.example.dungeaoncrawler.logic.actors.Actor;
+import com.example.dungeaoncrawler.logic.actors.Player;
+import com.example.dungeaoncrawler.logic.actors.Skeleton;
+import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.Items;
+import com.example.dungeaoncrawler.logic.status.Heal;
+import com.example.dungeaoncrawler.logic.status.Poisone;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +18,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Test extends Application {
 
@@ -26,97 +37,7 @@ public class Test extends Application {
         stage.setScene(scene);
         stage.show();
 
+
     }
-
-
-
-
-
-
-
-    @FXML
-    private Label FightMassage;
-
-    @FXML
-    private ListView<?> PlayerInventory;
-
-    @FXML
-    private ListView<?> PlayerInventory1;
-
-    @FXML
-    private ListView<?> PlayerStatus;
-
-    @FXML
-    private ListView<?> PlayerStatus1;
-
-    @FXML
-    private AnchorPane card1;
-
-    @FXML
-    private AnchorPane card11;
-
-    @FXML
-    private AnchorPane card12;
-
-    @FXML
-    private AnchorPane card13;
-
-    @FXML
-    private Label card1Cost;
-
-    @FXML
-    private Label card1Cost1;
-
-    @FXML
-    private Label card1Cost2;
-
-    @FXML
-    private Label card1Cost3;
-
-    @FXML
-    private ImageView card1background;
-
-    @FXML
-    private ImageView card1background1;
-
-    @FXML
-    private ImageView card1background2;
-
-    @FXML
-    private ImageView card1background3;
-
-    @FXML
-    private Label cardDescription1;
-
-    @FXML
-    private Label cardDescription11;
-
-    @FXML
-    private Label cardDescription12;
-
-    @FXML
-    private Label cardDescription13;
-
-    @FXML
-    private ImageView cardImage1;
-
-    @FXML
-    private ImageView cardImage2;
-
-    @FXML
-    private ImageView cardImage3;
-
-    @FXML
-    private ImageView cardImage4;
-
-    @FXML
-    private ImageView playerImage;
-
-    @FXML
-    private ImageView playerImage1;
-
-    @FXML
-    private ImageView windowBackground;
-
 
 }
