@@ -5,10 +5,12 @@ import com.example.dungeaoncrawler.logic.actors.Skeleton;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MapLoader {
     static Random random = new Random();
     static CellType[] values = CellType.values();
+    static CellDecoration[] cellDecorations = CellDecoration.values();
 
     public static GameMap loadMap(RoomType roomType, int worldPosX, int worldPosY) {
         int width = 25;
@@ -19,7 +21,9 @@ public class MapLoader {
                 Cell cell = map.getCell(x, y);
                 if (x == 0 || x == width-1 || y == 0 || y == height-1) {
                     cell.setType(CellType.WALL);
+
                 }
+                cell.setDecoration(randomCellDecoration(10));
             }
         }
         return map;
@@ -31,4 +35,10 @@ public class MapLoader {
         return values[random.nextInt(values.length)];
     }
 
+    static CellDecoration randomCellDecoration(int chance) {
+        if (ThreadLocalRandom.current().nextInt(chance) == 1) {
+            return cellDecorations[ThreadLocalRandom.current().nextInt(cellDecorations.length)];
+        }
+        return null;
+    }
 }

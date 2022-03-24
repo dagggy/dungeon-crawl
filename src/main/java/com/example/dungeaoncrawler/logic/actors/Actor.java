@@ -6,10 +6,12 @@ import com.example.dungeaoncrawler.logic.Drawable;
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
+    private ActorType actorType;
 
-    public Actor(Cell cell) {
+    public Actor(Cell cell, ActorType actorType) {
         this.cell = cell;
         this.cell.setActor(this);
+        this.actorType = actorType;
     }
 
     public void move(int dx, int dy) {
@@ -21,6 +23,10 @@ public abstract class Actor implements Drawable {
 
     public int getHealth() {
         return health;
+    }
+
+    public ActorType getActorType () {
+        return actorType;
     }
 
     public Cell getCell() {

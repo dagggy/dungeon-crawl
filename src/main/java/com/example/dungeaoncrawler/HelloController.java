@@ -17,7 +17,6 @@ import javafx.scene.shape.Rectangle;
 public class HelloController {
     ImageView imageView = new ImageView("img.png");
     ImageView imageView1 = new ImageView("img.png");
-    WorldMap worldMap = new WorldMap(1);
 
     @FXML
     private GridPane gridMap;
@@ -28,10 +27,14 @@ public class HelloController {
     @FXML
     private GridPane actorMap;
 
-    private final Image tileset = new Image("mapObjects.png", 543 * 2, 543 * 2, true, false);
+    private final Image tileset = new Image("mapObjects.png", 577 * 2, 577 * 2, true, false);
 
     @FXML
     void printMap(ActionEvent event) {
+        //todo: find a way to fit game logic elsewhere
+        WorldMap worldMap = new WorldMap(1);
+
+        gridMap.getChildren().clear();
 //        Image tileset = new Image("tiles.png");
 //        GameMap map = MapLoader.loadMap();
         GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
@@ -48,6 +51,7 @@ public class HelloController {
                 gridMap.add(imageView,i,j);
             }
         }
+        System.out.println(gridMap.getChildren().size());
         System.out.println(worldMap.toString());
 //        Rectangle b = new Rectangle(32,16,Color.BLACK);
 //        actorMap.add(whatever, 0, 0);

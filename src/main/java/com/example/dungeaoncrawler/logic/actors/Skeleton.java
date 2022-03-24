@@ -4,7 +4,7 @@ import com.example.dungeaoncrawler.logic.Cell;
 
 public class Skeleton extends Actor {
     public Skeleton(Cell cell) {
-        super(cell);
+        super(cell, ActorType.SKELETON);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.example.dungeaoncrawler.logic.actors;
 
 public enum ActorType {
-    PLAYER(24, 0, "player"),
-    SKELETON(29, 6, "skeleton");
+    PLAYER(25, 1, "player"),
+    SKELETON(30, 7, "skeleton");
 
     private final int x;
     private final int y;
@@ -14,7 +14,7 @@ public enum ActorType {
         this.tileName = tileName;
     }
 
-    public int[] getCellImageCoords() {
+    public int[] getActorImageCoords() {
         return new int[]{x, y};
     }
     public String getTileName() {

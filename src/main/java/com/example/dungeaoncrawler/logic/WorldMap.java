@@ -6,18 +6,22 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**A war crime
+ * @author Krzysiek*/
 public class WorldMap {
     private final int floor;
     private final int currMapX;
     private final int currMapY;
-    private final int worldWidth = 20;
-    private final int worldHeight = 20;
+    private final int worldWidth = 11;
+    private final int worldHeight = 11;
     private final GameMap[][] gameMaps = new GameMap[worldWidth][worldHeight];
     private final Random random = new Random();
     private final int normalRoomCount = random.nextInt(8, 15);
     private final int specialRoomCount = random.nextInt(3, 6);
     private final ArrayList<GameMap> gameMapStorage = new ArrayList<>();
 
+    /** WorldMap constructor
+     * @param floor Might be used in the future, numerical representation on the current floor (in case we go deeper) */
     public WorldMap (int floor) {
         this.floor = floor;
         placeSpawn();
@@ -34,6 +38,9 @@ public class WorldMap {
         placeMap(RoomType.LAST);
     }
 
+    /** Grab GameMap from WorldMap on specified coordinates
+     * @param x X location of the GameMap on the WorldMap
+     * @param y Y location of the GameMap on the WorldMap*/
     public GameMap getGameMap (int x, int y) {
         return gameMaps[x][y];
     }
@@ -42,6 +49,8 @@ public class WorldMap {
         return new int[]{currMapX, currMapY};
     }
 
+
+    /** Places the spawn GameMap in the center of the WorldMap*/
     private void placeSpawn () {
         GameMap map = MapLoader.loadMap(RoomType.SPAWN, worldWidth/2, worldHeight/2);
         Player player = new Player(map.getCell(map.getWidth()/2, map.getHeight()/2));
@@ -50,6 +59,9 @@ public class WorldMap {
 
     }
 
+
+    /** Places GameMap on the WorldMap
+     * @param roomType Used to specify what type of the room we're placing*/
     private void placeMap (RoomType roomType) {
         ArrayList<ArrayList<ArrayList<Integer>>> possibleRoomPositions = getPossibleRoomPositions();
         ArrayList<ArrayList<Integer>> selectedCoordinates = possibleRoomPositions.get(ThreadLocalRandom.current().nextInt(0, possibleRoomPositions.size()));
@@ -74,6 +86,11 @@ public class WorldMap {
         gameMapStorage.add(map);
     }
 
+
+    /**Gets possible room positions for the current world map.
+     * It will not allow for a room to be adjacent to a room it's not connected to.
+     * I sincerely hope no one ever reads this code.
+    * @return List of lists of pairs for room options and where they connect to*/
     private ArrayList<ArrayList<ArrayList<Integer>>> getPossibleRoomPositions () {
         ArrayList<ArrayList<ArrayList<Integer>>> possibleRoomPositions = new ArrayList<>();
         for (GameMap gameMap:gameMapStorage) {
@@ -126,10 +143,7 @@ public class WorldMap {
         return possibleRoomPositions;
     }
 
-    private void addMap (int coordinateX, int coordinateY, RoomType roomType) {
-
-    }
-
+    /** neat little toString() override :)*/
     @Override
     public String toString() {
         StringBuilder returnString = new StringBuilder();
