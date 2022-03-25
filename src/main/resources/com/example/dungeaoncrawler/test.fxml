@@ -18,13 +18,13 @@
             <Image url="@image/fight3.jpg" />
          </image>
       </ImageView>
-      <HBox fx:id="cardsField" layoutX="242.0" layoutY="174.0" prefHeight="382.0" prefWidth="797.0">
+      <HBox fx:id="cardsField" layoutX="242.0" layoutY="174.0" prefHeight="382.0" prefWidth="797.0" visible="false">
          <children>
             <AnchorPane fx:id="card0" onMouseClicked="#playCard" prefHeight="382.0" prefWidth="797.0" style="-fx-background-color: fff; -fx-border-color: black;">
                <children>
                   <ImageView fx:id="cardImage0" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
-                        <Image url="@image/attackImage1.jpg" />
+                        <Image url="@image/cards/swordAttack2.gif" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="card1background" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -48,7 +48,7 @@
                <children>
                   <ImageView fx:id="cardImage1" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
-                        <Image url="@image/attackImage1.jpg" />
+                        <Image url="@image/cards/shield.gif" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="cardbackground1" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -72,7 +72,7 @@
                <children>
                   <ImageView fx:id="cardImage2" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
-                        <Image url="@image/attackImage1.jpg" />
+                        <Image url="@image/cards/swordAttack.gif" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="card1background2" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -99,7 +99,7 @@
                <children>
                   <ImageView fx:id="cardImage3" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
-                        <Image url="@image/attackImage1.jpg" />
+                        <Image url="@image/cards/poison.gif" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="card1background3" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -145,16 +145,16 @@
          <font>
             <Font name="Comic Sans MS" size="16.0" />
          </font></Label>
-      <Label fx:id="diceSum" alignment="CENTER" layoutX="500.0" layoutY="47.0" onMouseClicked="#printSumDice" prefHeight="49.0" prefWidth="284.0" style="-fx-background-color: fff;" text="Roll Dices">
+      <Label fx:id="rollDice" alignment="CENTER" layoutX="500.0" layoutY="47.0" onMouseClicked="#printSumDice" prefHeight="49.0" prefWidth="284.0" style="-fx-background-color: fff;" text="Roll Dices">
          <font>
             <Font name="Comic Sans MS Bold" size="24.0" />
          </font></Label>
-      <Button layoutX="261.0" layoutY="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="Draw Cards">
+      <Button fx:id="drawCards" layoutX="261.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#drawCards" prefHeight="30.0" prefWidth="200.0" text="Draw Cards">
          <font>
             <Font name="Comic Sans MS Bold" size="24.0" />
          </font>
       </Button>
-      <Button layoutX="842.0" layoutY="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="End Turn">
+      <Button fx:id="endTurn" layoutX="842.0" layoutY="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="End Turn" visible="false">
          <font>
             <Font name="Comic Sans MS Bold" size="24.0" />
          </font>

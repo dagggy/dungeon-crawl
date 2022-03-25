@@ -9,18 +9,24 @@ import com.example.dungeaoncrawler.logic.status.Poisone;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+
+import java.util.*;
+
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
 
 public class FightControler {
     Player player;
@@ -34,10 +40,8 @@ public class FightControler {
         opponent = new Skeleton(10, 2, 5);
     }
 
-    @FXML
-    private HBox cardsField;
 
-    public void setCardsField(){
+    public void showCardsField(){
         cardsField.setVisible(true);
     }
 
@@ -57,21 +61,14 @@ public class FightControler {
     @FXML
     void playCard(MouseEvent event) {
         AnchorPane source = (AnchorPane) event.getSource();
-        System.out.println(Integer.parseInt(source.toString().replaceAll("[^0-9.]", "")));
         source.setOpacity(0.2);
+        int cardIndex = Integer.parseInt(source.toString().replaceAll("[^0-9.]", ""));
     }
 
     public Label getDiceSum() {
-        return diceSum;
+        return rollDice;
     }
 
-    public void playGame() {
-//            System.out.println(player.getPlayingDeck().size());
-        for (int i = 0; i < 4; i++) {
-//        while (skeleton.getHealth() > 0){
-            playermove(player, opponent);
-        }
-    }
 
     private void playermove(Actor player, Actor opponent){
         ArrayList<Cards> hand = drawRandomCards((Player) player);
@@ -84,8 +81,52 @@ public class FightControler {
         }
     }
 
-    private void displayMassage(int roll){
-        diceSum.setText("You have rolled " + roll);
+    /**
+     * After clicking draw card button player draw cards and display it on card field
+     * @param event - click on drawCard button
+     */
+    @FXML
+    void drawCards(MouseEvent event) {
+        ArrayList<Cards> hand = drawRandomCards(player);
+        displayCards(hand);
+        cardsField.setVisible(true);
+    }
+
+    /**
+     * put cards property (image, cost, description etc.) into cards container.
+     * @param hand list of cards object, that player draw during draw stage
+     */
+    private void displayCards(ArrayList<Cards> hand){
+        ArrayList<AnchorPane> cardsContainer = createCardContainerList();
+        for (int i = 0; i < cardsContainer.size(); i++) {
+            AnchorPane container = cardsContainer.get(i);
+            // set card image
+//            ImageView cardImage = (ImageView) container.getChildren().get(0);
+//            Image image = new Image("cards/swordAttack.gif");
+//            cardImage.setImage(image);
+
+            //set card description
+            Label cardDescription = (Label) container.getChildren().get(2);
+            cardDescription.setText(hand.get(i).getDescription());
+
+            // set card cost
+            Label cardCost = (Label) container.getChildren().get(3);
+            cardCost.setText(String.valueOf(hand.get(i).getCardCost()));
+        }
+    }
+
+    private ArrayList<AnchorPane> createCardContainerList(){
+        ArrayList<AnchorPane> cardContainer = new ArrayList<>();
+        Collections.addAll(cardContainer, card0, card1, card2, card3);
+        return cardContainer;
+    }
+
+    /**
+     * Display information about throw dice sum
+     * @param throwDiceSum results throw dice sum
+     */
+    private void displayMassage(int throwDiceSum){
+        rollDice.setText("You have rolled " + throwDiceSum);
     }
 
     private void playCard(Actor player, Actor opponent, int cardIndex, ArrayList<Cards> hand, int roll){
@@ -160,7 +201,7 @@ public class FightControler {
     }
 
     public void setDiceSum(String text){
-        diceSum.setText(text);
+        rollDice.setText(text);
     }
     private void printHand(ArrayList<Cards> hand){
         System.out.println();
@@ -210,28 +251,7 @@ public class FightControler {
     private AnchorPane card1;
 
     @FXML
-    private AnchorPane card2;
-
-    @FXML
-    private AnchorPane card3;
-
-    @FXML
-    private Label card1Cost;
-
-    @FXML
-    private Label card1Cost1;
-
-    @FXML
-    private Label card1Cost2;
-
-    @FXML
-    private Label card1Cost3;
-
-    @FXML
     private ImageView card1background;
-
-    @FXML
-    private ImageView card1background1;
 
     @FXML
     private ImageView card1background2;
@@ -240,16 +260,37 @@ public class FightControler {
     private ImageView card1background3;
 
     @FXML
+    private AnchorPane card2;
+
+    @FXML
+    private AnchorPane card3;
+
+    @FXML
+    private Label cardCost0;
+
+    @FXML
+    private Label cardCost1;
+
+    @FXML
+    private Label cardCost2;
+
+    @FXML
+    private Label cardCost3;
+
+    @FXML
+    private Label cardDescription0;
+
+    @FXML
     private Label cardDescription1;
 
     @FXML
-    private Label cardDescription11;
+    private Label cardDescription2;
 
     @FXML
-    private Label cardDescription12;
+    private Label cardDescription3;
 
     @FXML
-    private Label cardDescription13;
+    private ImageView cardImage0;
 
     @FXML
     private ImageView cardImage1;
@@ -261,7 +302,16 @@ public class FightControler {
     private ImageView cardImage3;
 
     @FXML
-    private ImageView cardImage4;
+    private ImageView cardbackground1;
+
+    @FXML
+    private HBox cardsField;
+
+    @FXML
+    private Button drawCards;
+
+    @FXML
+    private Button endTurn;
 
     @FXML
     private ImageView playerImage;
@@ -270,10 +320,10 @@ public class FightControler {
     private ImageView playerImage1;
 
     @FXML
-    private ImageView windowBackground;
+    private Label rollDice;
 
     @FXML
-    private Label diceSum;
+    private ImageView windowBackground;
 
 
 }
