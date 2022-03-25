@@ -60,8 +60,6 @@ public class FightControler {
         wasRolled = true;
     }
 }
-    @FXML
-    private ListView<String> PlayerStats;
 
     public ListView<String> getPlayerStats(){
         return PlayerStats;
@@ -264,6 +262,8 @@ public class FightControler {
 
 
 
+    @FXML
+    private ListView<String> PlayerStats;
 
     @FXML
     private Label FightMassage;
