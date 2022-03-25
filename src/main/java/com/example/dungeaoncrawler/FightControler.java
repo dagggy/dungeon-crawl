@@ -6,16 +6,10 @@ import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.status.Heal;
 import com.example.dungeaoncrawler.logic.status.Poisone;
-import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
-import javafx.animation.Transition;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -23,46 +17,82 @@ import javafx.scene.layout.HBox;
 import java.util.*;
 
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class FightControler {
     Player player;
     Skeleton opponent;
-    boolean roll = false;
+    boolean wasRolled = false;
     private int sumDiceRoll;
     private ArrayList<Cards> hand = new ArrayList<>();
+    private boolean drawCard = false;
 
     public void initialize(){
         player = new Player(20,0,0,4);
         opponent = new Skeleton(10, 2, 5);
+
+
+
     }
 
+    private void displayCharacterInfo(){
+        ArrayList<String> characterStatusList = setCharacterStatus(opponent);
+        ListView<String> playerStatusList = getPlayerStats();
+    }
+    //TODO dokończyć wyświetlanie statusów
 
-    public void showCardsField(){
-        cardsField.setVisible(true);
+    private ArrayList<String> setCharacterStatus(Actor character){
+        ArrayList<String> playerStatus = new ArrayList<>();
+        playerStatus.add("Health: "+ character.getHealth());
+        playerStatus.add("Armor "+character.getArmor());
+        playerStatus.add("Resistance " + character.getResistance());
+        playerStatus.add("Power: "+character.getPower());
+        return playerStatus;
     }
 
     @FXML
     void printSumDice(MouseEvent event) {
-    if (!roll) {
+    if (!wasRolled) {
         int sumRolled = rollDice(3);
+        this.sumDiceRoll = sumRolled;
         setDiceSum("You rolled "+ sumRolled);
-        roll = true;
+        wasRolled = true;
     }
 }
-    public void setFightMassage(String massage){
-        FightMassage.setText(massage);
+    @FXML
+    private ListView<String> PlayerStats;
+
+    public ListView<String> getPlayerStats(){
+        return PlayerStats;
     }
 
+    /**
+     * display message during fight - information about dealt dmg, healing etc.
+     * @param message text message that we want to display
+     */
+    public void setFightMessage(String message){
+        FightMassage.setText(message);
+    }
 
+    /**
+     * game logic after picking card to play
+     * @param event click on card container
+     */
     @FXML
     void playCard(MouseEvent event) {
         AnchorPane source = (AnchorPane) event.getSource();
-        source.setOpacity(0.2);
         int cardIndex = Integer.parseInt(source.toString().replaceAll("[^0-9.]", ""));
+        if (canPlayCard(sumDiceRoll, hand, cardIndex)) {
+            String message = resolveCardEffect(player, opponent, hand.get(cardIndex));
+            setFightMessage(message);
+            source.setOpacity(0.2);
+            source.setDisable(true);
+            sumDiceRoll -= hand.get(cardIndex).getCardCost();
+        } else {
+            String message = "You don't have points to play this card\n";
+            setFightMessage(message);
+        }
     }
 
     public Label getDiceSum() {
@@ -70,16 +100,17 @@ public class FightControler {
     }
 
 
-    private void playermove(Actor player, Actor opponent){
-        ArrayList<Cards> hand = drawRandomCards((Player) player);
-        int roll = rollDice(((Player) player).getDice());
-        displayMassage(roll);
-        printHand(hand);
-        if (canPlayCard(roll, hand)) {
-            int cardNumber = getUserInput();
-            playCard(player, opponent, cardNumber, hand, roll);
-        }
-    }
+//    private void playermove(Actor player, Actor opponent){
+//        ArrayList<Cards> hand = drawRandomCards((Player) player);
+//        this.hand = hand;
+//        int roll = rollDice(((Player) player).getDice());
+//        displayMassage(roll);
+//        printHand(hand);
+//        if (canPlayCard(roll, hand)) {
+//            int cardNumber = getUserInput();
+//            playCard(player, opponent, cardNumber, hand, roll);
+//        }
+//    }
 
     /**
      * After clicking draw card button player draw cards and display it on card field
@@ -87,9 +118,14 @@ public class FightControler {
      */
     @FXML
     void drawCards(MouseEvent event) {
-        ArrayList<Cards> hand = drawRandomCards(player);
-        displayCards(hand);
-        cardsField.setVisible(true);
+        if (!drawCard) {
+            ArrayList<Cards> hand = drawRandomCards(player);
+            this.hand = hand;
+            displayCards(hand);
+            cardsField.setVisible(true);
+            drawCard= true;
+            endTurn.setVisible(true);
+        }
     }
 
     /**
@@ -102,8 +138,7 @@ public class FightControler {
             AnchorPane container = cardsContainer.get(i);
             // set card image
 //            ImageView cardImage = (ImageView) container.getChildren().get(0);
-//            Image image = new Image("cards/swordAttack.gif");
-//            cardImage.setImage(image);
+//            cardImage.setImage(new Image("swordAttack.gif"));
 
             //set card description
             Label cardDescription = (Label) container.getChildren().get(2);
@@ -115,55 +150,78 @@ public class FightControler {
         }
     }
 
+    /**
+     *
+     * @return create list card containers
+     */
     private ArrayList<AnchorPane> createCardContainerList(){
         ArrayList<AnchorPane> cardContainer = new ArrayList<>();
         Collections.addAll(cardContainer, card0, card1, card2, card3);
         return cardContainer;
     }
+    //TODO reset values after end of round - enable clickers change opacity
 
     /**
      * Display information about throw dice sum
      * @param throwDiceSum results throw dice sum
      */
     private void displayMassage(int throwDiceSum){
-        rollDice.setText("You have rolled " + throwDiceSum);
+        String message = "You have rolled " + throwDiceSum+"\n";
+        rollDice.setText(message);
     }
 
-    private void playCard(Actor player, Actor opponent, int cardIndex, ArrayList<Cards> hand, int roll){
-        if (hand.get(cardIndex).getCardCost()>=roll){
-            resolveCardEffect(player, opponent, hand.get(cardIndex));
-        } else {
-            System.out.println("You dont have point action to play this card");
-        }
-    }
+//    private void playCard(Actor player, Actor opponent, int cardIndex, ArrayList<Cards> hand, int roll){
+//        if (hand.get(cardIndex).getCardCost()>=roll){
+//            resolveCardEffect(player, opponent, hand.get(cardIndex));
+//        } else {
+//            System.out.println("You dont have point action to play this card");
+//        }
+//    }
 
-    private void resolveCardEffect(Actor player, Actor opponent, Cards card){
+    private String resolveCardEffect(Actor player, Actor opponent, Cards card){
         switch (card.getCardsType()){
-            case DECREASE_ARMOR -> opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));
-            case RESISTANCE -> player.setResistance(card.getValue());
-            case DISPELL -> player.setDispell(card.getValue());
-            case POISON -> opponent.setPoisone(new Poisone(player.getPower(), card.getValue()));
-            case ATTACK -> opponent.takeDamage(card.getValue());
-            case SPELL -> opponent.takeMagicDamage(card.getValue());
-            case ARMOR -> player.setArmor(card.getValue());
-            case HEAL -> player.setHeal(new Heal(player.getPower(), card.getValue()));
-            case STUN -> opponent.setStun(player.getPower());
+            case DECREASE_ARMOR -> {
+                return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));
+            }
+            case RESISTANCE -> {
+                return player.setResistance(card.getValue());
+            }
+            case DISPELL -> {
+                return player.setDispell(card.getValue());
+            }
+            case POISON -> {
+                return opponent.setPoisone(new Poisone(player.getPower(), card.getValue()));
+            }
+            case ATTACK -> {
+                return opponent.takeDamage(card.getValue());
+            }
+            case SPELL -> {
+                return opponent.takeMagicDamage(card.getValue());
+            }
+            case ARMOR -> {
+                return player.setArmor(card.getValue());
+            }
+            case HEAL -> {
+                return player.setHeal(new Heal(player.getPower(), card.getValue()));
+            }
+            case STUN -> {
+                return opponent.setStun(player.getPower());
+            }
+    } return "";
         }
-    }
 
-    private boolean canPlayCard(int roll, ArrayList<Cards> hand){
-        if (hand.size()<=0) return false;
-        else return roll >= getLowestCost(hand);
+    private boolean canPlayCard(int roll, ArrayList<Cards> hand, int cardIndex){
+        return roll >= hand.get(cardIndex).getCardCost();
     }
 
 
-    private int getLowestCost(ArrayList<Cards> hand){
-        int lowestCost = 100;
-        for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).getCardCost()< lowestCost) lowestCost = hand.get(i).getCardCost();
-        }
-        return lowestCost;
-    }
+//    private int getLowestCost(ArrayList<Cards> hand){
+//        int lowestCost = 100;
+//        for (int i = 0; i < hand.size(); i++) {
+//            if (hand.get(i).getCardCost()< lowestCost) lowestCost = hand.get(i).getCardCost();
+//        }
+//        return lowestCost;
+//    }
 
     private ArrayList<Cards> drawRandomCards(Player player){
         Random random = new Random();
@@ -195,36 +253,14 @@ public class FightControler {
             diceSum += score;
             message += (i+1) + ". Dice roll = " + score + "\n";
         }
-        message += "You rolled " + diceSum;
-        setFightMassage(message);
+        message += "You rolled " + diceSum + "\n";
+        setFightMessage(message);
         return diceSum;
     }
 
     public void setDiceSum(String text){
         rollDice.setText(text);
     }
-    private void printHand(ArrayList<Cards> hand){
-        System.out.println();
-        System.out.println("PLAYER HAND");
-        System.out.println();
-        for (int i = 0; i < hand.size(); i++) {
-            System.out.println("CARD NUMBER" + (i+1));
-//            System.out.println("Card name: " + hand.get(i).getName());
-            System.out.println("Card Cost: " + hand.get(i).getCardCost());
-            System.out.println("Rarity: " + hand.get(i).getRarity());
-            System.out.println("Description: " + hand.get(i).getDescription());
-            System.out.println();
-        }
-    }
-
-    private int getUserInput(){
-        Scanner scanner = new Scanner(System.in);
-        int number = scanner.nextInt();
-        return number;
-    }
-
-
-
 
 
 
@@ -239,7 +275,7 @@ public class FightControler {
     private ListView<?> PlayerInventory1;
 
     @FXML
-    private ListView<?> PlayerStatus;
+    private ListView<String> PlayerStatus;
 
     @FXML
     private ListView<?> PlayerStatus1;
