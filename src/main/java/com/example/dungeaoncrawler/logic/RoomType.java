@@ -1,20 +1,20 @@
 package com.example.dungeaoncrawler.logic;
 
 public enum RoomType {
-    SPAWN('p'),
-    NORMAL('n'),
-    SHOP('c'),
-    SPECIAL('s'),
-    LAST('l'),
-    FINAL('f');
+    SPAWN("p"),
+    NORMAL("■"),
+    SHOP("■"),
+    SPECIAL("l"),
+    LAST("s"),
+    FINAL("■");
 
-    private final char symbol;
+    private final String symbol;
 
-    RoomType (char symbol) {
+    RoomType (String symbol) {
         this.symbol = symbol;
     }
 
-    public char getSymbol() {
+    public String getSymbol() {
         return symbol;
     }
 }

@@ -1,7 +1,9 @@
 package com.example.dungeaoncrawler.logic;
 
 import com.example.dungeaoncrawler.logic.actors.Actor;
+import com.example.dungeaoncrawler.logic.actors.ActorType;
 import com.example.dungeaoncrawler.logic.actors.Player;
+import com.example.dungeaoncrawler.logic.actors.Skeleton;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,10 +35,20 @@ public class GameMap {
                 cells[x][y] = new Cell(this, x, y, defaultCellType, CellDecoration.EMPTY);
             }
         }
+        for (int i = 0; i<4; i++) {
+            placeEnemy();
+        }
     }
 
     public RoomType getRoomType() {
         return roomType;
+    }
+
+    public void placeEnemy () {
+        int x = ThreadLocalRandom.current().nextInt(1, 24);
+        int y = ThreadLocalRandom.current().nextInt(1, 19);
+        Actor enemy = new Skeleton(cells[x][y]);
+        cells[x][y].setActor(enemy);
     }
 
     public ArrayList<Integer> getWorldPos() {

@@ -35,8 +35,7 @@ public class HelloController {
         WorldMap worldMap = new WorldMap(1);
 
         gridMap.getChildren().clear();
-//        Image tileset = new Image("tiles.png");
-//        GameMap map = MapLoader.loadMap();
+
         GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
         gridMap.setHgap(0);
         gridMap.setVgap(0);
@@ -53,8 +52,5 @@ public class HelloController {
         }
         System.out.println(gridMap.getChildren().size());
         System.out.println(worldMap.toString());
-//        Rectangle b = new Rectangle(32,16,Color.BLACK);
-//        actorMap.add(whatever, 0, 0);
-//        System.out.println(actorMap.getChildren());
     }
 }

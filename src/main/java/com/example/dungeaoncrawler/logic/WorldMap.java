@@ -6,8 +6,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**A war crime
- * @author Krzysiek*/
+/**A war crime*/
 public class WorldMap {
     private final int floor;
     private final int currMapX;
@@ -15,9 +14,6 @@ public class WorldMap {
     private final int worldWidth = 11;
     private final int worldHeight = 11;
     private final GameMap[][] gameMaps = new GameMap[worldWidth][worldHeight];
-    private final Random random = new Random();
-    private final int normalRoomCount = random.nextInt(8, 15);
-    private final int specialRoomCount = random.nextInt(3, 6);
     private final ArrayList<GameMap> gameMapStorage = new ArrayList<>();
 
     /** WorldMap constructor
@@ -28,9 +24,14 @@ public class WorldMap {
         this.currMapX = gameMapStorage.get(0).getWorldPos().get(0);
         this.currMapY = gameMapStorage.get(0).getWorldPos().get(1);
 
+        Random random = new Random();
+
+        int normalRoomCount = random.nextInt(8, 15);
         for (int i = 0; i < normalRoomCount; i++) {
             placeMap(RoomType.NORMAL);
         }
+
+        int specialRoomCount = random.nextInt(3, 6);
         for (int i = 0; i < specialRoomCount; i++) {
             placeMap(RoomType.SPECIAL);
         }
@@ -151,9 +152,9 @@ public class WorldMap {
             for (int y=0; y < worldHeight; y++) {
                 GameMap room = gameMaps[x][y];
                 if (room != null) {
-                    returnString.append(room.getRoomType().getSymbol());
+                    returnString.append(room.getRoomType().getSymbol()).append("  ");
                 } else {
-                    returnString.append(" ");
+                    returnString.append("   ");
                 }
             }
             returnString.append("\n");
