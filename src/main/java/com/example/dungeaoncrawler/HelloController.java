@@ -1,24 +1,33 @@
 package com.example.dungeaoncrawler;
 
 import com.example.dungeaoncrawler.logic.*;
+import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 
 import static com.example.dungeaoncrawler.HelloApplication.worldMap;
@@ -30,20 +39,20 @@ public class HelloController {
 
 
 
-    public void initialize() {
-        printMap();
-        player.move(3,5);
-        printMap();
-    }
-
     @FXML
     private GridPane gridMap;
 
-//    @FXML
-//    private Button printButton;
-
     @FXML
     private GridPane actorMap;
+
+    public void initialize() throws IOException {
+        printMap();
+        player.move(3,5);
+        printMap();
+
+    }
+
+
 
     private final Image tileset = new Image("mapObjects.png", 577 * 2, 577 * 2, true, false);
 
@@ -68,5 +77,35 @@ public class HelloController {
 
         System.out.println(gridMap.getChildren().size());
         System.out.println(worldMap);
+    }
+
+    public void onKeyPressed(KeyEvent keyEvent) {
+        switch (keyEvent.getCode()) {
+            case UP -> {
+                player.move(0, -1);
+                printMap();
+            }
+            case DOWN -> {
+                player.move(0, 1);
+                printMap();
+            }
+            case LEFT -> {
+                player.move(-1, 0);
+                printMap();
+            }
+            case RIGHT -> {
+                player.move(1, 0);
+                printMap();
+            }
+        }
+    }
+
+
+
+
+    private void getEnemyMove(Actor enemy) {
+        int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        int[] randomPair = possibleMoves[new Random().nextInt(possibleMoves.length)];
+        enemy.move(randomPair[0], randomPair[1]);
     }
 }
