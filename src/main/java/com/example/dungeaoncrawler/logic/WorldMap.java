@@ -11,8 +11,8 @@ import static com.example.dungeaoncrawler.HelloApplication.player;
 /**A war crime*/
 public class WorldMap {
     private final int floor;
-    private final int currMapX;
-    private final int currMapY;
+    private int currMapX;
+    private int currMapY;
     private final int worldWidth = 11;
     private final int worldHeight = 11;
     private final GameMap[][] gameMaps = new GameMap[worldWidth][worldHeight];
@@ -57,7 +57,8 @@ public class WorldMap {
 
     /** Places the spawn GameMap in the center of the WorldMap*/
     private void placeSpawn () {
-        GameMap map = MapLoader.loadMap(RoomType.SPAWN, worldWidth/2, worldHeight/2);
+
+        GameMap map = MapLoader.loadMap(RoomType.SPAWN, worldWidth/2, worldHeight/2, this);
         map.getCell(map.getWidth()/2, map.getHeight()/2).setActor(player);
         player.setCell(map.getCell(map.getWidth()/2, map.getHeight()/2));
         gameMaps[worldWidth/2][worldHeight/2] = map;
@@ -72,7 +73,7 @@ public class WorldMap {
         ArrayList<ArrayList<ArrayList<Integer>>> possibleRoomPositions = getPossibleRoomPositions();
         ArrayList<ArrayList<Integer>> selectedCoordinates = possibleRoomPositions.get(ThreadLocalRandom.current().nextInt(0, possibleRoomPositions.size()));
 
-        GameMap map = MapLoader.loadMap(roomType, selectedCoordinates.get(0).get(0), selectedCoordinates.get(0).get(1));
+        GameMap map = MapLoader.loadMap(roomType, selectedCoordinates.get(0).get(0), selectedCoordinates.get(0).get(1), this);
 
         if (Objects.equals(map.getWorldPos().get(0), selectedCoordinates.get(1).get(0)) && Objects.equals(map.getWorldPos().get(1)-1, selectedCoordinates.get(1).get(1))) {
             gameMaps[selectedCoordinates.get(1).get(0)][selectedCoordinates.get(1).get(1)].addDoor('r');
@@ -147,6 +148,23 @@ public class WorldMap {
             }
         }
         return possibleRoomPositions;
+    }
+
+    public int getCurrMapX() {
+        return currMapX;
+    }
+
+    public int getCurrMapY() {
+        return currMapY;
+    }
+
+    /**Move to a different map in the map storage, place player on given position*/
+    public Cell mapMove (int x, int y, int pPosX, int pPosY, Player player) {
+        this.currMapY += y;
+        this.currMapX += x;
+        Cell nextCell = getGameMap(currMapX, currMapY).getCell(pPosX, pPosY);
+        nextCell.setActor(player);
+        return nextCell;
     }
 
     /** neat little toString() override :)*/

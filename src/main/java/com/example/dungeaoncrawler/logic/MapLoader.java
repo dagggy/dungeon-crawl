@@ -12,10 +12,10 @@ public class MapLoader {
     static CellType[] values = CellType.values();
     static CellDecoration[] cellDecorations = CellDecoration.values();
 
-    public static GameMap loadMap(RoomType roomType, int worldPosX, int worldPosY) {
+    public static GameMap loadMap(RoomType roomType, int worldPosX, int worldPosY, WorldMap parentMap) {
         int width = 25;
         int height = 20;
-        GameMap map = new GameMap(width, height, CellType.EMPTY, roomType, worldPosX, worldPosY);
+        GameMap map = new GameMap(width, height, CellType.EMPTY, roomType, worldPosX, worldPosY, parentMap);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Cell cell = map.getCell(x, y);

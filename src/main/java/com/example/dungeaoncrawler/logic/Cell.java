@@ -8,6 +8,7 @@ public class Cell implements Drawable {
     private Actor actor;
     private GameMap gameMap;
     private int x, y;
+    private char doorDirection;
 
     public Cell(GameMap gameMap, int x, int y, CellType type, CellDecoration decoration) {
         this.gameMap = gameMap;
@@ -52,7 +53,9 @@ public class Cell implements Drawable {
         return type.getCellImageCoords();
     }
 
-
+    public GameMap getGameMap() {
+        return gameMap;
+    }
 
     public int getX() {
         return x;
@@ -60,6 +63,14 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+    }
+
+    public char getDoorDirection () {
+        return doorDirection;
+    }
+
+    public void setDoorDirection (char direction) {
+        this.doorDirection = direction;
     }
 
     @Override

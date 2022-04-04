@@ -1,6 +1,7 @@
 package com.example.dungeaoncrawler.logic.actors;
 
 import com.example.dungeaoncrawler.logic.Cell;
+import com.example.dungeaoncrawler.logic.CellType;
 import com.example.dungeaoncrawler.logic.Drawable;
 import com.example.dungeaoncrawler.logic.status.Heal;
 import com.example.dungeaoncrawler.logic.status.Poisone;
@@ -18,7 +19,7 @@ public abstract class Actor implements Drawable {
     private int dispell;
     private int power;
 
-    private Cell cell;
+    protected Cell cell;
     private final ActorType actorType;
 
     public Actor(int health, int resistance, int armor, ActorType actorType, Cell cell) {
@@ -148,9 +149,11 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        cell.setActor(null);
-        nextCell.setActor(this);
-        cell = nextCell;
+        if (nextCell.getType() == CellType.EMPTY) {
+            cell.setActor(null);
+            nextCell.setActor(this);
+            cell = nextCell;
+        }
     }
 }
 

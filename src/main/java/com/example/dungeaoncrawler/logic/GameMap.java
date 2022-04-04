@@ -19,11 +19,12 @@ public class GameMap {
     private final int worldPosY;
     private final int potentialSpawns = ThreadLocalRandom.current().nextInt(3);
     private final int potentialDecorations = ThreadLocalRandom.current().nextInt(20);
-
+    private final WorldMap parentMap;
 
     private Player player;
 
-    public GameMap(int width, int height, CellType defaultCellType, RoomType roomType, int worldPosX, int worldPosY) {
+    public GameMap(int width, int height, CellType defaultCellType, RoomType roomType, int worldPosX, int worldPosY, WorldMap parentMap) {
+        this.parentMap = parentMap;
         this.width = width;
         this.height = height;
         this.roomType = roomType;
@@ -68,12 +69,33 @@ public class GameMap {
 
     public void addDoor(char direction) {
         switch (direction) {
-            case 'u' -> cells[width / 2][0].setType(CellType.DOOR);
-            case 'd' -> cells[width / 2][height - 1].setType(CellType.DOOR);
-            case 'l' -> cells[0][height / 2].setType(CellType.DOOR);
-            case 'r' -> cells[width-1][height / 2].setType(CellType.DOOR);
+            case 'u': {
+                cells[width / 2][0].setType(CellType.DOOR);
+                cells[width / 2][0].setDoorDirection('u');
+                break;
+            }
+            case 'd': {
+                cells[width / 2][height - 1].setType(CellType.DOOR);
+                cells[width / 2][height - 1].setDoorDirection('d');
+                break;
+            }
+            case 'l': {
+                cells[0][height / 2].setType(CellType.DOOR);
+                cells[0][height / 2].setDoorDirection('l');
+                break;
+            }
+            case 'r': {
+                cells[width-1][height / 2].setType(CellType.DOOR);
+                cells[width-1][height / 2].setDoorDirection('r');
+                break;
+            }
         }
     }
+
+    public WorldMap getParentMap() {
+        return parentMap;
+    }
+
 
     public Player getPlayer() {
         return player;

@@ -47,8 +47,7 @@ public class HelloController {
 
     public void initialize() throws IOException {
         printMap();
-        player.move(3,5);
-        printMap();
+        printMinimap();
 
     }
 
@@ -75,7 +74,9 @@ public class HelloController {
             }
         }
 
-        System.out.println(gridMap.getChildren().size());
+    }
+
+    public void printMinimap () {
         System.out.println(worldMap);
     }
 
