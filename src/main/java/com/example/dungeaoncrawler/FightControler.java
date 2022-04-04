@@ -4,17 +4,22 @@ import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import com.example.dungeaoncrawler.logic.items.Cards;
+import com.example.dungeaoncrawler.logic.status.CharacterAttributes;
 import com.example.dungeaoncrawler.logic.status.Heal;
-import com.example.dungeaoncrawler.logic.status.Poisone;
+import com.example.dungeaoncrawler.logic.status.Poison;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,27 +36,51 @@ public class FightControler {
     public void initialize(){
         player = new Player(20,0,0,4);
         opponent = new Skeleton(10, 2, 5);
+        displayCharacterInfo(player);
+        displayCharacterInfo(opponent);
     }
 
-    private void displayCharacterInfo(){
-        ArrayList<String> characterStatusList = setCharacterStatus(opponent);
-        ListView<String> playerStatusList = getPlayerStats();
+
+
+    private void displayCharacterInfo(Player player){
+        ObservableList<CharacterAttributes> playerAttributes = createCharacterAttributesList(player);
+        PlayerAttributesDisplayContainer.setItems(playerAttributes);
+        PlayerAttributesType.setCellValueFactory(cellData-> cellData.getValue().getAttributeName());
+        PlayerAttributesValue.setCellValueFactory(cellData-> cellData.getValue().getAttributeValue().asObject());
+    }
+
+    private void displayCharacterInfo(Actor opponent){
+        ObservableList<CharacterAttributes> characterAttributes = createCharacterAttributesList(opponent);
+        OpponentAttributesDisplayContainer1.setItems(characterAttributes);
+        OpponentAttributesType1.setCellValueFactory(cellData-> cellData.getValue().getAttributeName());
+        OpponentsAttributesValue1.setCellValueFactory(cellData-> cellData.getValue().getAttributeValue().asObject());
     }
     //TODO dokończyć wyświetlanie statusów
+//    @FXML
+//    private TableView<CharacterAttributes> OpponentAttributesDisplayContainer1;
+//
+//    @FXML
+//    private TableColumn<CharacterAttributes, String> OpponentAttributesType1;
+//
+//    @FXML
+//    private TableColumn<CharacterAttributes, Integer> OpponentsAttributesValue1;
+
+    private ObservableList<CharacterAttributes> createCharacterAttributesList(Actor character){
+        ObservableList<CharacterAttributes> characterAttributes = FXCollections.observableArrayList();
+        characterAttributes.add(new CharacterAttributes("Health", character.getHealth()));
+        characterAttributes.add (new CharacterAttributes("Armor",character.getArmor()));
+        characterAttributes.add (new CharacterAttributes("Resistance", character.getResistance()));
+        characterAttributes.add (new CharacterAttributes("Power",character.getPower()));
+        characterAttributes.add (new CharacterAttributes("Dispel",character.getDispel()));
+        return characterAttributes;
+    }
+
 
     /**
      * put into array every information about actors like health, armor, power etc
      * @param character player or opponent
      * @return array with information to display.
      */
-    private ArrayList<String> setCharacterStatus(Actor character){
-        ArrayList<String> playerStatus = new ArrayList<>();
-        playerStatus.add("Health: "+ character.getHealth());
-        playerStatus.add("Armor "+character.getArmor());
-        playerStatus.add("Resistance " + character.getResistance());
-        playerStatus.add("Power: "+character.getPower());
-        return playerStatus;
-    }
 
     /**
      * after clicking roll dice simulate throw dice
@@ -67,10 +96,6 @@ public class FightControler {
         wasRolled = true;
     }
 }
-
-    public ListView<String> getPlayerStats(){
-        return PlayerStats;
-    }
 
     /**
      * display message during fight - information about dealt dmg, healing etc.
@@ -176,7 +201,7 @@ public class FightControler {
             case DECREASE_ARMOR -> {return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));}
             case RESISTANCE -> {return player.setResistance(card.getValue());}
             case DISPELL -> {return player.setDispell(card.getValue());}
-            case POISON -> {return opponent.setPoisone(new Poisone(player.getPower(), card.getValue()));}
+            case POISON -> {return opponent.setPoisone(new Poison(player.getPower(), card.getValue()));}
             case ATTACK -> {return opponent.takeDamage(card.getValue());}
             case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
             case ARMOR -> {return player.setArmor(card.getValue());}
@@ -239,24 +264,29 @@ public class FightControler {
     }
 
 
+    @FXML
+    private TableView<CharacterAttributes> OpponentAttributesDisplayContainer1;
 
     @FXML
-    private ListView<String> PlayerStats;
+    private TableColumn<CharacterAttributes, String> OpponentAttributesType1;
+
+    @FXML
+    private VBox OpponentStatus;
+
+    @FXML
+    private TableColumn<CharacterAttributes, Integer> OpponentsAttributesValue1;
+
+    @FXML
+    private TableView<CharacterAttributes> PlayerAttributesDisplayContainer;
+
+    @FXML
+    private TableColumn<CharacterAttributes, String> PlayerAttributesType;
+
+    @FXML
+    private TableColumn<CharacterAttributes, Integer> PlayerAttributesValue;
 
     @FXML
     private Label FightMassage;
-
-    @FXML
-    private ListView<?> PlayerInventory;
-
-    @FXML
-    private ListView<?> PlayerInventory1;
-
-    @FXML
-    private ListView<String> PlayerStatus;
-
-    @FXML
-    private ListView<?> PlayerStatus1;
 
     @FXML
     private AnchorPane card0;

@@ -1,10 +1,10 @@
 package com.example.dungeaoncrawler.logic.status;
 
-public class Poisone {
+public class Poison {
     private int rounds;
     private int loseLife;
 
-    public Poisone(int rounds, int loseLife) {
+    public Poison(int rounds, int loseLife) {
         this.rounds = rounds;
         this.loseLife = loseLife;
     }

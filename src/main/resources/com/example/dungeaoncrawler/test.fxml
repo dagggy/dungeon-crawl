@@ -3,8 +3,8 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -153,8 +153,12 @@
                   </ImageView>
                </children>
             </HBox>
-            <ListView fx:id="PlayerStats" prefHeight="200.0" prefWidth="200.0" />
-            <ListView fx:id="PlayerInventory" prefHeight="200.0" prefWidth="200.0" />
+            <TableView fx:id="PlayerAttributesDisplayContainer" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="PlayerAttributesType" prefWidth="130.0" text="Player Stats" />
+                <TableColumn fx:id="PlayerAttributesValue" prefWidth="37.0" />
+              </columns>
+            </TableView>
          </children>
       </VBox>
       <VBox fx:id="OpponentStatus" layoutX="1058.0" layoutY="47.0" opacity="0.76" prefHeight="516.0" prefWidth="120.0" style="-fx-background-color: fff;">
@@ -183,8 +187,12 @@
                   </ImageView>
                </children>
             </HBox>
-            <ListView fx:id="PlayerStatus1" prefHeight="183.0" prefWidth="69.0" />
-            <ListView fx:id="PlayerInventory1" prefHeight="200.0" prefWidth="200.0" />
+            <TableView fx:id="OpponentAttributesDisplayContainer1" prefHeight="200.0" prefWidth="200.0">
+               <columns>
+                  <TableColumn fx:id="OpponentAttributesType1" prefWidth="124.0" text="Opponent Stats" />
+                  <TableColumn fx:id="OpponentsAttributesValue1" prefWidth="43.0" />
+               </columns>
+            </TableView>
          </children>
       </VBox>
       <Label fx:id="FightMassage" layoutX="228.0" layoutY="628.0" prefHeight="113.0" prefWidth="950.0" style="-fx-background-color: fff;" wrapText="true">
@@ -208,6 +216,5 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
-      <ScrollBar fx:id="fightMessageScroll" layoutX="1158.0" layoutY="635.0" orientation="VERTICAL" />
    </children>
 </AnchorPane>

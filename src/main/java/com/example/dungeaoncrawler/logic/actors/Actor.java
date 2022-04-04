@@ -2,7 +2,7 @@ package com.example.dungeaoncrawler.logic.actors;
 
 import com.example.dungeaoncrawler.logic.Drawable;
 import com.example.dungeaoncrawler.logic.status.Heal;
-import com.example.dungeaoncrawler.logic.status.Poisone;
+import com.example.dungeaoncrawler.logic.status.Poison;
 
 import java.util.ArrayList;
 
@@ -10,11 +10,11 @@ public abstract class Actor implements Drawable {
     //    private Cell cell;
     private int health = 10;
     private ArrayList <Heal> heal;
-    private ArrayList <Poisone> poisone;
+    private ArrayList <Poison> poison;
     private int stun;
     private int resistance;
     private int armor;
-    private int dispell;
+    private int dispel;
     private int power;
 
 
@@ -24,22 +24,22 @@ public abstract class Actor implements Drawable {
         this.resistance = resistance;
         this.armor = armor;
         this.heal = new ArrayList<>();
-        this.poisone = new ArrayList<>();
+        this.poison = new ArrayList<>();
         this.stun = 0;
         power = 1;
-        dispell=0;
+        dispel =0;
     }
 
-    public ArrayList <Poisone> getPoisone() {
-        return poisone;
+    public ArrayList <Poison> getPoison() {
+        return poison;
     }
 
-    public String setPoisone(Poisone poisone) {
-        if (dispell == 0){
-        this.poisone.add(poisone);
+    public String setPoisone(Poison poison) {
+        if (dispel == 0){
+        this.poison.add(poison);
         return "Player successfully poison opponent\n";}
         else {
-            dispell -= 1;
+            dispel -= 1;
             return "Opponent successfully block spell\n";
         }
 
@@ -55,6 +55,14 @@ public abstract class Actor implements Drawable {
 
     public int getHealth() {
         return health;
+    }
+
+    public int getDispel() {
+        return dispel;
+    }
+
+    public void setDispel(int dispel) {
+        this.dispel = dispel;
     }
 
     public void setHealth(int health) {
@@ -75,11 +83,11 @@ public abstract class Actor implements Drawable {
     }
 
     public String setStun(int stun) {
-        if (dispell <= 0) {
+        if (dispel <= 0) {
             this.stun += stun;
             return "Opponent is stuned\n";
         } else {
-            dispell -= 1;
+            dispel -= 1;
             return "Opponent successfully cancel player spell \n";
         }
     }
@@ -113,8 +121,8 @@ public abstract class Actor implements Drawable {
     }
 
     public String takeMagicDamage(int damage){
-        if (dispell>0) {
-            dispell -= 1;
+        if (dispel >0) {
+            dispel -= 1;
             return "Opponent block your spell\n";
         }
         else if (damage > resistance) {
@@ -127,10 +135,11 @@ public abstract class Actor implements Drawable {
     }
 
     public String setDispell(int dispell) {
-        this.dispell += dispell;
-        return "Player can now block next " + this.dispell + " spell(s)\n";
+        this.dispel += dispell;
+        return "Player can now block next " + this.dispel + " spell(s)\n";
     }
 }
+
 
 //    public void move(int dx, int dy) {
 //        Cell nextCell = cell.getNeighbor(dx, dy);
