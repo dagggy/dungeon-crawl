@@ -21,9 +21,20 @@ import java.io.InputStream;
 import java.time.Instant;
 import java.util.Scanner;
 
+import static com.example.dungeaoncrawler.HelloApplication.worldMap;
+import static com.example.dungeaoncrawler.HelloApplication.player;
+
 public class HelloController {
     ImageView imageView = new ImageView("img.png");
     ImageView imageView1 = new ImageView("img.png");
+
+
+
+    public void initialize() {
+        printMap(worldMap);
+        player.move(3,5);
+        printMap(worldMap);
+    }
 
     @FXML
     private GridPane gridMap;
@@ -36,12 +47,8 @@ public class HelloController {
 
     private final Image tileset = new Image("mapObjects.png", 577 * 2, 577 * 2, true, false);
 
-    @FXML
-    void printMap(WorldMap worldMap) {
-        //todo: find a way to fit game logic elsewhere
-//        WorldMap worldMap = new WorldMap(1);
+    private void printMap(WorldMap worldMap) {
         gridMap.getChildren().clear();
-
 
         GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
         gridMap.setHgap(0);
@@ -58,10 +65,8 @@ public class HelloController {
                 gridMap.add(imageView,i,j);
             }
         }
+
         System.out.println(gridMap.getChildren().size());
         System.out.println(worldMap);
-//        Rectangle b = new Rectangle(32,16,Color.BLACK);
-//        actorMap.add(whatever, 0, 0);
-//        System.out.println(actorMap.getChildren());
     }
 }

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public abstract class Actor implements Drawable {
     //    private Cell cell;
     private int health = 10;
-    private ArrayList <Heal> heal;
-    private ArrayList <Poisone> poisone;
+    private ArrayList<Heal> heal;
+    private ArrayList<Poisone> poisone;
     private int stun;
     private int resistance;
     private int armor;
@@ -31,18 +31,18 @@ public abstract class Actor implements Drawable {
         this.poisone = new ArrayList<>();
         this.stun = 0;
         power = 1;
-        dispell=0;
+        dispell = 0;
     }
 
-    public ArrayList <Poisone> getPoisone() {
+    public ArrayList<Poisone> getPoisone() {
         return poisone;
     }
 
     public String setPoisone(Poisone poisone) {
-        if (dispell == 0){
-        this.poisone.add(poisone);
-        return "Player successfully poison opponent\n";}
-        else {
+        if (dispell == 0) {
+            this.poisone.add(poisone);
+            return "Player successfully poison opponent\n";
+        } else {
             dispell -= 1;
             return "Opponent successfully block spell\n";
         }
@@ -61,18 +61,11 @@ public abstract class Actor implements Drawable {
         return health;
     }
 
-    public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        cell.setActor(null);
-        nextCell.setActor(this);
-        cell = nextCell;
-    }
-
-    public ActorType getActorType () {
+    public ActorType getActorType() {
         return actorType;
     }
 
-    public Cell getCell () {
+    public Cell getCell() {
         return cell;
     }
 
@@ -80,7 +73,7 @@ public abstract class Actor implements Drawable {
         this.health = health;
     }
 
-    public ArrayList <Heal> getHeal() {
+    public ArrayList<Heal> getHeal() {
         return heal;
     }
 
@@ -122,21 +115,20 @@ public abstract class Actor implements Drawable {
     }
 
     public String takeDamage(int damage) {
-        if (damage>armor) {
+        if (damage > armor) {
             int dealtDamage = damage - armor;
             health -= dealtDamage;
             armor = 0;
             return "Player deal " + dealtDamage + " damage\n";
         } else armor -= damage;
-        return "Player decrease armor by " + damage+"\n";
+        return "Player decrease armor by " + damage + "\n";
     }
 
-    public String takeMagicDamage(int damage){
-        if (dispell>0) {
+    public String takeMagicDamage(int damage) {
+        if (dispell > 0) {
             dispell -= 1;
             return "Opponent block your spell\n";
-        }
-        else if (damage > resistance) {
+        } else if (damage > resistance) {
             int dealtMagicDamage = damage - resistance;
             health -= dealtMagicDamage;
             resistance = 0;
@@ -148,6 +140,17 @@ public abstract class Actor implements Drawable {
     public String setDispell(int dispell) {
         this.dispell += dispell;
         return "Player can now block next " + this.dispell + " spell(s)\n";
+    }
+
+    public void setCell(Cell newCell) {
+        cell = newCell;
+    }
+
+    public void move(int dx, int dy) {
+        Cell nextCell = cell.getNeighbor(dx, dy);
+        cell.setActor(null);
+        nextCell.setActor(this);
+        cell = nextCell;
     }
 }
 

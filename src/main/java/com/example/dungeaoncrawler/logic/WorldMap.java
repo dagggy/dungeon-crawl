@@ -6,6 +6,8 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.example.dungeaoncrawler.HelloApplication.player;
+
 /**A war crime*/
 public class WorldMap {
     private final int floor;
@@ -15,6 +17,8 @@ public class WorldMap {
     private final int worldHeight = 11;
     private final GameMap[][] gameMaps = new GameMap[worldWidth][worldHeight];
     private final ArrayList<GameMap> gameMapStorage = new ArrayList<>();
+
+
 
     /** WorldMap constructor
      * @param floor Might be used in the future, numerical representation on the current floor (in case we go deeper) */
@@ -54,8 +58,8 @@ public class WorldMap {
     /** Places the spawn GameMap in the center of the WorldMap*/
     private void placeSpawn () {
         GameMap map = MapLoader.loadMap(RoomType.SPAWN, worldWidth/2, worldHeight/2);
-        Player player = new Player(10, 0, 0, 4, map.getCell(map.getWidth()/2, map.getHeight()/2));
         map.getCell(map.getWidth()/2, map.getHeight()/2).setActor(player);
+        player.setCell(map.getCell(map.getWidth()/2, map.getHeight()/2));
         gameMaps[worldWidth/2][worldHeight/2] = map;
         gameMapStorage.add(map);
 
@@ -92,7 +96,7 @@ public class WorldMap {
     /**Gets possible room positions for the current world map.
      * It will not allow for a room to be adjacent to a room it's not connected to.
      * I sincerely hope no one ever reads this code.
-    * @return List of lists of pairs for room options and where they connect to*/
+     * @return List of lists of pairs for room options and where they connect to*/
     private ArrayList<ArrayList<ArrayList<Integer>>> getPossibleRoomPositions () {
         ArrayList<ArrayList<ArrayList<Integer>>> possibleRoomPositions = new ArrayList<>();
         for (GameMap gameMap:gameMapStorage) {
