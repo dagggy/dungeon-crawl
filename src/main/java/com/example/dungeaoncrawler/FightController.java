@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class FightControler {
+public class FightController {
     Player player;
     Skeleton opponent;
     boolean wasRolled = false;
@@ -33,9 +33,10 @@ public class FightControler {
     private ArrayList<Cards> hand = new ArrayList<>();
     private boolean drawCard = false;
 
+
     public void initialize(){
         player = new Player(20,0,0,4);
-        opponent = new Skeleton(10, 2, 5);
+        opponent = new Skeleton(2, 0, 0, 30);
         displayCharacterInfo(player);
         displayCharacterInfo(opponent);
     }
@@ -43,28 +44,28 @@ public class FightControler {
 
 
     private void displayCharacterInfo(Player player){
+        PlayerAttributesDisplayContainer.getItems().clear();
         ObservableList<CharacterAttributes> playerAttributes = createCharacterAttributesList(player);
         PlayerAttributesDisplayContainer.setItems(playerAttributes);
         PlayerAttributesType.setCellValueFactory(cellData-> cellData.getValue().getAttributeName());
         PlayerAttributesValue.setCellValueFactory(cellData-> cellData.getValue().getAttributeValue().asObject());
     }
 
+    /**
+     * Fill table with player attributes and its value and display it.
+     * @param opponent
+     */
     private void displayCharacterInfo(Actor opponent){
+        OpponentAttributesDisplayContainer1.getItems().clear();
         ObservableList<CharacterAttributes> characterAttributes = createCharacterAttributesList(opponent);
         OpponentAttributesDisplayContainer1.setItems(characterAttributes);
         OpponentAttributesType1.setCellValueFactory(cellData-> cellData.getValue().getAttributeName());
         OpponentsAttributesValue1.setCellValueFactory(cellData-> cellData.getValue().getAttributeValue().asObject());
     }
-    //TODO dokończyć wyświetlanie statusów
-//    @FXML
-//    private TableView<CharacterAttributes> OpponentAttributesDisplayContainer1;
-//
-//    @FXML
-//    private TableColumn<CharacterAttributes, String> OpponentAttributesType1;
-//
-//    @FXML
-//    private TableColumn<CharacterAttributes, Integer> OpponentsAttributesValue1;
 
+    /**
+    Create List of object from characters attributes with its name and value.
+     */
     private ObservableList<CharacterAttributes> createCharacterAttributesList(Actor character){
         ObservableList<CharacterAttributes> characterAttributes = FXCollections.observableArrayList();
         characterAttributes.add(new CharacterAttributes("Health", character.getHealth()));
@@ -119,16 +120,47 @@ public class FightControler {
             source.setOpacity(0.2);
             source.setDisable(true);
             sumDiceRoll -= hand.get(cardIndex).getCardCost();
+            refreshCharacterAttributes(hand.get(cardIndex));
+            rollDice.setText(sumDiceRoll>0? sumDiceRoll + " points remains": "No points left.");
+            checkForWin();
         } else {
             String message = "You don't have points to play this card\n";
             setFightMessage(message);
         }
     }
-//TODO zmienić label na listView lub tabelview
+
+    private void checkForWin() {
+        if (opponent.getHealth() <= 0){
+            playerIsWon();
+        } else if (player.getHealth() <= 0)
+            opponentIsWon();
+    }
+
+    private void opponentIsWon() {
+
+    }
+
+    private void playerIsWon() {
+        FightMassage.setText("You have won! This time .....");
+        player.getPoison().clear();
+        player.getHeal().clear();
+        player.resetDispel();
+        player.resetStun();
+        player.setExp(opponent.getExp());
+    }
+
+
+    private void refreshCharacterAttributes(Cards card) {
+        switch(card.getCardsType()){
+            case DECREASE_ARMOR, POISON, ATTACK, SPELL, STUN -> displayCharacterInfo(opponent);
+            default -> displayCharacterInfo(player);
+        }
+    }
+
+    //TODO zmienić label na listView lub tabelview
     public Label getDiceSum() {
         return rollDice;
     }
-
 
     /**
      * After clicking draw card button player draw cards and display it on card field
@@ -200,8 +232,8 @@ public class FightControler {
         switch (card.getCardsType()){
             case DECREASE_ARMOR -> {return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));}
             case RESISTANCE -> {return player.setResistance(card.getValue());}
-            case DISPELL -> {return player.setDispell(card.getValue());}
-            case POISON -> {return opponent.setPoisone(new Poison(player.getPower(), card.getValue()));}
+            case DISPELL -> {return player.setDispel(card.getValue());}
+            case POISON -> {return opponent.setPoison(new Poison(player.getPower(), card.getValue()));}
             case ATTACK -> {return opponent.takeDamage(card.getValue());}
             case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
             case ARMOR -> {return player.setArmor(card.getValue());}
@@ -242,8 +274,8 @@ public class FightControler {
 
     /**
      * simulate throwing cards
-     * @param dices coun of dice that player have
-     * @return sum of all dice thraws
+     * @param dices count of dice that player has
+     * @return sum of all dice rolls
      */
     private int rollDice(int dices){
         Random random = new Random();

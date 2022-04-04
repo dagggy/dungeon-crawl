@@ -50,8 +50,8 @@ public class Fight {
         switch (card.getCardsType()){
             case DECREASE_ARMOR -> opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));
             case RESISTANCE -> player.setResistance(card.getValue());
-            case DISPELL -> player.setDispell(card.getValue());
-            case POISON -> opponent.setPoisone(new Poison(player.getPower(), card.getValue()));
+            case DISPELL -> player.setDispel(card.getValue());
+            case POISON -> opponent.setPoison(new Poison(player.getPower(), card.getValue()));
             case ATTACK -> opponent.takeDamage(card.getValue());
             case SPELL -> opponent.takeMagicDamage(card.getValue());
             case ARMOR -> player.setArmor(card.getValue());

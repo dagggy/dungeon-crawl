@@ -7,18 +7,20 @@ import com.example.dungeaoncrawler.logic.status.Poison;
 import java.util.ArrayList;
 
 public abstract class Actor implements Drawable {
-    //    private Cell cell;
-    private int health = 10;
-    private ArrayList <Heal> heal;
-    private ArrayList <Poison> poison;
-    private int stun;
-    private int resistance;
-    private int armor;
-    private int dispel;
-    private int power;
+//        private Cell cell;
+    protected int health = 10;
+    protected ArrayList <Heal> heal;
+    protected ArrayList <Poison> poison;
+    protected int stun;
+    protected int resistance;
+    protected int armor;
+    protected int dispel;
+    protected int power;
+    protected int exp;
 
 
-    public Actor(int health, int resistance, int armor) {
+
+    public Actor(int health, int resistance, int armor, int exp) {
 //        this.cell = cell;
         this.health = health;
         this.resistance = resistance;
@@ -26,15 +28,16 @@ public abstract class Actor implements Drawable {
         this.heal = new ArrayList<>();
         this.poison = new ArrayList<>();
         this.stun = 0;
+        this.exp = exp;
         power = 1;
-        dispel =0;
+        dispel = 0;
     }
 
     public ArrayList <Poison> getPoison() {
         return poison;
     }
 
-    public String setPoisone(Poison poison) {
+    public String setPoison(Poison poison) {
         if (dispel == 0){
         this.poison.add(poison);
         return "Player successfully poison opponent\n";}
@@ -61,8 +64,8 @@ public abstract class Actor implements Drawable {
         return dispel;
     }
 
-    public void setDispel(int dispel) {
-        this.dispel = dispel;
+    public void resetDispel() {
+        this.dispel = 0;
     }
 
     public void setHealth(int health) {
@@ -80,6 +83,9 @@ public abstract class Actor implements Drawable {
 
     public int getStun() {
         return stun;
+    }
+    public void resetStun() {
+        stun = 0;
     }
 
     public String setStun(int stun) {
@@ -134,9 +140,13 @@ public abstract class Actor implements Drawable {
         return "Player decrease opponent resistance by " + damage + " points\n";
     }
 
-    public String setDispell(int dispell) {
-        this.dispel += dispell;
+    public String setDispel(int dispel) {
+        this.dispel += dispel;
         return "Player can now block next " + this.dispel + " spell(s)\n";
+    }
+
+    public int getExp() {
+        return exp;
     }
 }
 

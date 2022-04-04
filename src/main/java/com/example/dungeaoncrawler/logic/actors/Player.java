@@ -11,15 +11,13 @@ public class Player extends Actor {
     private int getCards;
     private int dice;
     private int lvl;
-    private int exp;
     ArrayList<Cards> deck = new ArrayList<>();
     ArrayList<Cards> playingDeck;
 
     public Player(int health, int resistance, int armor, int getCards) {
-        super(health, resistance, armor);
+        super(health, resistance, armor, 0);
         this.getCards = getCards;
         this.lvl = 1;
-        exp = 0;
         dice = 3;
         setStartingDeck();
         setPlayingDeck(deck);
@@ -29,7 +27,7 @@ public class Player extends Actor {
         playingDeck = new ArrayList<>(deck);
         setArmor(0);
         setHeal(null);
-        setPoisone(null);
+        setPoison(null);
         setResistance(0);
     }
 
@@ -104,8 +102,8 @@ public class Player extends Actor {
         return exp;
     }
 
-    public void setExp(int exp) {
-        this.exp = exp;
+    public void setExp(int gainExp) {
+        this.exp = gainExp;
     }
 
     public ArrayList<Cards> getDeck() {

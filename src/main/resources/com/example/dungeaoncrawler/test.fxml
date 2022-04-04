@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dungeaoncrawler.FightControler">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dungeaoncrawler.FightController">
    <children>
       <ImageView fx:id="windowBackground" fitHeight="800.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -35,7 +35,7 @@
                   </ImageView>
                   <Label fx:id="cardDescription0" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="22.0" />
+                        <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
                   <Label fx:id="cardCost0" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
@@ -59,7 +59,7 @@
                   </ImageView>
                   <Label fx:id="cardDescription1" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="22.0" />
+                        <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
                   <Label fx:id="cardCost1" alignment="CENTER" layoutX="139.0" layoutY="312.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
@@ -83,7 +83,7 @@
                   </ImageView>
                   <Label fx:id="cardDescription2" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="22.0" />
+                        <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
                   <Label fx:id="cardCost2" alignment="CENTER" layoutX="139.0" layoutY="308.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
@@ -110,7 +110,7 @@
                   </ImageView>
                   <Label fx:id="cardDescription3" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
-                        <Font name="Comic Sans MS Bold" size="22.0" />
+                        <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
                   <Label fx:id="cardCost3" alignment="CENTER" layoutX="139.0" layoutY="313.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
@@ -155,8 +155,8 @@
             </HBox>
             <TableView fx:id="PlayerAttributesDisplayContainer" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn fx:id="PlayerAttributesType" prefWidth="130.0" text="Player Stats" />
-                <TableColumn fx:id="PlayerAttributesValue" prefWidth="37.0" />
+                <TableColumn fx:id="PlayerAttributesType" editable="false" prefWidth="130.0" sortable="false" text="Player Stats" />
+                <TableColumn fx:id="PlayerAttributesValue" editable="false" prefWidth="37.0" sortable="false" />
               </columns>
             </TableView>
          </children>
@@ -189,8 +189,8 @@
             </HBox>
             <TableView fx:id="OpponentAttributesDisplayContainer1" prefHeight="200.0" prefWidth="200.0">
                <columns>
-                  <TableColumn fx:id="OpponentAttributesType1" prefWidth="124.0" text="Opponent Stats" />
-                  <TableColumn fx:id="OpponentsAttributesValue1" prefWidth="43.0" />
+                  <TableColumn fx:id="OpponentAttributesType1" editable="false" prefWidth="124.0" sortable="false" text="Opponent Stats" />
+                  <TableColumn fx:id="OpponentsAttributesValue1" editable="false" prefWidth="43.0" sortable="false" />
                </columns>
             </TableView>
          </children>
