@@ -31,9 +31,9 @@ public class HelloController {
 
 
     public void initialize() {
-        printMap(worldMap);
+        printMap();
         player.move(3,5);
-        printMap(worldMap);
+        printMap();
     }
 
     @FXML
@@ -47,7 +47,7 @@ public class HelloController {
 
     private final Image tileset = new Image("mapObjects.png", 577 * 2, 577 * 2, true, false);
 
-    private void printMap(WorldMap worldMap) {
+    private void printMap() {
         gridMap.getChildren().clear();
 
         GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
