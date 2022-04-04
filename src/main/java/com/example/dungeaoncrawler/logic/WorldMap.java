@@ -54,7 +54,8 @@ public class WorldMap {
     /** Places the spawn GameMap in the center of the WorldMap*/
     private void placeSpawn () {
         GameMap map = MapLoader.loadMap(RoomType.SPAWN, worldWidth/2, worldHeight/2);
-        Player player = new Player(map.getCell(map.getWidth()/2, map.getHeight()/2));
+        Player player = new Player(10, 0, 0, 4, map.getCell(map.getWidth()/2, map.getHeight()/2));
+        map.getCell(map.getWidth()/2, map.getHeight()/2).setActor(player);
         gameMaps[worldWidth/2][worldHeight/2] = map;
         gameMapStorage.add(map);
 

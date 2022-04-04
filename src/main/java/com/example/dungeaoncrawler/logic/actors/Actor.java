@@ -19,14 +19,14 @@ public abstract class Actor implements Drawable {
     private int power;
 
     private Cell cell;
-    private ActorType actorType;
+    private final ActorType actorType;
 
-    public Actor(int health, int resistance, int armor) {
-//        this.cell = cell;
-        this.actorType = ActorType.PLAYER;
+    public Actor(int health, int resistance, int armor, ActorType actorType, Cell cell) {
+        this.actorType = actorType;
         this.health = health;
         this.resistance = resistance;
         this.armor = armor;
+        this.cell = cell;
         this.heal = new ArrayList<>();
         this.poisone = new ArrayList<>();
         this.stun = 0;

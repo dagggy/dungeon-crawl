@@ -1,5 +1,6 @@
 package com.example.dungeaoncrawler.logic.actors;
 
+import com.example.dungeaoncrawler.logic.Cell;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.CardsType;
@@ -14,9 +15,10 @@ public class Player extends Actor {
     private int exp;
     ArrayList<Cards> deck = new ArrayList<>();
     ArrayList<Cards> playingDeck;
+    private Cell cell;
 
-    public Player(int health, int resistance, int armor, int getCards) {
-        super(health, resistance, armor);
+    public Player(int health, int resistance, int armor, int getCards, Cell cell) {
+        super(health, resistance, armor, ActorType.PLAYER, cell);
         this.getCards = getCards;
         this.lvl = 1;
         exp = 0;
@@ -122,6 +124,14 @@ public class Player extends Actor {
 
     public void setPlayingDeck(ArrayList<Cards> playingDeck) {
         this.playingDeck = playingDeck;
+    }
+
+    public int getX() {
+        return cell.getX();
+    }
+
+    public int getY() {
+        return cell.getY();
     }
 }
 //    Cards(String img, String name, Position position, CardsType cardsType, CardRarity cardRarity)

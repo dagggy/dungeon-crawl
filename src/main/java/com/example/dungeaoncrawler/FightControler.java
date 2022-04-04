@@ -1,5 +1,6 @@
 package com.example.dungeaoncrawler;
 
+import com.example.dungeaoncrawler.logic.Cell;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
@@ -29,8 +30,8 @@ public class FightControler {
     private boolean drawCard = false;
 
     public void initialize(){
-        player = new Player(20,0,0,4);
-        opponent = new Skeleton(10, 2, 5);
+//        player = new Player(20,0,0,4, new Cell());
+//        opponent = new Skeleton(10, 2, 5);
 
 
 

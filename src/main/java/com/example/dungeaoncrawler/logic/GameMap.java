@@ -47,7 +47,7 @@ public class GameMap {
     public void placeEnemy () {
         int x = ThreadLocalRandom.current().nextInt(1, 24);
         int y = ThreadLocalRandom.current().nextInt(1, 19);
-        Actor enemy = new Skeleton(cells[x][y]);
+        Actor enemy = new Skeleton(10, 10, 10, cells[x][y]);
         cells[x][y].setActor(enemy);
     }
 

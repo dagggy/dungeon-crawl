@@ -59,7 +59,7 @@
             <RowConstraints maxHeight="32.0" minHeight="32.0" prefHeight="32.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button fx:id="printButton" layoutX="1135.0" layoutY="187.0" mnemonicParsing="false" onAction="#printMap" text="Button" />
+<!--      <Button fx:id="printButton" layoutX="1135.0" layoutY="187.0" mnemonicParsing="false" onAction="#printMap" text="Button" />-->
       <GridPane id="gridMap" fx:id="actorMap" layoutX="228.0" layoutY="47.0" minHeight="32.0" minWidth="32.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="32.0" minWidth="32.0" prefWidth="32.0" />

@@ -5,8 +5,8 @@ import com.example.dungeaoncrawler.logic.Cell;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Skeleton extends Actor {
-    public Skeleton(int health, int resistance, int armor) {
-        super(health, resistance, armor);
+    public Skeleton(int health, int resistance, int armor, Cell cell) {
+        super(health, resistance, armor, ActorType.SKELETON, cell);
     }
 
     @Override
