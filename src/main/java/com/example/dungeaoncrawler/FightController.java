@@ -10,15 +10,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-import java.util.*;
-
-import javafx.scene.layout.AnchorPane;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class FightControler {
     Player player;
@@ -31,9 +31,6 @@ public class FightControler {
     public void initialize(){
         player = new Player(20,0,0,4);
         opponent = new Skeleton(10, 2, 5);
-
-
-
     }
 
     private void displayCharacterInfo(){
@@ -42,6 +39,11 @@ public class FightControler {
     }
     //TODO dokończyć wyświetlanie statusów
 
+    /**
+     * put into array every information about actors like health, armor, power etc
+     * @param character player or opponent
+     * @return array with information to display.
+     */
     private ArrayList<String> setCharacterStatus(Actor character){
         ArrayList<String> playerStatus = new ArrayList<>();
         playerStatus.add("Health: "+ character.getHealth());
@@ -50,6 +52,11 @@ public class FightControler {
         playerStatus.add("Power: "+character.getPower());
         return playerStatus;
     }
+
+    /**
+     * after clicking roll dice simulate throw dice
+     * @param event mouse click
+     */
 
     @FXML
     void printSumDice(MouseEvent event) {
@@ -92,23 +99,11 @@ public class FightControler {
             setFightMessage(message);
         }
     }
-
+//TODO zmienić label na listView lub tabelview
     public Label getDiceSum() {
         return rollDice;
     }
 
-
-//    private void playermove(Actor player, Actor opponent){
-//        ArrayList<Cards> hand = drawRandomCards((Player) player);
-//        this.hand = hand;
-//        int roll = rollDice(((Player) player).getDice());
-//        displayMassage(roll);
-//        printHand(hand);
-//        if (canPlayCard(roll, hand)) {
-//            int cardNumber = getUserInput();
-//            playCard(player, opponent, cardNumber, hand, roll);
-//        }
-//    }
 
     /**
      * After clicking draw card button player draw cards and display it on card field
@@ -135,8 +130,8 @@ public class FightControler {
         for (int i = 0; i < cardsContainer.size(); i++) {
             AnchorPane container = cardsContainer.get(i);
             // set card image
-//            ImageView cardImage = (ImageView) container.getChildren().get(0);
-//            cardImage.setImage(new Image("swordAttack.gif"));
+            ImageView cardImage = (ImageView) container.getChildren().get(0);
+            cardImage.setImage(new Image("swordAttack.gif"));
 
             //set card description
             Label cardDescription = (Label) container.getChildren().get(2);
@@ -168,59 +163,37 @@ public class FightControler {
         rollDice.setText(message);
     }
 
-//    private void playCard(Actor player, Actor opponent, int cardIndex, ArrayList<Cards> hand, int roll){
-//        if (hand.get(cardIndex).getCardCost()>=roll){
-//            resolveCardEffect(player, opponent, hand.get(cardIndex));
-//        } else {
-//            System.out.println("You dont have point action to play this card");
-//        }
-//    }
 
+    /**
+     * after picking card to play
+     * @param player player character
+     * @param opponent opponent character
+     * @param card picked card
+     * @return return message to display about card effect
+     */
     private String resolveCardEffect(Actor player, Actor opponent, Cards card){
         switch (card.getCardsType()){
-            case DECREASE_ARMOR -> {
-                return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));
-            }
-            case RESISTANCE -> {
-                return player.setResistance(card.getValue());
-            }
-            case DISPELL -> {
-                return player.setDispell(card.getValue());
-            }
-            case POISON -> {
-                return opponent.setPoisone(new Poisone(player.getPower(), card.getValue()));
-            }
-            case ATTACK -> {
-                return opponent.takeDamage(card.getValue());
-            }
-            case SPELL -> {
-                return opponent.takeMagicDamage(card.getValue());
-            }
-            case ARMOR -> {
-                return player.setArmor(card.getValue());
-            }
-            case HEAL -> {
-                return player.setHeal(new Heal(player.getPower(), card.getValue()));
-            }
-            case STUN -> {
-                return opponent.setStun(player.getPower());
-            }
-    } return "";
-        }
+            case DECREASE_ARMOR -> {return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));}
+            case RESISTANCE -> {return player.setResistance(card.getValue());}
+            case DISPELL -> {return player.setDispell(card.getValue());}
+            case POISON -> {return opponent.setPoisone(new Poisone(player.getPower(), card.getValue()));}
+            case ATTACK -> {return opponent.takeDamage(card.getValue());}
+            case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
+            case ARMOR -> {return player.setArmor(card.getValue());}
+            case HEAL -> {return player.setHeal(new Heal(player.getPower(), card.getValue()));}
+            case STUN -> {return opponent.setStun(player.getPower());}
+        } return "";
+    }
 
     private boolean canPlayCard(int roll, ArrayList<Cards> hand, int cardIndex){
         return roll >= hand.get(cardIndex).getCardCost();
     }
 
-
-//    private int getLowestCost(ArrayList<Cards> hand){
-//        int lowestCost = 100;
-//        for (int i = 0; i < hand.size(); i++) {
-//            if (hand.get(i).getCardCost()< lowestCost) lowestCost = hand.get(i).getCardCost();
-//        }
-//        return lowestCost;
-//    }
-
+    /**
+     * draw card mechanism
+     * @param player player
+     * @return all cards that are in hand
+     */
     private ArrayList<Cards> drawRandomCards(Player player){
         Random random = new Random();
         int cardsOnHand = player.getCards();
@@ -242,6 +215,11 @@ public class FightControler {
         return hand;
     }
 
+    /**
+     * simulate throwing cards
+     * @param dices coun of dice that player have
+     * @return sum of all dice thraws
+     */
     private int rollDice(int dices){
         Random random = new Random();
         int diceSum = 0;
