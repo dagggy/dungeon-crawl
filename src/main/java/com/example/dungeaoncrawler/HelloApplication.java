@@ -3,6 +3,7 @@ package com.example.dungeaoncrawler;
 import com.example.dungeaoncrawler.logic.WorldMap;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -14,6 +15,7 @@ public class HelloApplication extends Application {
 
     public static Player player = new Player(10, 0, 0,4, null);
     static WorldMap worldMap = new WorldMap(1);
+
 
     @Override
     public void start(Stage stage) throws IOException {

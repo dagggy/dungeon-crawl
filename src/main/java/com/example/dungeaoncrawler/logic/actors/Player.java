@@ -142,7 +142,7 @@ public class Player extends Actor {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
-        } else if (nextCell.getType() == CellType.DOOR) {
+        } else if (nextCell.getType() == CellType.CLOSED_DOOR) {
             cell.setActor(null);
             switch (nextCell.getDoorDirection()) {
                 case 'u' -> {
