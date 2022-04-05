@@ -113,6 +113,7 @@ public class HelloController {
                 printMap();
             }
         }
+        startFightWithEnemy();
     }
 
     public void getEnemyMove() {
@@ -124,10 +125,16 @@ public class HelloController {
         }
     }
 
+    private void startFightWithEnemy() {
+        int x = player.getCell().getX();
+        int y = player.getCell().getY();
+        int[][] neighbourField = {{x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1}};
 
-//    private void getEnemyMove(Actor enemy) {
-//        int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-//        int[] randomPair = possibleMoves[new Random().nextInt(possibleMoves.length)];
-//        enemy.move(randomPair[0], randomPair[1]);
-//    }
+        for (int[] i : neighbourField) {
+            if (worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]).getActor() != null) {
+                System.out.println("działa");     //rozpoczęcie walki
+            }
+        }
+    }
+
 }
