@@ -1,7 +1,6 @@
 package com.example.dungeaoncrawler.logic.items;
 
 import com.example.dungeaoncrawler.logic.Position;
-import com.example.dungeaoncrawler.logic.actors.Actor;
 
 public class Cards extends Items{
     private final CardsType cardsType;
@@ -35,7 +34,7 @@ public class Cards extends Items{
 
     private int getCardValue(){
         switch (cardsType){
-            case HEAL, POISON,DISPELL -> {
+            case HEAL, POISON, DISPEL -> {
                 return getTimeValue(rarity);
             }
             case ARMOR,ATTACK,DECREASE_ARMOR,SPELL,RESISTANCE -> {

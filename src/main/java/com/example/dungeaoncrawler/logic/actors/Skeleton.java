@@ -3,8 +3,8 @@ package com.example.dungeaoncrawler.logic.actors;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Skeleton extends Actor {
-    public Skeleton(int health, int resistance, int armor, int exp) {
-        super(health, resistance, armor, exp);
+    public Skeleton(int health, int resistance, int armor, int exp, int attackRound) {
+        super(health, resistance, armor, exp, "Skeleton", attackRound);
     }
 
     @Override
@@ -26,7 +26,6 @@ public class Skeleton extends Actor {
         }
     }
 
-
     private int magicAttack(){
         return ThreadLocalRandom.current().nextInt(2,5);
     }
@@ -36,4 +35,5 @@ public class Skeleton extends Actor {
     private int poisonAttack(){
         return ThreadLocalRandom.current().nextInt(1,3);
     }
+
 }

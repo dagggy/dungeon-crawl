@@ -4,6 +4,7 @@ import com.example.dungeaoncrawler.logic.Drawable;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Actor implements Drawable {
 //        private Cell cell;
@@ -16,10 +17,13 @@ public abstract class Actor implements Drawable {
     protected int dispel;
     protected int power;
     protected int exp;
+    protected String name;
+    protected int attackRound;
 
 
 
-    public Actor(int health, int resistance, int armor, int exp) {
+
+    public Actor(int health, int resistance, int armor, int exp, String name, int attackRound) {
 //        this.cell = cell;
         this.health = health;
         this.resistance = resistance;
@@ -28,8 +32,10 @@ public abstract class Actor implements Drawable {
         this.poison = new ArrayList<>();
         this.stun = 0;
         this.exp = exp;
+        this.attackRound = attackRound;
         power = 1;
         dispel = 0;
+        this.name = name;
     }
 
     public ArrayList <LifeChanger> getPoison() {
@@ -125,6 +131,7 @@ public abstract class Actor implements Drawable {
         return "Player decrease armor by " + damage+"\n";
     }
 
+
     public String takeMagicDamage(int damage){
         if (dispel >0) {
             dispel -= 1;
@@ -156,14 +163,28 @@ public abstract class Actor implements Drawable {
         if (list.size()>0) for (int i = 0; i < list.size(); i++) {
             LifeChanger lifeChanger = list.get(i);
             health += lifeChanger.getLifeChanger();
-            if (lifeChanger.getRounds() > 1) {
-                lifeChanger.setRounds(-1);
-            } else {
-                list.remove(i);
-            }
+            if (lifeChanger.getRounds() > 0) {
+                lifeChanger.setRounds(1);}
+        }
+        removeLifeChangerFromList(list);
+    }
+
+    private void removeLifeChangerFromList(List<LifeChanger> list){
+        List<LifeChanger> toRemove = list.stream()
+                .filter(item -> item.getRounds()<=0).toList();
+
+        for (LifeChanger lifeChanger : toRemove) {
+            list.remove(lifeChanger);
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getAttackRound() {
+        return attackRound;
+    }
 }
 
 

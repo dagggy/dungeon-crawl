@@ -9,7 +9,7 @@ public enum CardsType {
     POISON,
     ARMOR,
     RESISTANCE,
-    DISPELL,
+    DISPEL,
     DECREASE_ARMOR,
     HEAL,
     STUN;

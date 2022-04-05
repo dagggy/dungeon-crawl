@@ -15,7 +15,7 @@ public class Player extends Actor {
     ArrayList<Cards> playingDeck;
 
     public Player(int health, int resistance, int armor, int getCards) {
-        super(health, resistance, armor, 0);
+        super(health, resistance, armor, 0, "player", 0);
         this.getCards = getCards;
         this.lvl = 1;
         dice = 3;
@@ -26,9 +26,11 @@ public class Player extends Actor {
     public void endFight(){
         playingDeck = new ArrayList<>(deck);
         setArmor(0);
-        setHeal(null);
-        setPoison(null);
         setResistance(0);
+        heal.clear();
+        poison.clear();
+        resetDispel();
+        resetStun();
     }
 
     public String getTileName() {
@@ -43,6 +45,7 @@ public class Player extends Actor {
         addDefensiveCardsToStartingDeck(defendsCards);
         addRandomCardsToStartingDeck(otherCards);
     }
+    //TODO talie startyowe i klasy bohatera + strona startowa
 
     private void addOffensiveCardsToStartingDeck(int cardsNumber){
         for (int i = 0; i < cardsNumber; i++) {

@@ -37,14 +37,18 @@ public class FightController {
 
     public void initialize(){
         player = new Player(20,0,0,4);
-        opponent = new Skeleton(12, 4, 1, 30);
-        displayCharacterInfo(player);
-        displayCharacterInfo(opponent);
+        opponent = new Skeleton(12, 4, 1, 30,2);
+        displayActorInfo(player);
+        displayActorInfo(opponent);
     }
 
+    private void displayActorInfo(Actor actor){
+        if (actor instanceof Player) {
+            displayPlayerInfo((Player) actor);
+        } else {displayOpponentInfo(actor);}
+    }
 
-
-    private void displayCharacterInfo(Player player){
+    private void displayPlayerInfo(Player player){
         PlayerAttributesDisplayContainer.getItems().clear();
         ObservableList<CharacterAttributes> playerAttributes = createCharacterAttributesList(player);
         PlayerAttributesDisplayContainer.setItems(playerAttributes);
@@ -56,7 +60,7 @@ public class FightController {
      * Fill table with player attributes and its value and display it.
      * @param opponent
      */
-    private void displayCharacterInfo(Actor opponent){
+    private void displayOpponentInfo(Actor opponent){
         OpponentAttributesDisplayContainer1.getItems().clear();
         ObservableList<CharacterAttributes> characterAttributes = createCharacterAttributesList(opponent);
         OpponentAttributesDisplayContainer1.setItems(characterAttributes);
@@ -137,43 +141,52 @@ public class FightController {
 
     private void playerIsWon() {
         FightMassage.setText("You have won! This time .....");
-        player.getPoison().clear();
-        player.getHeal().clear();
-        player.resetDispel();
-        player.resetStun();
         player.setExp(opponent.getExp());
+        player.endFight();
     }
 
     private void refreshCharacterAttributes(Cards card) {
         switch(card.getCardsType()){
-            case DECREASE_ARMOR, POISON, ATTACK, SPELL, STUN -> displayCharacterInfo(opponent);
-            default -> displayCharacterInfo(player);
+            case DECREASE_ARMOR, POISON, ATTACK, SPELL, STUN -> displayActorInfo(opponent);
+            default -> displayActorInfo(player);
         }
     }
 
     @FXML
     void endTurn(ActionEvent event) {
-        changePlayer();
-        newTurn();
-    }
-
-    private void changePlayer(){
-        if (playerTurn) {
-            playerTurn = false;
-        } else playerTurn = true;
-    }
-
-    private void newTurn(){
         cardsField.setVisible(false);
         FightMassage.setText("Now its next turn");
-        checkCharacterStatus(opponent);
-        displayCharacterInfo(opponent);
-        rollDice.setText("Opponents Turn");
+        roundBeginning(opponent);
+        opponentMove();
+    }
+
+    private void opponentMove() {
+        int attackRound = opponent.getAttackRound();
+        for (int i = 0; i < attackRound; i++) {
+            opponentAttackPhase();
+            checkForWin();
+            if (i==attackRound-1){
+                playerNewTurnToPlay();
+            }
+        }
+    };
+
+
+    //TODO poprawić zagranie kart przy starcie rundy
+    private void roundBeginning(Actor character) {
+        checkCharacterStatus(character);
+        displayActorInfo(character);
+        rollDice.setText("*****  " + character.getName() + " Turn");
         checkForWin();
-        opponentAttackPhase();
-        checkForWin();
-        opponentAttackPhase();
-        checkForWin();
+    }
+
+    private void playerNewTurnToPlay() {
+        roundBeginning(player);
+        rollDice.setText("Roll Dices");
+        wasRolled = false;
+        drawCard = false;
+        endTurn.setVisible(false);
+        playerTurn = false;
     }
 
     private void opponentAttackPhase() {
@@ -181,17 +194,18 @@ public class FightController {
         int value = opponent.opponentAttack(attack);
         String massage = resolveOpponentAttack(attack, value);
         FightMassage.setText(massage);
-        displayCharacterInfo(player);
+        displayActorInfo(player);
     }
 
     private String resolveOpponentAttack(String attack, int value) {
         switch (attack) {
             case "magic" -> {return player.takeMagicDamage(value);}
-            case "poison" -> {return player.setPoison (new LifeChanger(opponent.opponentAttack(attack) ,value));}
+            case "poison" -> {return player.setPoison(new LifeChanger(opponent.getPower(), -value));}
             case "damage" -> {return player.takeDamage(value);}
         }
         return "";
     }
+
     private void checkCharacterStatus(Actor character) {
         character.resolveLifeChanger();
     }
@@ -212,7 +226,7 @@ public class FightController {
             this.hand = hand;
             displayCards(hand);
             cardsField.setVisible(true);
-            drawCard= true;
+            drawCard = true;
             endTurn.setVisible(true);
         }
     }
@@ -225,6 +239,8 @@ public class FightController {
         ArrayList<AnchorPane> cardsContainer = createCardContainerList();
         for (int i = 0; i < cardsContainer.size(); i++) {
             AnchorPane container = cardsContainer.get(i);
+            container.setOpacity(1);
+            container.setDisable(false);
             // set card image
             ImageView cardImage = (ImageView) container.getChildren().get(0);
             cardImage.setImage(new Image("swordAttack.gif"));
@@ -271,7 +287,7 @@ public class FightController {
         switch (card.getCardsType()){
             case DECREASE_ARMOR -> {return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));}
             case RESISTANCE -> {return player.setResistance(card.getValue());}
-            case DISPELL -> {return player.setDispel(card.getValue());}
+            case DISPEL -> {return player.setDispel(card.getValue());}
             case POISON -> {return opponent.setPoison(new LifeChanger(player.getPower(), -card.getValue()));}
             case ATTACK -> {return opponent.takeDamage(card.getValue());}
             case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
