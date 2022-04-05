@@ -21,7 +21,6 @@ public abstract class Actor implements Drawable {
     protected int exp;
     protected String name;
     protected int attackRound;
-    protected Cell cell;
     private final ActorType actorType;
 
 

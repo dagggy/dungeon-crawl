@@ -1,12 +1,10 @@
 package com.example.dungeaoncrawler.logic;
 
 import com.example.dungeaoncrawler.logic.actors.Actor;
-import com.example.dungeaoncrawler.logic.actors.ActorType;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameMap {
@@ -48,7 +46,7 @@ public class GameMap {
     public void placeEnemy () {
         int x = ThreadLocalRandom.current().nextInt(1, 24);
         int y = ThreadLocalRandom.current().nextInt(1, 19);
-        Actor enemy = new Skeleton(10, 10, 10, cells[x][y]);
+        Actor enemy = new Skeleton(10, 10, 10, 4, 2, cells[x][y]);
         cells[x][y].setActor(enemy);
     }
 

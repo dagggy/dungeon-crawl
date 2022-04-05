@@ -14,8 +14,6 @@ public class Test extends Application {
         stage.setTitle("Fight!");
         stage.setScene(scene);
         stage.show();
-
-
     }
 
 }

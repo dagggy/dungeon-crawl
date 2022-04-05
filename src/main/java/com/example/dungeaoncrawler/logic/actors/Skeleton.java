@@ -1,5 +1,7 @@
 package com.example.dungeaoncrawler.logic.actors;
 
+import com.example.dungeaoncrawler.logic.Cell;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Skeleton extends Actor {

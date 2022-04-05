@@ -36,8 +36,8 @@ public class FightController {
 
 
     public void initialize(){
-        player = new Player(20,0,0,4);
-        opponent = new Skeleton(12, 4, 1, 30,2);
+        player = new Player(20,0,0,4, null);
+        opponent = new Skeleton(12, 4, 1, 30,2, null);
         displayActorInfo(player);
         displayActorInfo(opponent);
     }
@@ -93,8 +93,8 @@ public class FightController {
         this.sumDiceRoll = sumRolled;
         setDiceSum("You rolled "+ sumRolled);
         wasRolled = true;
+       }
     }
-}
 
     /**
      * display message during fight - information about dealt dmg, healing etc.
