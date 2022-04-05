@@ -4,8 +4,7 @@ import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import com.example.dungeaoncrawler.logic.items.Cards;
-import com.example.dungeaoncrawler.logic.status.Heal;
-import com.example.dungeaoncrawler.logic.status.Poison;
+import com.example.dungeaoncrawler.logic.status.LifeChanger;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -51,11 +50,11 @@ public class Fight {
             case DECREASE_ARMOR -> opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));
             case RESISTANCE -> player.setResistance(card.getValue());
             case DISPELL -> player.setDispel(card.getValue());
-            case POISON -> opponent.setPoison(new Poison(player.getPower(), card.getValue()));
+            case POISON -> opponent.setPoison(new LifeChanger(player.getPower(), -card.getValue()));
             case ATTACK -> opponent.takeDamage(card.getValue());
             case SPELL -> opponent.takeMagicDamage(card.getValue());
             case ARMOR -> player.setArmor(card.getValue());
-            case HEAL -> player.setHeal(new Heal(player.getPower(), card.getValue()));
+            case HEAL -> player.setHeal(new LifeChanger(player.getPower(), card.getValue()));
             case STUN -> opponent.setStun(player.getPower());
         }
     }

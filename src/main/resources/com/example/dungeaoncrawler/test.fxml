@@ -138,7 +138,7 @@
                <children>
                   <ImageView fx:id="opponentHeal1" fitHeight="69.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../heal.png" />
+                        <Image url="@../../../lifeChanger.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="opponentPoison1" fitHeight="30.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
@@ -172,7 +172,7 @@
                <children>
                   <ImageView fx:id="opponentHeal" fitHeight="69.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../heal.png" />
+                        <Image url="@../../../lifeChanger.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="opponentPoison" fitHeight="30.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
@@ -208,7 +208,7 @@
             <Font name="Comic Sans MS Bold" size="24.0" />
          </font>
       </Button>
-      <Button fx:id="endTurn" layoutX="842.0" layoutY="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="End Turn" visible="false">
+      <Button fx:id="endTurn" layoutX="842.0" layoutY="46.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="30.0" prefWidth="200.0" text="End Turn" visible="false">
          <font>
             <Font name="Comic Sans MS Bold" size="24.0" />
          </font>

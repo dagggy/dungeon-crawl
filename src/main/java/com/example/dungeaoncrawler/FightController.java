@@ -5,10 +5,10 @@ import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.status.CharacterAttributes;
-import com.example.dungeaoncrawler.logic.status.Heal;
-import com.example.dungeaoncrawler.logic.status.Poison;
+import com.example.dungeaoncrawler.logic.status.LifeChanger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,11 +32,12 @@ public class FightController {
     private int sumDiceRoll;
     private ArrayList<Cards> hand = new ArrayList<>();
     private boolean drawCard = false;
+    private boolean playerTurn = true;
 
 
     public void initialize(){
         player = new Player(20,0,0,4);
-        opponent = new Skeleton(2, 0, 0, 30);
+        opponent = new Skeleton(12, 4, 1, 30);
         displayCharacterInfo(player);
         displayCharacterInfo(opponent);
     }
@@ -75,13 +76,6 @@ public class FightController {
         characterAttributes.add (new CharacterAttributes("Dispel",character.getDispel()));
         return characterAttributes;
     }
-
-
-    /**
-     * put into array every information about actors like health, armor, power etc
-     * @param character player or opponent
-     * @return array with information to display.
-     */
 
     /**
      * after clicking roll dice simulate throw dice
@@ -137,7 +131,8 @@ public class FightController {
     }
 
     private void opponentIsWon() {
-
+        FightMassage.setText("You lose general Kenobi\n Hahaha");
+        endTurn.setDisable(true);
     }
 
     private void playerIsWon() {
@@ -149,12 +144,56 @@ public class FightController {
         player.setExp(opponent.getExp());
     }
 
-
     private void refreshCharacterAttributes(Cards card) {
         switch(card.getCardsType()){
             case DECREASE_ARMOR, POISON, ATTACK, SPELL, STUN -> displayCharacterInfo(opponent);
             default -> displayCharacterInfo(player);
         }
+    }
+
+    @FXML
+    void endTurn(ActionEvent event) {
+        changePlayer();
+        newTurn();
+    }
+
+    private void changePlayer(){
+        if (playerTurn) {
+            playerTurn = false;
+        } else playerTurn = true;
+    }
+
+    private void newTurn(){
+        cardsField.setVisible(false);
+        FightMassage.setText("Now its next turn");
+        checkCharacterStatus(opponent);
+        displayCharacterInfo(opponent);
+        rollDice.setText("Opponents Turn");
+        checkForWin();
+        opponentAttackPhase();
+        checkForWin();
+        opponentAttackPhase();
+        checkForWin();
+    }
+
+    private void opponentAttackPhase() {
+        String attack = opponent.opponentChoseAttack();
+        int value = opponent.opponentAttack(attack);
+        String massage = resolveOpponentAttack(attack, value);
+        FightMassage.setText(massage);
+        displayCharacterInfo(player);
+    }
+
+    private String resolveOpponentAttack(String attack, int value) {
+        switch (attack) {
+            case "magic" -> {return player.takeMagicDamage(value);}
+            case "poison" -> {return player.setPoison (new LifeChanger(opponent.opponentAttack(attack) ,value));}
+            case "damage" -> {return player.takeDamage(value);}
+        }
+        return "";
+    }
+    private void checkCharacterStatus(Actor character) {
+        character.resolveLifeChanger();
     }
 
     //TODO zmienić label na listView lub tabelview
@@ -233,11 +272,11 @@ public class FightController {
             case DECREASE_ARMOR -> {return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));}
             case RESISTANCE -> {return player.setResistance(card.getValue());}
             case DISPELL -> {return player.setDispel(card.getValue());}
-            case POISON -> {return opponent.setPoison(new Poison(player.getPower(), card.getValue()));}
+            case POISON -> {return opponent.setPoison(new LifeChanger(player.getPower(), -card.getValue()));}
             case ATTACK -> {return opponent.takeDamage(card.getValue());}
             case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
             case ARMOR -> {return player.setArmor(card.getValue());}
-            case HEAL -> {return player.setHeal(new Heal(player.getPower(), card.getValue()));}
+            case HEAL -> {return player.setHeal(new LifeChanger(player.getPower(), card.getValue()));}
             case STUN -> {return opponent.setStun(player.getPower());}
         } return "";
     }

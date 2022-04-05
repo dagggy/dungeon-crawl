@@ -1,16 +1,15 @@
 package com.example.dungeaoncrawler.logic.actors;
 
 import com.example.dungeaoncrawler.logic.Drawable;
-import com.example.dungeaoncrawler.logic.status.Heal;
-import com.example.dungeaoncrawler.logic.status.Poison;
+import com.example.dungeaoncrawler.logic.status.LifeChanger;
 
 import java.util.ArrayList;
 
 public abstract class Actor implements Drawable {
 //        private Cell cell;
     protected int health = 10;
-    protected ArrayList <Heal> heal;
-    protected ArrayList <Poison> poison;
+    protected ArrayList <LifeChanger> heal;
+    protected ArrayList <LifeChanger> poison;
     protected int stun;
     protected int resistance;
     protected int armor;
@@ -33,11 +32,11 @@ public abstract class Actor implements Drawable {
         dispel = 0;
     }
 
-    public ArrayList <Poison> getPoison() {
+    public ArrayList <LifeChanger> getPoison() {
         return poison;
     }
 
-    public String setPoison(Poison poison) {
+    public String setPoison(LifeChanger poison) {
         if (dispel == 0){
         this.poison.add(poison);
         return "Player successfully poison opponent\n";}
@@ -72,12 +71,12 @@ public abstract class Actor implements Drawable {
         this.health = health;
     }
 
-    public ArrayList <Heal> getHeal() {
+    public ArrayList <LifeChanger> getHeal() {
         return heal;
     }
 
-    public String setHeal(Heal heal) {
-        this.heal.add(heal);
+    public String setHeal(LifeChanger lifeChanger) {
+        this.heal.add(lifeChanger);
         return "Player successfully cast healing\n";
     }
 
@@ -148,6 +147,23 @@ public abstract class Actor implements Drawable {
     public int getExp() {
         return exp;
     }
+    public void resolveLifeChanger() {
+        checkPlayerStatus(poison);
+        checkPlayerStatus(heal);
+    }
+
+    private void checkPlayerStatus(ArrayList<LifeChanger> list){
+        if (list.size()>0) for (int i = 0; i < list.size(); i++) {
+            LifeChanger lifeChanger = list.get(i);
+            health += lifeChanger.getLifeChanger();
+            if (lifeChanger.getRounds() > 1) {
+                lifeChanger.setRounds(-1);
+            } else {
+                list.remove(i);
+            }
+        }
+    }
+
 }
 
 
