@@ -19,7 +19,7 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         HelloController helloController = fxmlLoader.getController();
-        stage.setTitle("Hello!");
+        stage.setTitle("CardCrawl");
         stage.setScene(scene);
         stage.show();
         scene.setOnKeyPressed(helloController::onKeyPressed);
