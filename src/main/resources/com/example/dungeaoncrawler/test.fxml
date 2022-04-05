@@ -3,6 +3,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -128,32 +129,9 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </HBox>
-      <VBox fx:id="playerStatus" layoutX="28.0" layoutY="47.0" opacity="0.76" prefHeight="516.0" prefWidth="129.0" style="-fx-background-color: fff;">
+      <VBox fx:id="playerStatus" layoutX="28.0" layoutY="226.0" opacity="0.76" prefHeight="337.0" prefWidth="167.0" style="-fx-background-color: fff;">
          <children>
-            <ImageView fx:id="playerImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@image/cards/getResistance.gif" />
-               </image></ImageView>
-            <HBox fx:id="opponentStateDisplay1" prefHeight="16.0" prefWidth="159.0">
-               <children>
-                  <ImageView fx:id="opponentHeal1" fitHeight="69.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../lifeChanger.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="opponentPoison1" fitHeight="30.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../poison2.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="opponentStun1" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../stun.gif" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <TableView fx:id="PlayerAttributesDisplayContainer" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="PlayerAttributesDisplayContainer" prefHeight="200.0" prefWidth="170.0">
               <columns>
                 <TableColumn fx:id="PlayerAttributesType" editable="false" prefWidth="130.0" sortable="false" text="Player Stats" />
                 <TableColumn fx:id="PlayerAttributesValue" editable="false" prefWidth="37.0" sortable="false" />
@@ -161,44 +139,16 @@
             </TableView>
          </children>
       </VBox>
-      <VBox fx:id="OpponentStatus" layoutX="1058.0" layoutY="47.0" opacity="0.76" prefHeight="516.0" prefWidth="120.0" style="-fx-background-color: fff;">
+      <VBox fx:id="OpponentStatus" layoutX="1089.0" layoutY="211.0" opacity="0.76" prefHeight="337.0" prefWidth="150.0" style="-fx-background-color: fff;">
          <children>
-            <ImageView fx:id="playerImage1" disable="true" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../skeleton2.jpg" />
-               </image>
-            </ImageView>
-            <HBox fx:id="opponentStateDisplay" prefHeight="16.0" prefWidth="159.0">
-               <children>
-                  <ImageView fx:id="opponentHeal" fitHeight="69.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../lifeChanger.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="opponentPoison" fitHeight="30.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../poison2.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="opponentStun" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../stun.gif" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <TableView fx:id="OpponentAttributesDisplayContainer1" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="OpponentAttributesDisplayContainer1" prefHeight="200.0" prefWidth="130.0">
                <columns>
-                  <TableColumn fx:id="OpponentAttributesType1" editable="false" prefWidth="124.0" sortable="false" text="Opponent Stats" />
-                  <TableColumn fx:id="OpponentsAttributesValue1" editable="false" prefWidth="43.0" sortable="false" />
+                  <TableColumn fx:id="OpponentAttributesType1" editable="false" prefWidth="112.0" sortable="false" text="Opponent Stats" />
+                  <TableColumn fx:id="OpponentsAttributesValue1" editable="false" prefWidth="55.0" sortable="false" />
                </columns>
             </TableView>
          </children>
       </VBox>
-      <Label fx:id="FightMassage" layoutX="228.0" layoutY="628.0" prefHeight="113.0" prefWidth="950.0" style="-fx-background-color: fff;" wrapText="true">
-         <font>
-            <Font name="Comic Sans MS" size="16.0" />
-         </font></Label>
       <Label fx:id="rollDice" alignment="CENTER" layoutX="500.0" layoutY="47.0" onMouseClicked="#printSumDice" prefHeight="49.0" prefWidth="284.0" style="-fx-background-color: fff;" text="Roll Dices">
          <font>
             <Font name="Comic Sans MS Bold" size="24.0" />
@@ -216,5 +166,62 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
+      <ListView fx:id="matchHistory" accessibleRole="TEXT" layoutX="170.0" layoutY="667.0" prefHeight="104.0" prefWidth="941.0" />
+      <Label fx:id="FightMassage" layoutX="170.0" layoutY="611.0" prefHeight="69.0" prefWidth="941.0" style="-fx-background-color: fff;" wrapText="true">
+         <font>
+            <Font name="Comic Sans MS" size="16.0" />
+         </font></Label>
+      <ImageView fx:id="playerImage" fitHeight="150.0" fitWidth="200.0" layoutX="28.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/cards/getResistance.gif" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="106.0" layoutY="198.0">
+         <children>
+            <HBox fx:id="opponentStateDisplay1" prefHeight="0.0" prefWidth="89.0">
+               <children>
+                  <ImageView fx:id="playerHealIcon" fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@image/cards/heal.gif" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="playerPoisonIcon" fitHeight="38.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../poison2.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="playerStunIcon" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../stun.gif" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <ImageView fx:id="playerImage1" disable="true" fitHeight="150.0" fitWidth="166.0" layoutX="1089.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../skeleton.jpg" />
+         </image>
+      </ImageView>
+      <HBox fx:id="opponentStateDisplay" layoutX="1089.0" layoutY="183.0" prefHeight="30.0" prefWidth="69.0">
+         <children>
+            <ImageView fx:id="opponentHealIcon" fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@image/cards/heal.gif" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="opponentPoisonIcon" fitHeight="37.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../../../poison2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="opponentStunIcon" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../../../stun.gif" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

@@ -205,6 +205,18 @@ public abstract class Actor implements Drawable {
             cell = nextCell;
         }
     }
+
+    public boolean isPoison(){
+        return poison.size() > 0;
+    }
+
+    public boolean isHeal(){
+        return heal.size() > 0;
+    }
+
+    public boolean isStuned(){
+        return stun > 0;
+    }
 }
 
 //    public void move(int dx, int dy) {

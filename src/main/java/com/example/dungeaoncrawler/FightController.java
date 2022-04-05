@@ -10,10 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -101,6 +98,7 @@ public class FightController {
      * @param message text message that we want to display
      */
     public void setFightMessage(String message){
+        matchHistory.getItems().add(0,message);
         FightMassage.setText(message);
     }
 
@@ -119,12 +117,36 @@ public class FightController {
             source.setDisable(true);
             sumDiceRoll -= hand.get(cardIndex).getCardCost();
             refreshCharacterAttributes(hand.get(cardIndex));
-            rollDice.setText(sumDiceRoll>0? sumDiceRoll + " points remains": "No points left.");
+            displayPlayerCondition();
+            displayOpponentCondition();
+            rollDice.setText(sumDiceRoll > 0? sumDiceRoll + " points remains": "No points left.");
             checkForWin();
         } else {
             String message = "You don't have points to play this card\n";
             setFightMessage(message);
         }
+    }
+
+    private void displayPlayerCondition() {
+        if (player.isHeal()) {playerHealIcon.setVisible(true);
+        }else playerHealIcon.setVisible(false);
+        
+        if (player.isPoison()) {playerPoisonIcon.setVisible(true);
+        } else {playerPoisonIcon.setVisible(false);}
+        
+        if (player.isStuned()) {playerStunIcon.setVisible(true);
+        } else {playerStunIcon.setVisible(false);}
+    }
+
+    private void displayOpponentCondition(){
+        if (opponent.isHeal()) {opponentHealIcon.setVisible(true);
+        } else opponentHealIcon.setVisible(false);
+
+        if (opponent.isPoison()) {opponentPoisonIcon.setVisible(true);
+        } else {opponentPoisonIcon.setVisible(false);}
+
+        if (opponent.isStuned()) {opponentStunIcon.setVisible(true);
+        } else {opponentStunIcon.setVisible(false);}
     }
 
     private void checkForWin() {
@@ -135,12 +157,14 @@ public class FightController {
     }
 
     private void opponentIsWon() {
-        FightMassage.setText("You lose general Kenobi\n Hahaha");
+        String message = "You lose general Kenobi\n Hahaha";
+        setFightMessage(message);
         endTurn.setDisable(true);
     }
 
     private void playerIsWon() {
-        FightMassage.setText("You have won! This time .....");
+        String message = "You have won! This time .....";
+        setFightMessage(message);
         player.setExp(opponent.getExp());
         player.endFight();
     }
@@ -155,7 +179,8 @@ public class FightController {
     @FXML
     void endTurn(ActionEvent event) {
         cardsField.setVisible(false);
-        FightMassage.setText("Now its next turn");
+        String message = "Now its next turn";
+        setFightMessage(message);
         roundBeginning(opponent);
         opponentMove();
     }
@@ -178,10 +203,12 @@ public class FightController {
         displayActorInfo(character);
         rollDice.setText("*****  " + character.getName() + " Turn");
         checkForWin();
+        displayOpponentCondition();
     }
 
     private void playerNewTurnToPlay() {
         roundBeginning(player);
+        displayPlayerCondition();
         rollDice.setText("Roll Dices");
         wasRolled = false;
         drawCard = false;
@@ -192,8 +219,10 @@ public class FightController {
     private void opponentAttackPhase() {
         String attack = opponent.opponentChoseAttack();
         int value = opponent.opponentAttack(attack);
-        String massage = resolveOpponentAttack(attack, value);
-        FightMassage.setText(massage);
+        String message = resolveOpponentAttack(attack, value);
+        displayOpponentCondition();
+        displayPlayerCondition();
+        setFightMessage(message);
         displayActorInfo(player);
     }
 
@@ -275,7 +304,6 @@ public class FightController {
         rollDice.setText(message);
     }
 
-
     /**
      * after picking card to play
      * @param player player character
@@ -339,9 +367,10 @@ public class FightController {
         for (int i = 0; i < dices; i++) {
             int score = random.nextInt(6)+1;
             diceSum += score;
-            message += (i+1) + ". Dice roll = " + score + "\n";
+            message = (i+1) + ". Dice roll = " + score + "\n";
+            setFightMessage(message);
         }
-        message += "You rolled " + diceSum + "\n";
+        message = "You rolled " + diceSum + "\n";
         setFightMessage(message);
         return diceSum;
     }
@@ -349,7 +378,26 @@ public class FightController {
     public void setDiceSum(String text){
         rollDice.setText(text);
     }
+    @FXML
+    private ImageView opponentHealIcon;
 
+    @FXML
+    private ImageView opponentPoisonIcon;
+
+    @FXML
+    private ImageView opponentStunIcon;
+
+    @FXML
+    private ImageView playerHealIcon;
+
+    @FXML
+    private ImageView playerPoisonIcon;
+
+    @FXML
+    private ImageView playerStunIcon;
+
+    @FXML
+    private ListView<String> matchHistory;
 
     @FXML
     private TableView<CharacterAttributes> OpponentAttributesDisplayContainer1;
@@ -455,6 +503,5 @@ public class FightController {
 
     @FXML
     private ImageView windowBackground;
-
 
 }
