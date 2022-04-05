@@ -2,7 +2,9 @@ package com.example.dungeaoncrawler.logic;
 
 import com.example.dungeaoncrawler.logic.actors.Actor;
 
-public class Cell implements Drawable {
+import java.io.Serializable;
+
+public class Cell implements Drawable, Serializable {
     private CellType type;
     private CellDecoration decoration;
     private Actor actor;

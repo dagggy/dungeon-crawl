@@ -6,9 +6,10 @@ import com.example.dungeaoncrawler.logic.Drawable;
 import com.example.dungeaoncrawler.logic.status.Heal;
 import com.example.dungeaoncrawler.logic.status.Poisone;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Actor implements Drawable {
+public abstract class Actor implements Drawable, Serializable {
     //    private Cell cell;
     private int health = 10;
     private ArrayList<Heal> heal;

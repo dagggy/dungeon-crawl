@@ -2,6 +2,7 @@ package com.example.dungeaoncrawler.logic;
 
 import com.example.dungeaoncrawler.logic.actors.Player;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -9,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.example.dungeaoncrawler.HelloApplication.player;
 
 /**A war crime*/
-public class WorldMap {
+public class WorldMap implements Serializable {
     private final int floor;
     private int currMapX;
     private int currMapY;

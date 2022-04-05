@@ -5,11 +5,12 @@ import com.example.dungeaoncrawler.logic.actors.ActorType;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GameMap {
+public class GameMap implements Serializable {
     private final int width;
     private final int height;
     private Cell[][] cells;

@@ -22,9 +22,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+
+
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Random;
@@ -98,11 +98,58 @@ public class HelloController {
                 player.move(1, 0);
                 printMap();
             }
+            case A -> {
+                saveGame();
+            }
+            case S -> {
+                loadGame();
+                printMap();
+                printMinimap();
+            }
         }
     }
 
 
+    private void loadGame () {
+        try {
+            FileInputStream loadStream = new FileInputStream("SAVE.sav");
+            ObjectInputStream loadData = new ObjectInputStream(loadStream);
 
+            worldMap = (WorldMap) loadData.readObject();
+            player = (Player) loadData.readObject();
+
+            loadData.close();
+            loadStream.close();
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+            System.out.println(f + ": File Not Found");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e + ": Object Error");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveGame () {
+        try {
+            File saveFile = new File("SAVE.sav");
+            FileOutputStream saveStream = new FileOutputStream(saveFile);
+            ObjectOutputStream saveData = new ObjectOutputStream(saveStream);
+
+            saveData.writeObject(worldMap);
+            saveData.writeObject(player);
+
+            saveData.close();
+            saveStream.close();
+            System.out.println(saveFile.getAbsolutePath());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println(": Error while saving: file not found");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void getEnemyMove(Actor enemy) {
         int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};

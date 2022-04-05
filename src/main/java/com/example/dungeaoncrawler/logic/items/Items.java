@@ -4,9 +4,10 @@ import com.example.dungeaoncrawler.logic.Position;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Player;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class Items {
+public abstract class Items implements Serializable {
     protected String img;
     protected String name;
     protected Position position;
