@@ -1,5 +1,7 @@
 package com.example.dungeaoncrawler.logic.actors;
 
+import com.example.dungeaoncrawler.logic.Cell;
+import com.example.dungeaoncrawler.logic.CellType;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.CardsType;
@@ -14,8 +16,8 @@ public class Player extends Actor {
     ArrayList<Cards> deck = new ArrayList<>();
     ArrayList<Cards> playingDeck;
 
-    public Player(int health, int resistance, int armor, int getCards) {
-        super(health, resistance, armor, 0, "player", 0);
+    public Player(int health, int resistance, int armor, int getCards, Cell cell) {
+        super(health, resistance, armor,0, "player", 0, ActorType.PLAYER, cell);
         this.getCards = getCards;
         this.lvl = 1;
         dice = 3;
@@ -123,6 +125,45 @@ public class Player extends Actor {
 
     public void setPlayingDeck(ArrayList<Cards> playingDeck) {
         this.playingDeck = playingDeck;
+    }
+
+    public int getX() {
+        return cell.getX();
+    }
+
+    public int getY() {
+        return cell.getY();
+    }
+
+    @Override
+    public void move(int dx, int dy) {
+
+        Cell nextCell = cell.getNeighbor(dx, dy);
+        if (nextCell.getType() == CellType.EMPTY) {
+            cell.setActor(null);
+            nextCell.setActor(this);
+            cell = nextCell;
+        } else if (nextCell.getType() == CellType.DOOR) {
+            cell.setActor(null);
+            switch (nextCell.getDoorDirection()) {
+                case 'u' -> {
+                    nextCell = cell.getGameMap().getParentMap().mapMove(-1, 0, cell.getGameMap().getWidth() / 2, 18, this);
+                    cell = nextCell;
+                }
+                case 'd' -> {
+                    nextCell = cell.getGameMap().getParentMap().mapMove(1, 0, cell.getGameMap().getWidth() / 2, 1, this);
+                    cell = nextCell;
+                }
+                case 'l' -> {
+                    nextCell = cell.getGameMap().getParentMap().mapMove(0, -1, 23, cell.getGameMap().getHeight() / 2, this);
+                    cell = nextCell;
+                }
+                case 'r' -> {
+                    nextCell = cell.getGameMap().getParentMap().mapMove(0, 1, 1, cell.getGameMap().getHeight() / 2, this);
+                    cell = nextCell;
+                }
+            }
+        }
     }
 }
 //    Cards(String img, String name, Position position, CardsType cardsType, CardRarity cardRarity)

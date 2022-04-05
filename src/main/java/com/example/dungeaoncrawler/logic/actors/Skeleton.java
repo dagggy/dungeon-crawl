@@ -3,8 +3,8 @@ package com.example.dungeaoncrawler.logic.actors;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Skeleton extends Actor {
-    public Skeleton(int health, int resistance, int armor, int exp, int attackRound) {
-        super(health, resistance, armor, exp, "Skeleton", attackRound);
+    public Skeleton(int health, int resistance, int armor, int exp, int attackRound, Cell cell) {
+        super(health, resistance, armor, exp, "Skeleton", attackRound, ActorType.SKELETON, cell);
     }
 
     @Override

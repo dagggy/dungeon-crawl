@@ -1,5 +1,7 @@
 package com.example.dungeaoncrawler.logic.actors;
 
+import com.example.dungeaoncrawler.logic.Cell;
+import com.example.dungeaoncrawler.logic.CellType;
 import com.example.dungeaoncrawler.logic.Drawable;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
 
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Actor implements Drawable {
-//        private Cell cell;
+    protected Cell cell;
     protected int health = 10;
     protected ArrayList <LifeChanger> heal;
     protected ArrayList <LifeChanger> poison;
@@ -19,23 +21,24 @@ public abstract class Actor implements Drawable {
     protected int exp;
     protected String name;
     protected int attackRound;
+    protected Cell cell;
+    private final ActorType actorType;
 
 
-
-
-    public Actor(int health, int resistance, int armor, int exp, String name, int attackRound) {
-//        this.cell = cell;
+    public Actor(int health, int resistance, int armor, int exp, String name, int attackRound, ActorType actorType, Cell cell) {
         this.health = health;
         this.resistance = resistance;
         this.armor = armor;
+        this.cell = cell;
         this.heal = new ArrayList<>();
         this.poison = new ArrayList<>();
         this.stun = 0;
         this.exp = exp;
         this.attackRound = attackRound;
+        this.name = name;
+        this.actorType = actorType;
         power = 1;
         dispel = 0;
-        this.name = name;
     }
 
     public ArrayList <LifeChanger> getPoison() {
@@ -64,13 +67,19 @@ public abstract class Actor implements Drawable {
     public int getHealth() {
         return health;
     }
-
     public int getDispel() {
         return dispel;
     }
 
     public void resetDispel() {
         this.dispel = 0;
+    }
+    public ActorType getActorType() {
+        return actorType;
+    }
+
+    public Cell getCell() {
+        return cell;
     }
 
     public void setHealth(int health) {
@@ -122,22 +131,21 @@ public abstract class Actor implements Drawable {
     }
 
     public String takeDamage(int damage) {
-        if (damage>armor) {
+        if (damage > armor) {
             int dealtDamage = damage - armor;
             health -= dealtDamage;
             armor = 0;
             return "Player deal " + dealtDamage + " damage\n";
         } else armor -= damage;
-        return "Player decrease armor by " + damage+"\n";
+        return "Player decrease armor by " + damage + "\n";
     }
 
 
     public String takeMagicDamage(int damage){
-        if (dispel >0) {
+        if (dispel > 0) {
             dispel -= 1;
             return "Opponent block your spell\n";
-        }
-        else if (damage > resistance) {
+        } else if (damage > resistance) {
             int dealtMagicDamage = damage - resistance;
             health -= dealtMagicDamage;
             resistance = 0;
@@ -185,8 +193,20 @@ public abstract class Actor implements Drawable {
     public int getAttackRound() {
         return attackRound;
     }
-}
 
+    public void setCell(Cell newCell) {
+        cell = newCell;
+    }
+
+    public void move(int dx, int dy) {
+        Cell nextCell = cell.getNeighbor(dx, dy);
+        if (nextCell.getType() == CellType.EMPTY) {
+            cell.setActor(null);
+            nextCell.setActor(this);
+            cell = nextCell;
+        }
+    }
+}
 
 //    public void move(int dx, int dy) {
 //        Cell nextCell = cell.getNeighbor(dx, dy);
