@@ -13,15 +13,13 @@ public class Player extends Actor {
     private int getCards;
     private int dice;
     private int lvl;
-    private int exp;
     ArrayList<Cards> deck = new ArrayList<>();
     ArrayList<Cards> playingDeck;
 
     public Player(int health, int resistance, int armor, int getCards, Cell cell) {
-        super(health, resistance, armor, ActorType.PLAYER, cell);
+        super(health, resistance, armor,0, "player", 0, ActorType.PLAYER, cell);
         this.getCards = getCards;
         this.lvl = 1;
-        exp = 0;
         dice = 3;
         setStartingDeck();
         setPlayingDeck(deck);
@@ -30,9 +28,11 @@ public class Player extends Actor {
     public void endFight(){
         playingDeck = new ArrayList<>(deck);
         setArmor(0);
-        setHeal(null);
-        setPoisone(null);
         setResistance(0);
+        heal.clear();
+        poison.clear();
+        resetDispel();
+        resetStun();
     }
 
     public String getTileName() {
@@ -47,6 +47,7 @@ public class Player extends Actor {
         addDefensiveCardsToStartingDeck(defendsCards);
         addRandomCardsToStartingDeck(otherCards);
     }
+    //TODO talie startyowe i klasy bohatera + strona startowa
 
     private void addOffensiveCardsToStartingDeck(int cardsNumber){
         for (int i = 0; i < cardsNumber; i++) {
@@ -106,8 +107,8 @@ public class Player extends Actor {
         return exp;
     }
 
-    public void setExp(int exp) {
-        this.exp = exp;
+    public void setExp(int gainExp) {
+        this.exp = gainExp;
     }
 
     public ArrayList<Cards> getDeck() {
@@ -136,7 +137,7 @@ public class Player extends Actor {
 
     @Override
     public void move(int dx, int dy) {
-        
+
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (nextCell.getType() == CellType.EMPTY) {
             cell.setActor(null);

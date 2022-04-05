@@ -3,48 +3,53 @@ package com.example.dungeaoncrawler.logic.actors;
 import com.example.dungeaoncrawler.logic.Cell;
 import com.example.dungeaoncrawler.logic.CellType;
 import com.example.dungeaoncrawler.logic.Drawable;
-import com.example.dungeaoncrawler.logic.status.Heal;
-import com.example.dungeaoncrawler.logic.status.Poisone;
+import com.example.dungeaoncrawler.logic.status.LifeChanger;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Actor implements Drawable {
-    //    private Cell cell;
-    private int health = 10;
-    private ArrayList<Heal> heal;
-    private ArrayList<Poisone> poisone;
-    private int stun;
-    private int resistance;
-    private int armor;
-    private int dispell;
-    private int power;
-
     protected Cell cell;
+    protected int health = 10;
+    protected ArrayList <LifeChanger> heal;
+    protected ArrayList <LifeChanger> poison;
+    protected int stun;
+    protected int resistance;
+    protected int armor;
+    protected int dispel;
+    protected int power;
+    protected int exp;
+    protected String name;
+    protected int attackRound;
     private final ActorType actorType;
 
-    public Actor(int health, int resistance, int armor, ActorType actorType, Cell cell) {
-        this.actorType = actorType;
+
+    public Actor(int health, int resistance, int armor, int exp, String name, int attackRound, ActorType actorType, Cell cell) {
         this.health = health;
         this.resistance = resistance;
         this.armor = armor;
         this.cell = cell;
         this.heal = new ArrayList<>();
-        this.poisone = new ArrayList<>();
+        this.poison = new ArrayList<>();
         this.stun = 0;
+        this.exp = exp;
+        this.attackRound = attackRound;
+        this.name = name;
+        this.actorType = actorType;
         power = 1;
-        dispell = 0;
+        dispel = 0;
     }
 
-    public ArrayList<Poisone> getPoisone() {
-        return poisone;
+    public ArrayList <LifeChanger> getPoison() {
+        return poison;
     }
 
-    public String setPoisone(Poisone poisone) {
-        if (dispell == 0) {
-            this.poisone.add(poisone);
-            return "Player successfully poison opponent\n";
-        } else {
-            dispell -= 1;
+    public String setPoison(LifeChanger poison) {
+        if (dispel == 0){
+        this.poison.add(poison);
+        return "Player successfully poison opponent\n";}
+        else {
+            dispel -= 1;
             return "Opponent successfully block spell\n";
         }
 
@@ -61,7 +66,13 @@ public abstract class Actor implements Drawable {
     public int getHealth() {
         return health;
     }
+    public int getDispel() {
+        return dispel;
+    }
 
+    public void resetDispel() {
+        this.dispel = 0;
+    }
     public ActorType getActorType() {
         return actorType;
     }
@@ -74,25 +85,28 @@ public abstract class Actor implements Drawable {
         this.health = health;
     }
 
-    public ArrayList<Heal> getHeal() {
+    public ArrayList <LifeChanger> getHeal() {
         return heal;
     }
 
-    public String setHeal(Heal heal) {
-        this.heal.add(heal);
+    public String setHeal(LifeChanger lifeChanger) {
+        this.heal.add(lifeChanger);
         return "Player successfully cast healing\n";
     }
 
     public int getStun() {
         return stun;
     }
+    public void resetStun() {
+        stun = 0;
+    }
 
     public String setStun(int stun) {
-        if (dispell <= 0) {
+        if (dispel <= 0) {
             this.stun += stun;
             return "Opponent is stuned\n";
         } else {
-            dispell -= 1;
+            dispel -= 1;
             return "Opponent successfully cancel player spell \n";
         }
     }
@@ -125,9 +139,10 @@ public abstract class Actor implements Drawable {
         return "Player decrease armor by " + damage + "\n";
     }
 
-    public String takeMagicDamage(int damage) {
-        if (dispell > 0) {
-            dispell -= 1;
+
+    public String takeMagicDamage(int damage){
+        if (dispel > 0) {
+            dispel -= 1;
             return "Opponent block your spell\n";
         } else if (damage > resistance) {
             int dealtMagicDamage = damage - resistance;
@@ -138,9 +153,44 @@ public abstract class Actor implements Drawable {
         return "Player decrease opponent resistance by " + damage + " points\n";
     }
 
-    public String setDispell(int dispell) {
-        this.dispell += dispell;
-        return "Player can now block next " + this.dispell + " spell(s)\n";
+    public String setDispel(int dispel) {
+        this.dispel += dispel;
+        return "Player can now block next " + this.dispel + " spell(s)\n";
+    }
+
+    public int getExp() {
+        return exp;
+    }
+    public void resolveLifeChanger() {
+        checkPlayerStatus(poison);
+        checkPlayerStatus(heal);
+    }
+
+    private void checkPlayerStatus(ArrayList<LifeChanger> list){
+        if (list.size()>0) for (int i = 0; i < list.size(); i++) {
+            LifeChanger lifeChanger = list.get(i);
+            health += lifeChanger.getLifeChanger();
+            if (lifeChanger.getRounds() > 0) {
+                lifeChanger.setRounds(1);}
+        }
+        removeLifeChangerFromList(list);
+    }
+
+    private void removeLifeChangerFromList(List<LifeChanger> list){
+        List<LifeChanger> toRemove = list.stream()
+                .filter(item -> item.getRounds()<=0).toList();
+
+        for (LifeChanger lifeChanger : toRemove) {
+            list.remove(lifeChanger);
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAttackRound() {
+        return attackRound;
     }
 
     public void setCell(Cell newCell) {
