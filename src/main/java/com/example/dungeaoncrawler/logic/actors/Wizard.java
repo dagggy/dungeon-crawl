@@ -5,8 +5,22 @@ import com.example.dungeaoncrawler.logic.Cell;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Wizard extends Actor {
-    public Wizard(int health, int resistance, int armor, Cell cell) {
-        super(health, resistance, armor, ActorType.WIZARD, cell);
+    public Wizard(int health, int resistance, int armor, int exp, int attackRound, Cell cell) {
+        super(health, resistance, armor, exp, "Wizard", attackRound, ActorType.WIZARD, cell);
+    }
+
+    public String opponentChoseAttack(){
+        String[] attack = new String[] {"magic", "damage", "poison"};
+        return attack[ThreadLocalRandom.current().nextInt(0,attack.length)];
+    }
+
+    public int opponentAttack(String attack){
+        switch (attack){
+            case "magic" -> { return magicAttack();}
+            case "damage" -> { return damageAttack();}
+            case "poison" -> { return poisonAttack();}
+            default -> {return 0;}
+        }
     }
 
     @Override

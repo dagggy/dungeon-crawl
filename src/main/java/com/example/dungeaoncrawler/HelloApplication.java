@@ -28,18 +28,5 @@ public class HelloApplication {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//    @Override
-//    public void start(Stage stage) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load());
-//        HelloController helloController = fxmlLoader.getController();
-//        stage.setTitle("CardCrawl");
-//        stage.setScene(scene);
-//        stage.show();
-//        scene.setOnKeyPressed(helloController::onKeyPressed);
-//    }
-//
-//    public static void main(String[] args) {
-//        launch();
     }
 }

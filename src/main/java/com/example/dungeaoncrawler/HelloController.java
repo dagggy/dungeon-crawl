@@ -125,7 +125,7 @@ public class HelloController {
     }
 
 
-    private void loadGame () {
+    public void loadGame () {
         try {
             FileInputStream loadStream = new FileInputStream("SAVE.sav");
             ObjectInputStream loadData = new ObjectInputStream(loadStream);

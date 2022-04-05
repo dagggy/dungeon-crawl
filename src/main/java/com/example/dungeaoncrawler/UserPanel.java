@@ -12,6 +12,8 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+import static javafx.application.Platform.exit;
+
 public class UserPanel extends Application {
 
     @Override
@@ -40,7 +42,12 @@ public class UserPanel extends Application {
 
     @FXML
     void loadPreviousGame(ActionEvent event) {
+        //TODO: wczytanie gry
+    }
 
+    @FXML
+    void exitGame(ActionEvent event) {
+        exit();
     }
 
     public String getIdUserName() {
