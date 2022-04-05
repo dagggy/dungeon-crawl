@@ -185,4 +185,12 @@ public class WorldMap implements Serializable {
         }
         return returnString.toString();
     }
+
+    public int getWorldWidth() {
+        return worldWidth;
+    }
+
+    public int getWorldHeight() {
+        return worldHeight;
+    }
 }

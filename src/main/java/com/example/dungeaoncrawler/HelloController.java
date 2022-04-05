@@ -4,6 +4,7 @@ import com.example.dungeaoncrawler.logic.*;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,9 +27,7 @@ import java.io.*;
 
 
 import java.time.Instant;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static com.example.dungeaoncrawler.HelloApplication.worldMap;
 import static com.example.dungeaoncrawler.HelloApplication.player;
@@ -36,8 +35,6 @@ import static com.example.dungeaoncrawler.HelloApplication.player;
 public class HelloController {
     ImageView imageView = new ImageView("img.png");
     ImageView imageView1 = new ImageView("img.png");
-
-
 
     @FXML
     private GridPane gridMap;
@@ -48,14 +45,31 @@ public class HelloController {
     public void initialize() throws IOException {
         printMap();
         printMinimap();
-
+        Thread independentEnemiesMoves = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.currentThread().sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    getEnemyMove();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            printMap();
+                        }
+                    });
+                }
+            }
+        });
+        independentEnemiesMoves.start();
     }
-
-
 
     private final Image tileset = new Image("mapObjects.png", 577 * 2, 577 * 2, true, false);
 
-    private void printMap() {
+    public void printMap() {
         gridMap.getChildren().clear();
 
         GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
@@ -107,6 +121,7 @@ public class HelloController {
                 printMinimap();
             }
         }
+        startFightWithEnemy();
     }
 
 
@@ -128,6 +143,28 @@ public class HelloController {
             System.out.println(e + ": Object Error");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+        startFightWithEnemy();
+    }
+
+    public void getEnemyMove() {
+        int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        int[] randomCoordinates = possibleMoves[new Random().nextInt(possibleMoves.length)];
+
+        for (Actor actor : worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getEnemyList()) {
+            actor.move(randomCoordinates[0], randomCoordinates[1]);
+        }
+    }
+
+    private void startFightWithEnemy() {
+        int x = player.getCell().getX();
+        int y = player.getCell().getY();
+        int[][] neighbourField = {{x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1}};
+
+        for (int[] i : neighbourField) {
+            if (worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]).getActor() != null) {
+                System.out.println("działa");     //rozpoczęcie walki
+            }
         }
     }
 
@@ -151,9 +188,4 @@ public class HelloController {
         }
     }
 
-    private void getEnemyMove(Actor enemy) {
-        int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-        int[] randomPair = possibleMoves[new Random().nextInt(possibleMoves.length)];
-        enemy.move(randomPair[0], randomPair[1]);
-    }
 }
