@@ -18,7 +18,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class FightController {
 
 
     public void initialize(){
-        player = new Player(2000,0,0,4, null);
+        player = new Player(1,0,0,4, null);
         opponent = new Skeleton(1, 4, 1, 30,2, null);
         displayActorInfo(player);
         displayActorInfo(opponent);
@@ -138,7 +137,6 @@ public class FightController {
         int cardIndex = Integer.parseInt(source.toString().replaceAll("[^0-9.]", ""));
         player.addCardToDeck(winningCards.get(cardIndex));
         winningBoard.setDisable(true);
-        source.setOpacity(1);
         player.endFight();
     }
 
@@ -176,6 +174,8 @@ public class FightController {
         String message = "You lose general Kenobi\n Hahaha";
         setFightMessage(message);
         endTurn.setDisable(true);
+        GameBoard.setVisible(false);
+        endFightButton.setVisible(true);
     }
 
     private void playerIsWon() {
@@ -183,8 +183,6 @@ public class FightController {
         setFightMessage(message);
         player.setExp(opponent.getExp());
         displayWinningScreen();
-        //player.endFight();
-        //TODO koniec gry - zamknięcie okna
     }
 
     private void displayWinningScreen() {
@@ -237,8 +235,7 @@ public class FightController {
                 playerNewTurnToPlay();
             }
         }
-    };
-
+    }
 
     //TODO poprawić zagranie kart przy starcie rundy
     private void roundBeginning(Actor character) {
@@ -286,6 +283,12 @@ public class FightController {
         return rollDice;
     }
 
+    @FXML
+    void cardBringFront(MouseEvent event) {
+        AnchorPane source = (AnchorPane) event.getSource();
+        source.toFront();
+    }
+
     /**
      * After clicking draw card button player draw cards and display it on card field
      * @param event - click on drawCard button
@@ -310,6 +313,7 @@ public class FightController {
     private void displayCards(ArrayList<Cards> cardsToDisplay, ArrayList<AnchorPane> gameCardsContainer ){
         for (int i = 0; i < gameCardsContainer.size(); i++) {
             AnchorPane container = gameCardsContainer.get(i);
+            container.setVisible(true);
             container.setOpacity(1);
             container.setDisable(false);
             // set card image
@@ -426,6 +430,7 @@ public class FightController {
     public void setDiceSum(String text){
         rollDice.setText(text);
     }
+
     @FXML
     private ImageView opponentHealIcon;
 
@@ -532,7 +537,7 @@ public class FightController {
     private ImageView cardbackground1;
 
     @FXML
-    private HBox cardsField;
+    private AnchorPane cardsField;
 
     @FXML
     private Button drawCards;
@@ -607,4 +612,33 @@ public class FightController {
     @FXML
     private Button endFightButton;
 
+    @FXML
+    private ImageView cardImage4;
+
+    @FXML
+    private ImageView cardImage5;
+
+    @FXML
+    private Label cardDescription4;
+
+    @FXML
+    private Label cardDescription5;
+
+    @FXML
+    private Label cardCost4;
+
+    @FXML
+    private Label cardCost5;
+
+    @FXML
+    private AnchorPane card4;
+
+    @FXML
+    private AnchorPane card5;
+
+    @FXML
+    private ImageView card1background4;
+
+    @FXML
+    private ImageView card1background5;
 }
