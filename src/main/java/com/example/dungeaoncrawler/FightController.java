@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -287,6 +288,16 @@ public class FightController {
     void cardBringFront(MouseEvent event) {
         AnchorPane source = (AnchorPane) event.getSource();
         source.toFront();
+        source.setEffect(null);
+    }
+
+    @FXML
+    void setCardOpacity(MouseEvent event) {
+        AnchorPane source = (AnchorPane) event.getSource();
+        source.toFront();
+        ColorAdjust  colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.8);
+        source.setEffect(colorAdjust);
     }
 
     /**
@@ -311,7 +322,7 @@ public class FightController {
      * @param cardsToDisplay list of cards object, that player draw during draw stage
      */
     private void displayCards(ArrayList<Cards> cardsToDisplay, ArrayList<AnchorPane> gameCardsContainer ){
-        for (int i = 0; i < gameCardsContainer.size(); i++) {
+        for (int i = 0; i < cardsToDisplay.size(); i++) {
             AnchorPane container = gameCardsContainer.get(i);
             container.setVisible(true);
             container.setOpacity(1);
@@ -336,7 +347,7 @@ public class FightController {
      */
     private ArrayList<AnchorPane> createCardContainerList(){
         ArrayList<AnchorPane> cardContainer = new ArrayList<>();
-        Collections.addAll(cardContainer, card0, card1, card2, card3);
+        Collections.addAll(cardContainer, card0, card1, card2, card3, card4, card5);
         return cardContainer;
     }
     //TODO reset values after end of round - enable clickers change opacity
@@ -429,6 +440,25 @@ public class FightController {
 
     public void setDiceSum(String text){
         rollDice.setText(text);
+    }
+
+    @FXML
+    void cursorEnterIntoCardsField(MouseEvent event) {
+//        System.out.println("ok");
+//        AnchorPane source = (AnchorPane) event.getSource();
+//        for (Node kid : source.getChildren()) {
+//            Shadow shadow = new Shadow(0.8,Color.BLACK);
+//            kid.setEffect(shadow);
+//        }
+    }
+
+    @FXML
+    void cursorLeaveIntoCardsField(MouseEvent event) {
+//        System.out.println("ok");
+//        AnchorPane source = (AnchorPane) event.getSource();
+//        for (Node kid : source.getChildren()) {
+//            kid.setEffect(null);
+//        }
     }
 
     @FXML

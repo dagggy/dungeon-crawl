@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
 
-    public static Player player = new Player(10, 0, 0,4, null);
+    public static Player player = new Player(10, 0, 0,6, null);
     static WorldMap worldMap = new WorldMap(1);
 
     @Override
