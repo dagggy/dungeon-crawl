@@ -260,60 +260,60 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="winningCard01" layoutX="504.0" layoutY="138.0" onMouseClicked="#pickReward" prefHeight="382.0" prefWidth="89.0">
+            <AnchorPane fx:id="winningCard1" layoutX="504.0" layoutY="138.0" onMouseClicked="#pickReward" prefHeight="382.0" prefWidth="89.0">
                <children>
-                  <ImageView fx:id="winningCardImage01" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                  <ImageView fx:id="winningCardImage1" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
                         <Image url="@image/cards/swordAttack2.gif" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="winningCardbackground01" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="winningCardbackground1" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@image/cardHeal.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="winningCardDescription01" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="winningCardDescription1" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="winningCardCost01" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                  <Label fx:id="winningCardCost1" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
                      <font>
                         <Font name="Comic Sans MS Bold" size="29.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="winningCard02" layoutX="812.0" layoutY="138.0" onMouseClicked="#pickReward" prefHeight="382.0" prefWidth="89.0">
+            <AnchorPane fx:id="winningCard2" layoutX="812.0" layoutY="138.0" onMouseClicked="#pickReward" prefHeight="382.0" prefWidth="89.0">
                <children>
-                  <ImageView fx:id="winningCardImage02" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                  <ImageView fx:id="winningCardImage2" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
                         <Image url="@image/cards/swordAttack2.gif" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="winningCardbackground02" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="winningCardbackground2" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@image/cardHeal.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="winningCardDescription02" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="winningCardDescription2" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="winningCardCost02" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                  <Label fx:id="winningCardCost2" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
                      <font>
                         <Font name="Comic Sans MS Bold" size="29.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <Button fx:id="endFightButton" layoutX="956.0" layoutY="546.0" mnemonicParsing="false" onAction="#endFight" prefHeight="41.0" prefWidth="214.0" text="skip">
-               <font>
-                  <Font name="Comic Sans MS" size="26.0" />
-               </font>
-            </Button>
          </children>
       </AnchorPane>
+      <Button fx:id="endFightButton" layoutX="853.0" layoutY="530.0" mnemonicParsing="false" onAction="#endFight" prefHeight="41.0" prefWidth="214.0" text="End Fight!" visible="false">
+         <font>
+            <Font name="Comic Sans MS" size="26.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

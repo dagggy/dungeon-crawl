@@ -13,8 +13,8 @@ public class Player extends Actor {
     private int getCards;
     private int dice;
     private int lvl;
-    ArrayList<Cards> deck = new ArrayList<>();
-    ArrayList<Cards> playingDeck;
+    private ArrayList<Cards> deck = new ArrayList<>();
+    private ArrayList<Cards> playingDeck;
 
     public Player(int health, int resistance, int armor, int getCards, Cell cell) {
         super(health, resistance, armor,0, "player", 0, ActorType.PLAYER, cell);
@@ -22,7 +22,7 @@ public class Player extends Actor {
         this.lvl = 1;
         dice = 3;
         setStartingDeck();
-        setPlayingDeck(deck);
+        setPlayingDeck();
     }
 
     public void endFight(){
@@ -123,8 +123,8 @@ public class Player extends Actor {
         return playingDeck;
     }
 
-    public void setPlayingDeck(ArrayList<Cards> playingDeck) {
-        this.playingDeck = playingDeck;
+    public void setPlayingDeck() {
+        this.playingDeck = new ArrayList<>(deck);
     }
 
     public int getX() {

@@ -8,6 +8,7 @@ import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.CardsType;
 import com.example.dungeaoncrawler.logic.status.CharacterAttributes;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,13 +31,14 @@ public class FightController {
     boolean wasRolled = false;
     private int sumDiceRoll;
     private ArrayList<Cards> hand = new ArrayList<>();
+    private ArrayList<Cards> winningCards;
     private boolean drawCard = false;
     private boolean playerTurn = true;
 
 
     public void initialize(){
-        player = new Player(20,0,0,4, null);
-        opponent = new Skeleton(12, 4, 1, 30,2, null);
+        player = new Player(2000,0,0,4, null);
+        opponent = new Skeleton(1, 4, 1, 30,2, null);
         displayActorInfo(player);
         displayActorInfo(opponent);
     }
@@ -129,13 +131,25 @@ public class FightController {
         }
     }
 
+
+    @FXML
+    void pickReward(MouseEvent event) {
+        AnchorPane source = (AnchorPane) event.getSource();
+        int cardIndex = Integer.parseInt(source.toString().replaceAll("[^0-9.]", ""));
+        player.addCardToDeck(winningCards.get(cardIndex));
+        winningBoard.setDisable(true);
+        source.setOpacity(1);
+        player.endFight();
+    }
+
+
     private void displayPlayerCondition() {
         if (player.isHeal()) {playerHealIcon.setVisible(true);
         }else playerHealIcon.setVisible(false);
-        
+
         if (player.isPoison()) {playerPoisonIcon.setVisible(true);
         } else {playerPoisonIcon.setVisible(false);}
-        
+
         if (player.isStuned()) {playerStunIcon.setVisible(true);
         } else {playerStunIcon.setVisible(false);}
     }
@@ -169,21 +183,22 @@ public class FightController {
         setFightMessage(message);
         player.setExp(opponent.getExp());
         displayWinningScreen();
-        player.endFight();
+        //player.endFight();
+        //TODO koniec gry - zamknięcie okna
     }
 
     private void displayWinningScreen() {
         GameBoard.setVisible(false);
-        generateWinningCards(3);
-        ArrayList<Cards> rewardCards = generateWinningCards(3);
+        endFightButton.setVisible(true);
+        ArrayList<Cards> winningCards = generateWinningCards(3);
         ArrayList<AnchorPane> winCardContainer = createWinningCardContainer();
-        displayCards(rewardCards, winCardContainer);
+        displayCards(winningCards, winCardContainer);
         winningBoard.setVisible(true);
     }
 
     private ArrayList<AnchorPane> createWinningCardContainer() {
         ArrayList<AnchorPane> cardContainer = new ArrayList<>();
-        Collections.addAll(cardContainer, winningCard0, winningCard01, winningCard02);
+        Collections.addAll(cardContainer, winningCard0, winningCard1, winningCard2);
         return cardContainer;
     }
 
@@ -193,6 +208,7 @@ public class FightController {
             Cards card = new Cards("Winning Card", "Winning Card", null, CardsType.getRandomeType(), CardRarity.genWinRandomCardRarity());
             listWinningCards.add(card);
         }
+        this.winningCards = listWinningCards;
         return listWinningCards;
     }
 
@@ -277,7 +293,7 @@ public class FightController {
     @FXML
     void drawCards(MouseEvent event) {
         if (!drawCard) {
-            ArrayList<Cards> hand = drawRandomCards(player);
+            ArrayList<Cards> hand = drawRandomCards();
             this.hand = hand;
             ArrayList<AnchorPane> cardContainerList = createCardContainerList();
             displayCards(hand, cardContainerList);
@@ -357,10 +373,9 @@ public class FightController {
 
     /**
      * draw card mechanism
-     * @param player player
      * @return all cards that are in hand
      */
-    private ArrayList<Cards> drawRandomCards(Player player){
+    private ArrayList<Cards> drawRandomCards(){
         Random random = new Random();
         int cardsOnHand = player.getCards();
         ArrayList<Cards> hand = new ArrayList<>();
@@ -372,13 +387,20 @@ public class FightController {
                 deck.remove(index);
             }
             else {
-                deck = new ArrayList<>(player.getDeck());
+                player.setPlayingDeck();
+                deck = player.getPlayingDeck();
                 int index = random.nextInt(deck.size());
                 hand.add(deck.get(index));
                 deck.remove(index);
             }
         }
         return hand;
+    }
+
+    @FXML
+    void endFight(ActionEvent event) {
+        player.endFight();
+        Platform.exit();
     }
 
     /**
@@ -540,19 +562,19 @@ public class FightController {
     private AnchorPane winningCard0;
 
     @FXML
-    private AnchorPane winningCard01;
+    private AnchorPane winningCard1;
 
     @FXML
-    private AnchorPane winningCard02;
+    private AnchorPane winningCard2;
 
     @FXML
     private Label winningCardCost0;
 
     @FXML
-    private Label winningCardCost01;
+    private Label winningCardCost1;
 
     @FXML
-    private Label winningCardCost02;
+    private Label winningCardCost2;
 
     @FXML
     private Label winningCardDescription0;
@@ -567,27 +589,20 @@ public class FightController {
     private ImageView winningCardImage0;
 
     @FXML
-    private ImageView winningCardImage01;
+    private ImageView winningCardImage1;
 
     @FXML
-    private ImageView winningCardImage02;
+    private ImageView winningCardImage2;
 
     @FXML
     private ImageView winningCardbackground0;
 
     @FXML
-    private ImageView winningCardbackground01;
+    private ImageView winningCardbackground1;
 
     @FXML
-    private ImageView winningCardbackground02;
+    private ImageView winningCardbackground2;
 
-    @FXML
-    void pickReward(MouseEvent event) {
-    }
-
-    @FXML
-    void endFight(ActionEvent event) {
-    }
 
     @FXML
     private Button endFightButton;
