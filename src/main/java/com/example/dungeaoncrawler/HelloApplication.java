@@ -11,12 +11,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HelloApplication {
-
-    public static Player player = new Player(10, 0, 0,4, null);
-    static WorldMap worldMap = new WorldMap(1);
+    public static Player player;
+    static WorldMap worldMap;
 
     public void loadNewGame() {
         try {
+            player = new Player(100, 0, 0,4, null);
+            worldMap = new WorldMap(1);
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(UserPanel.class.getResource("hello-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());

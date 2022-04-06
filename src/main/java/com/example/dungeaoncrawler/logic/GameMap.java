@@ -57,13 +57,13 @@ public class GameMap implements Serializable {
         }
 
         switch (randomCase) {
-            case 1 -> {Actor skeleton = new Skeleton(10, 10, 10, 10, 10, cells[randomPlace[0]][randomPlace[1]]);
+            case 1 -> {Actor skeleton = new Skeleton(10, 0, 0, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
                     cells[randomPlace[0]][randomPlace[1]].setActor(skeleton);
                     enemyList.add(skeleton);}
-            case 2 -> {Actor wizard = new Wizard(10, 15, 5, 10, 10, cells[randomPlace[0]][randomPlace[1]]);
+            case 2 -> {Actor wizard = new Wizard(10, 15, 5, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
                     cells[randomPlace[0]][randomPlace[1]].setActor(wizard);
                     enemyList.add(wizard);}
-            case 3 -> {Actor knight = new Knight(10, 5, 15, 10, 10, cells[randomPlace[0]][randomPlace[1]]);
+            case 3 -> {Actor knight = new Knight(10, 5, 15, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
                     cells[randomPlace[0]][randomPlace[1]].setActor(knight);
                     enemyList.add(knight);}
         }

@@ -1,26 +1,35 @@
 package com.example.dungeaoncrawler;
 
-import javafx.application.Application;
+import com.example.dungeaoncrawler.logic.actors.Enemy;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class FightScene extends Application {
+import java.io.IOException;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(FightScene.class.getResource("fight.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Fight!");
-        stage.setScene(scene);
-        stage.show();
-    }
+import static com.example.dungeaoncrawler.HelloApplication.player;
 
-    public static void main(String[] args){
-        launch();
-    }
+public class FightScene {
+
+//    public void startFight(Enemy enemy) {
+//        try {
+//            Stage stage = new Stage();
+//            FXMLLoader fxmlLoader = new FXMLLoader(UserPanel.class.getResource("fight.fxml"));
+//            fxmlLoader.setRoot();
+//            Scene scene = new Scene(fxmlLoader.load());
+//            FightController fightController = fxmlLoader.getController();
+//            fightController.setPlayer(player);
+//            fightController.setEnemy(enemy);
+//            fightController.displayFighters();
+//            stage.setTitle("Fight!");
+//            stage.setScene(scene);
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @FXML
     private ImageView FightBackground;

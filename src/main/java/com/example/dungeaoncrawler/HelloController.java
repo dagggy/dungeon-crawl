@@ -2,6 +2,7 @@ package com.example.dungeaoncrawler;
 
 import com.example.dungeaoncrawler.logic.*;
 import com.example.dungeaoncrawler.logic.actors.Actor;
+import com.example.dungeaoncrawler.logic.actors.Enemy;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import javafx.application.Platform;
@@ -35,6 +36,8 @@ import static com.example.dungeaoncrawler.HelloApplication.player;
 public class HelloController {
     ImageView imageView = new ImageView("img.png");
     ImageView imageView1 = new ImageView("img.png");
+    static boolean canMove = true;
+    static Enemy opponent;
 
     @FXML
     private GridPane gridMap;
@@ -95,33 +98,35 @@ public class HelloController {
     }
 
     public void onKeyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case UP -> {
-                player.move(0, -1);
-                printMap();
+        if (canMove) {
+            switch (keyEvent.getCode()) {
+                case UP -> {
+                    player.move(0, -1);
+                    printMap();
+                }
+                case DOWN -> {
+                    player.move(0, 1);
+                    printMap();
+                }
+                case LEFT -> {
+                    player.move(-1, 0);
+                    printMap();
+                }
+                case RIGHT -> {
+                    player.move(1, 0);
+                    printMap();
+                }
+                case A -> {
+                    saveGame();
+                }
+                case S -> {
+                    loadGame();
+                    printMap();
+                    printMinimap();
+                }
             }
-            case DOWN -> {
-                player.move(0, 1);
-                printMap();
-            }
-            case LEFT -> {
-                player.move(-1, 0);
-                printMap();
-            }
-            case RIGHT -> {
-                player.move(1, 0);
-                printMap();
-            }
-            case A -> {
-                saveGame();
-            }
-            case S -> {
-                loadGame();
-                printMap();
-                printMinimap();
-            }
+            startFightWithEnemy();
         }
-        startFightWithEnemy();
     }
 
 
@@ -148,11 +153,13 @@ public class HelloController {
     }
 
     public void getEnemyMove() {
-        int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-        int[] randomCoordinates = possibleMoves[new Random().nextInt(possibleMoves.length)];
+        if (canMove) {
+            int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+            int[] randomCoordinates = possibleMoves[new Random().nextInt(possibleMoves.length)];
 
-        for (Actor actor : worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getEnemyList()) {
-            actor.move(randomCoordinates[0], randomCoordinates[1]);
+            for (Actor actor : worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getEnemyList()) {
+                actor.move(randomCoordinates[0], randomCoordinates[1]);
+            }
         }
     }
 
@@ -164,6 +171,10 @@ public class HelloController {
         for (int[] i : neighbourField) {
             if (worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]).getActor() != null) {
                 System.out.println("działa");     //rozpoczęcie walki
+                canMove = false;
+                opponent = (Enemy) worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]).getActor();
+                Test test = new Test();
+                test.startFight();
             }
         }
     }
