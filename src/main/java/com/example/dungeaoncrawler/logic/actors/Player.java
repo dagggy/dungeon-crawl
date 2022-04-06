@@ -72,7 +72,7 @@ public class Player extends Actor {
         }
     }
 
-    private CardRarity drawRarity(){
+    public static CardRarity drawRarity(){
         int faith = ThreadLocalRandom.current().nextInt(0,11);
         if (faith <=6 ) return CardRarity.COMMON;
         else if (faith <=9) return CardRarity.RARE;

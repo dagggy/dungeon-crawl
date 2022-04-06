@@ -4,18 +4,19 @@ import com.example.dungeaoncrawler.logic.*;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Enemy;
 import com.example.dungeaoncrawler.logic.actors.Player;
-import com.example.dungeaoncrawler.logic.actors.Skeleton;
+import com.example.dungeaoncrawler.logic.items.CardRarity;
+import com.example.dungeaoncrawler.logic.items.Cards;
+import com.example.dungeaoncrawler.logic.items.CardsType;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -23,11 +24,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 import java.io.*;
 
 
-import java.time.Instant;
 import java.util.*;
 
 import static com.example.dungeaoncrawler.HelloApplication.worldMap;
@@ -44,6 +45,18 @@ public class HelloController {
 
     @FXML
     private GridPane actorMap;
+
+    @FXML
+    private TableView<Statistics> TableView;
+
+    @FXML
+    private TableColumn<Statistics, String> TableStatisticName;
+
+    @FXML
+    private TableColumn<Statistics, Integer> TableStatisticPoints;
+
+    @FXML
+    private VBox playerCardDeck;
 
     public void initialize() throws IOException {
         printMap();
@@ -68,6 +81,7 @@ public class HelloController {
             }
         });
         independentEnemiesMoves.start();
+        loadStatistics();
     }
 
     private final Image tileset = new Image("mapObjects.png", 577 * 2, 577 * 2, true, false);
@@ -126,6 +140,7 @@ public class HelloController {
                 }
             }
             startFightWithEnemy();
+            takeItem();
         }
     }
 
@@ -179,6 +194,55 @@ public class HelloController {
         }
     }
 
+    private void takeItem() {
+        int x = player.getCell().getX();
+        int y = player.getCell().getY();
+        int[][] neighbourField = {{x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1}};
+        Cards newCard = null;
+
+        for (int[] i : neighbourField) {
+            Cell cell = worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]);
+            if (Objects.equals(cell.getTileName(), "health") || Objects.equals(cell.getTileName(), "power") ||
+                Objects.equals(cell.getTileName(), "armor") || Objects.equals(cell.getTileName(), "card")) {
+                switch (cell.getTileName()) {
+                    case "health" -> player.setHealth(player.getHealth() + 2);
+                    case "power" -> player.setPower(player.getPower() + 2);
+                    case "armor" -> player.setArmor(player.getArmor() + 2);
+                    case "card" -> newCard = collectCardAndAddToDeck();
+                }
+                if (Objects.equals(cell.getTileName(), "card")) {
+                    AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra card " + newCard.getName() + "!\n" +
+                            "Card type : " + newCard.getCardsType().name() + "\n" +
+                            "Card cost : " + newCard.getCardCost() + "\n" +
+                            "Card rarity : " + newCard.getRarity() + "\n" +
+                            "Description : " + newCard.getDescription() + "\n" +
+                            "Value : " + newCard.getValue() + "\n", newCard.getImg());
+                } else {
+                    AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra + 2 to " +
+                            cell.getTileName() + "!", "img.png");
+                }
+                cell.setType(CellType.EMPTY);
+                loadStatistics();
+            }
+        }
+    }
+
+    public Cards collectCardAndAddToDeck() {
+        CardRarity rarity = Player.drawRarity();
+        CardsType cardsType = CardsType.getRandomeType();
+        Cards card = new Cards("heal.png", "attack", null, cardsType, rarity);
+        player.addCardToDeck(card);
+        Label label = new Label();
+        Image img = new Image("E:\\OOP - Java\\dungeon-crawl-1-java-BartoszKosicki\\src\\main\\resources\\" + card.getImg());
+        ImageView view = new ImageView(img);
+        view.setFitHeight(80);
+        view.setPreserveRatio(true);
+        label.setGraphic(view);
+        playerCardDeck.getChildren().addAll(label);
+        playerCardDeck.setAlignment(Pos.TOP_CENTER);
+        return card;
+    }
+
     private void saveGame () {
         try {
             File saveFile = new File("SAVE.sav");
@@ -197,6 +261,23 @@ public class HelloController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadStatistics() {
+        ObservableList<Statistics> playerStatistics = createPlayerStatistics();
+        TableView.setItems(playerStatistics);
+        TableStatisticName.setCellValueFactory(cellData -> cellData.getValue().getStatisticsName());
+        TableStatisticPoints.setCellValueFactory(cellData -> cellData.getValue().getStatisticsPoints().asObject());
+    }
+
+    public ObservableList<Statistics> createPlayerStatistics() {
+        ObservableList<Statistics> playerStatistics = FXCollections.observableArrayList(
+            new Statistics("Health", player.getHealth()),
+            new Statistics("Resistance", player.getResistance()),
+            new Statistics("Armor", player.getArmor()),
+            new Statistics("Power", player.getPower()),
+            new Statistics("Exp", player.getExp()));
+        return playerStatistics;
     }
 
 }

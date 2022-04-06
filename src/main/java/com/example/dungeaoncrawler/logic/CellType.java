@@ -5,7 +5,11 @@ public enum CellType {
     WALL(7, 12, "wall"),
     CLOSED_DOOR(9, 11, "door"),
     OPEN_DOOR(8, 11, "next_room"),
-    KEY(17, 24, "key");
+    KEY(17, 24, "key"),
+    HEALTH(27, 23, "health"),
+    POWER(27, 24, "power"),
+    ARMOR(2, 24, "armor"),
+    CARD(21, 17, "card");
 
     private final int x;
     private final int y;
