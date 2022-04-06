@@ -12,7 +12,8 @@ public enum CardsType {
     DISPEL,
     DECREASE_ARMOR,
     HEAL,
-    STUN;
+    STUN,
+    DISCARD;
 
     public static CardsType getRandomOffensive() {
         Random random = new Random();

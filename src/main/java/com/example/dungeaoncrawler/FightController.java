@@ -1,9 +1,9 @@
 package com.example.dungeaoncrawler;
 
 import com.example.dungeaoncrawler.logic.actors.Actor;
-import com.example.dungeaoncrawler.logic.actors.MageClass;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
+import com.example.dungeaoncrawler.logic.actors.WarriorClass;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.CardsCreator;
@@ -36,13 +36,16 @@ public class FightController {
     private ArrayList<Cards> winningCards;
     private boolean drawCard = false;
     private boolean playerTurn = true;
+    private int handSize;
+    private int handSizeModification =0;
 
 
     public void initialize(){
-        player = new MageClass(15,3,0,4, null);
-        opponent = new Skeleton(1, 4, 1, 30,2, null);
+        player = new WarriorClass(150,0,5,4, null);
+        opponent = new Skeleton(100, 4, 1, 30,2, null);
         displayActorInfo(player);
         displayActorInfo(opponent);
+        handSize = player.getCards();
     }
 
     private void displayActorInfo(Actor actor){
@@ -117,16 +120,18 @@ public class FightController {
         AnchorPane source = (AnchorPane) event.getSource();
         int cardIndex = Integer.parseInt(source.toString().replaceAll("[^0-9.]", ""));
         if (canPlayCard(sumDiceRoll, hand, cardIndex)) {
-            String message = resolveCardEffect(player, opponent, hand.get(cardIndex));
-            setFightMessage(message);
-            source.setOpacity(0.2);
-            source.setDisable(true);
-            sumDiceRoll -= hand.get(cardIndex).getCardCost();
-            refreshCharacterAttributes(hand.get(cardIndex));
-            displayPlayerCondition();
-            displayOpponentCondition();
-            rollDice.setText(sumDiceRoll > 0? sumDiceRoll + " points remains": "No points left.");
-            checkForWin();
+            if (hand.get(cardIndex).getCardsType() != CardsType.DISPEL || hand.get(cardIndex).getCardsType() != CardsType.DISPEL && hand.size()>1) {
+                String message = resolveCardEffect(hand.get(cardIndex));
+                setFightMessage(message);
+                source.setOpacity(0.2);
+                source.setDisable(true);
+                sumDiceRoll -= hand.get(cardIndex).getCardCost();
+                refreshCharacterAttributes(hand.get(cardIndex));
+                displayPlayerCondition();
+                displayOpponentCondition();
+                rollDice.setText(sumDiceRoll > 0 ? sumDiceRoll + " points remains" : "No points left.");
+                checkForWin();
+            }
         } else {
             String message = "You don't have points to play this card\n";
             setFightMessage(message);
@@ -217,18 +222,25 @@ public class FightController {
 
     private void refreshCharacterAttributes(Cards card) {
         switch(card.getCardsType()){
-            case DECREASE_ARMOR, POISON, ATTACK, SPELL, STUN -> displayActorInfo(opponent);
+            case DECREASE_ARMOR, POISON, ATTACK, SPELL, STUN, DISCARD -> displayActorInfo(opponent);
             default -> displayActorInfo(player);
         }
     }
 
     @FXML
     void endTurn(ActionEvent event) {
-        cardsField.setVisible(false);
+        hideCardsAfterEndTurn();
+//        cardsField.setVisible(false);
         String message = "Now its next turn";
         setFightMessage(message);
         roundBeginning(opponent);
         opponentMove();
+    }
+
+    private void hideCardsAfterEndTurn() {
+        for (int i = 0; i < cardsField.getChildren().size(); i++) {
+            cardsField.getChildren().get(i).setVisible(false);
+        }
     }
 
     private void opponentMove() {
@@ -316,10 +328,10 @@ public class FightController {
     @FXML
     void drawCards(MouseEvent event) {
         if (!drawCard) {
-            ArrayList<Cards> hand = drawRandomCards();
-            this.hand = hand;
+            ArrayList<Cards> newHand = drawRandomCards();
+            this.hand = newHand;
             ArrayList<AnchorPane> cardContainerList = createCardContainerList();
-            displayCards(hand, cardContainerList);
+            displayCards(newHand, cardContainerList);
             cardsField.setVisible(true);
             drawCard = true;
             endTurn.setVisible(true);
@@ -372,18 +384,18 @@ public class FightController {
 
     /**
      * after picking card to play
-     * @param player player character
-     * @param opponent opponent character
      * @param card picked card
      * @return return message to display about card effect
      */
-    private String resolveCardEffect(Actor player, Actor opponent, Cards card){
+    private String resolveCardEffect(Cards card){
         switch (card.getCardsType()){
             case DECREASE_ARMOR -> {return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));}
             case RESISTANCE -> {return player.setResistance(card.getValue());}
             case DISPEL -> {return player.setDispel(card.getValue());}
             case POISON -> {return opponent.setPoison(new LifeChanger(player.getPower(), -card.getValue()));}
             case ATTACK -> {return opponent.takeDamage(card.getValue());}
+            case DISCARD -> { handSizeModification -=1;
+                return opponent.takeDamage(card.getValue());}
             case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
             case ARMOR -> {return player.setArmor(card.getValue());}
             case HEAL -> {return player.setHeal(new LifeChanger(player.getPower(), card.getValue()));}
@@ -401,11 +413,12 @@ public class FightController {
      */
     private ArrayList<Cards> drawRandomCards(){
         Random random = new Random();
-        int cardsOnHand = player.getCards();
+        int cardsOnHand = handSize + handSizeModification;
+        handSizeModification = 0;
         ArrayList<Cards> hand = new ArrayList<>();
         ArrayList<Cards> deck = player.getPlayingDeck();
         for (int i = 0; i < cardsOnHand; i++) {
-            if (deck.size() > player.getCards()-hand.size()){
+            if (deck.size() > cardsOnHand){
                 int index =random.nextInt(deck.size());
                 hand.add(deck.get(index));
                 deck.remove(index);
@@ -451,24 +464,6 @@ public class FightController {
         rollDice.setText(text);
     }
 
-    @FXML
-    void cursorEnterIntoCardsField(MouseEvent event) {
-//        System.out.println("ok");
-//        AnchorPane source = (AnchorPane) event.getSource();
-//        for (Node kid : source.getChildren()) {
-//            Shadow shadow = new Shadow(0.8,Color.BLACK);
-//            kid.setEffect(shadow);
-//        }
-    }
-
-    @FXML
-    void cursorLeaveIntoCardsField(MouseEvent event) {
-//        System.out.println("ok");
-//        AnchorPane source = (AnchorPane) event.getSource();
-//        for (Node kid : source.getChildren()) {
-//            kid.setEffect(null);
-//        }
-    }
 
     @FXML
     private ImageView opponentHealIcon;
