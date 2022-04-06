@@ -23,7 +23,12 @@
       </ImageView>
       <AnchorPane fx:id="GameBoard" layoutX="28.0" layoutY="46.0">
          <children>
-            <AnchorPane fx:id="cardsField" layoutX="169.0" layoutY="83.0" onMouseEntered="#cursorEnterIntoCardsField" onMouseExited="#cursorLeaveIntoCardsField" prefHeight="455.0" prefWidth="861.0">
+            <ImageView fx:id="playerImage1" disable="false" fitHeight="150.0" fitWidth="166.0" layoutX="1061.0" layoutY="15.0" onMouseEntered="#showCharacterNextRoundDmg" onMouseExited="#hideCharacterNextRoundDmg" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../skeleton.jpg" />
+               </image>
+            </ImageView>
+            <AnchorPane fx:id="cardsField" layoutX="169.0" layoutY="83.0" prefHeight="455.0" prefWidth="861.0">
                <children>
                   <AnchorPane fx:id="card0" layoutX="206.0" layoutY="20.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-12.5" visible="false">
                      <children>
@@ -238,7 +243,7 @@
                   <Font name="Comic Sans MS" size="16.0" />
                </font>
             </Label>
-            <ImageView fx:id="playerImage" fitHeight="150.0" fitWidth="200.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="playerImage" fitHeight="150.0" fitWidth="200.0" layoutY="30.0" onMouseEntered="#showCharacterNextRoundDmg" onMouseExited="#hideCharacterNextRoundDmg" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@image/cards/getResistance.gif" />
                </image>
@@ -247,9 +252,9 @@
                <children>
                   <HBox fx:id="opponentStateDisplay1" prefHeight="0.0" prefWidth="89.0">
                      <children>
-                        <ImageView fx:id="playerHealIcon" fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <ImageView fx:id="playerStunIcon" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>
-                              <Image url="@image/cards/heal.gif" />
+                              <Image url="@../../../stun.gif" />
                            </image>
                         </ImageView>
                         <ImageView fx:id="playerPoisonIcon" fitHeight="38.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -257,20 +262,15 @@
                               <Image url="@../../../poison2.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="playerStunIcon" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <ImageView fx:id="playerHealIcon" fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>
-                              <Image url="@../../../stun.gif" />
+                              <Image url="@image/cards/heal.gif" />
                            </image>
                         </ImageView>
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
-            <ImageView fx:id="playerImage1" disable="true" fitHeight="150.0" fitWidth="166.0" layoutX="1061.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../skeleton.jpg" />
-               </image>
-            </ImageView>
             <HBox fx:id="opponentStateDisplay" layoutX="1061.0" layoutY="137.0" prefHeight="30.0" prefWidth="69.0">
                <children>
                   <ImageView fx:id="opponentHealIcon" fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -379,5 +379,35 @@
             <Font name="Comic Sans MS" size="26.0" />
          </font>
       </Button>
+      <Label fx:id="healthInfoOpponent" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="1091.0" layoutY="183.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="poisonInfoOpponent" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="1120.0" layoutY="183.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="stunInfoOpponent" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="1149.0" layoutY="183.0" opacity="0.82" prefHeight="30.0" prefWidth="28.0" style="-fx-background-color: fff;" text="3" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="healthInfoPlayer" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="164.0" layoutY="198.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="poisonInfoPlayer" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="198.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="stunInfoPlayer" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="134.0" layoutY="198.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

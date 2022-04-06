@@ -34,4 +34,19 @@ public abstract class CardsCreator {
         return "do nothing";
     }
 
+    public static String imageCardCreator(CardsType cardsType){
+        switch (cardsType){
+            case ARMOR -> {return "armor.gif";}
+            case STUN -> {return "stun.gif";}
+            case HEAL -> {return "heal.gif";}
+            case SPELL -> {return "spell.gif";}
+            case ATTACK -> {return "attack.gif";}
+            case POISON -> {return "poisonBig.gif";}
+            case DISPEL -> {return "dispel.gif";}
+            case RESISTANCE -> {return "magic.gif";}
+            case DECREASE_ARMOR -> {return "armorDown.gif";}
+            default -> {return "swordAttack.gif";}
+        }
+    }
+
 }

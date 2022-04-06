@@ -1,10 +1,12 @@
 package com.example.dungeaoncrawler;
 
 import com.example.dungeaoncrawler.logic.actors.Actor;
+import com.example.dungeaoncrawler.logic.actors.MageClass;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
+import com.example.dungeaoncrawler.logic.items.CardsCreator;
 import com.example.dungeaoncrawler.logic.items.CardsType;
 import com.example.dungeaoncrawler.logic.status.CharacterAttributes;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
@@ -37,7 +39,7 @@ public class FightController {
 
 
     public void initialize(){
-        player = new Player(1,0,0,4, null);
+        player = new MageClass(15,3,0,4, null);
         opponent = new Skeleton(1, 4, 1, 30,2, null);
         displayActorInfo(player);
         displayActorInfo(opponent);
@@ -204,7 +206,9 @@ public class FightController {
     private ArrayList<Cards> generateWinningCards(int cardsToGen) {
         ArrayList<Cards> listWinningCards = new ArrayList<>();
         for (int i = 0; i < cardsToGen; i++) {
-            Cards card = new Cards("Winning Card", "Winning Card", null, CardsType.getRandomeType(), CardRarity.genWinRandomCardRarity());
+            CardsType cardType = CardsType.getRandomeType();
+            String imgCard = CardsCreator.imageCardCreator(cardType);
+            Cards card = new Cards(imgCard, "Winning Card", null, cardType, CardRarity.genWinRandomCardRarity());
             listWinningCards.add(card);
         }
         this.winningCards = listWinningCards;
@@ -228,13 +232,18 @@ public class FightController {
     }
 
     private void opponentMove() {
-        int attackRound = opponent.getAttackRound();
-        for (int i = 0; i < attackRound; i++) {
-            opponentAttackPhase();
-            checkForWin();
-            if (i==attackRound-1){
-                playerNewTurnToPlay();
+        if (opponent.getStun() <= 0) {
+            int attackRound = opponent.getAttackRound();
+            for (int i = 0; i < attackRound; i++) {
+                opponentAttackPhase();
+                checkForWin();
+                if (i == attackRound - 1) {
+                    playerNewTurnToPlay();
+                }
             }
+        }else {
+            opponent.setStun(-1);
+            playerNewTurnToPlay();
         }
     }
 
@@ -329,7 +338,7 @@ public class FightController {
             container.setDisable(false);
             // set card image
             ImageView cardImage = (ImageView) container.getChildren().get(0);
-            cardImage.setImage(new Image("swordAttack.gif"));
+            cardImage.setImage(new Image(cardsToDisplay.get(i).getImg()));
 
             //set card description
             Label cardDescription = (Label) container.getChildren().get(2);
@@ -671,4 +680,75 @@ public class FightController {
 
     @FXML
     private ImageView card1background5;
+
+    @FXML
+    void showCharacterNextRoundDmg(MouseEvent event) {
+        ImageView image = (ImageView) event.getSource();
+        switch (image.getId()){
+            case "playerImage1"-> {
+                if (opponent.getHealPts() > 0) {
+                    healthInfoOpponent.setText(String.valueOf(opponent.getHealPts()));
+                    healthInfoOpponent.setVisible(true);
+                }
+                if (opponent.getPoisonDmg() > 0) {
+                    poisonInfoOpponent.setText(String.valueOf(opponent.getPoisonDmg()));
+                    poisonInfoOpponent.setVisible(true);
+                }
+                if (opponent.getStun() > 0) {
+                    stunInfoOpponent.setText(String.valueOf(opponent.getStun()));
+                    stunInfoOpponent.setVisible(true);
+                }
+            }
+            case "playerImage"-> {
+                if (player.getStun() > 0) {
+                    stunInfoPlayer.setText(String.valueOf(player.getStun()));
+                    stunInfoPlayer.setVisible(true);
+                }
+                if (player.getPoisonDmg() > 0) {
+                    poisonInfoPlayer.setText(String.valueOf(player.getPoisonDmg()));
+                    poisonInfoPlayer.setVisible(true);
+                }
+                if (player.getHealPts() >0) {
+                    healthInfoPlayer.setText(String.valueOf(player.getHealPts()));
+                    healthInfoPlayer.setVisible(true);
+                }
+            }
+        }
+    }
+
+
+    @FXML
+    void hideCharacterNextRoundDmg(MouseEvent event) {
+        ImageView image = (ImageView) event.getSource();
+        switch (image.getId()){
+            case "playerImage1"-> {
+                healthInfoOpponent.setVisible(false);
+                poisonInfoOpponent.setVisible(false);
+                stunInfoOpponent.setVisible(false);
+            }
+            case "playerImage"-> {
+                stunInfoPlayer.setVisible(false);
+                poisonInfoPlayer.setVisible(false);
+                healthInfoPlayer.setVisible(false);
+            }
+        }
+    }
+    @FXML
+    private Label stunInfoOpponent;
+
+    @FXML
+    private Label stunInfoPlayer;
+
+    @FXML
+    private Label poisonInfoOpponent;
+
+    @FXML
+    private Label poisonInfoPlayer;
+
+    @FXML
+    private Label healthInfoOpponent;
+
+    @FXML
+    private Label healthInfoPlayer;
+
 }

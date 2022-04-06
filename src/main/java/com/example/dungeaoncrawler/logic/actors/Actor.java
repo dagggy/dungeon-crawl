@@ -209,9 +209,26 @@ public abstract class Actor implements Drawable {
     public boolean isPoison(){
         return poison.size() > 0;
     }
+    public int getPoisonDmg(){
+            int sum = 0;
+        if (isPoison()) {
+            for (LifeChanger poisons : poison){
+                sum -= poisons.getLifeChanger();
+            }
+        }return sum;
+    }
 
     public boolean isHeal(){
         return heal.size() > 0;
+    }
+
+    public int getHealPts(){
+        int sum = 0;
+        if (isHeal()) {
+            for (LifeChanger heals : heal){
+                sum += heals.getLifeChanger();
+            }
+        }return sum;
     }
 
     public boolean isStuned(){
