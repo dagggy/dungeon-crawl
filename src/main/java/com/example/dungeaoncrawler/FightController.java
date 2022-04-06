@@ -3,7 +3,9 @@ package com.example.dungeaoncrawler;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
+import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
+import com.example.dungeaoncrawler.logic.items.CardsType;
 import com.example.dungeaoncrawler.logic.status.CharacterAttributes;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
 import javafx.collections.FXCollections;
@@ -166,7 +168,32 @@ public class FightController {
         String message = "You have won! This time .....";
         setFightMessage(message);
         player.setExp(opponent.getExp());
+        displayWinningScreen();
         player.endFight();
+    }
+
+    private void displayWinningScreen() {
+        GameBoard.setVisible(false);
+        generateWinningCards(3);
+        ArrayList<Cards> rewardCards = generateWinningCards(3);
+        ArrayList<AnchorPane> winCardContainer = createWinningCardContainer();
+        displayCards(rewardCards, winCardContainer);
+        winningBoard.setVisible(true);
+    }
+
+    private ArrayList<AnchorPane> createWinningCardContainer() {
+        ArrayList<AnchorPane> cardContainer = new ArrayList<>();
+        Collections.addAll(cardContainer, winningCard0, winningCard01, winningCard02);
+        return cardContainer;
+    }
+
+    private ArrayList<Cards> generateWinningCards(int cardsToGen) {
+        ArrayList<Cards> listWinningCards = new ArrayList<>();
+        for (int i = 0; i < cardsToGen; i++) {
+            Cards card = new Cards("Winning Card", "Winning Card", null, CardsType.getRandomeType(), CardRarity.genWinRandomCardRarity());
+            listWinningCards.add(card);
+        }
+        return listWinningCards;
     }
 
     private void refreshCharacterAttributes(Cards card) {
@@ -239,7 +266,6 @@ public class FightController {
         character.resolveLifeChanger();
     }
 
-    //TODO zmienić label na listView lub tabelview
     public Label getDiceSum() {
         return rollDice;
     }
@@ -253,7 +279,8 @@ public class FightController {
         if (!drawCard) {
             ArrayList<Cards> hand = drawRandomCards(player);
             this.hand = hand;
-            displayCards(hand);
+            ArrayList<AnchorPane> cardContainerList = createCardContainerList();
+            displayCards(hand, cardContainerList);
             cardsField.setVisible(true);
             drawCard = true;
             endTurn.setVisible(true);
@@ -262,12 +289,11 @@ public class FightController {
 
     /**
      * put cards property (image, cost, description etc.) into cards container.
-     * @param hand list of cards object, that player draw during draw stage
+     * @param cardsToDisplay list of cards object, that player draw during draw stage
      */
-    private void displayCards(ArrayList<Cards> hand){
-        ArrayList<AnchorPane> cardsContainer = createCardContainerList();
-        for (int i = 0; i < cardsContainer.size(); i++) {
-            AnchorPane container = cardsContainer.get(i);
+    private void displayCards(ArrayList<Cards> cardsToDisplay, ArrayList<AnchorPane> gameCardsContainer ){
+        for (int i = 0; i < gameCardsContainer.size(); i++) {
+            AnchorPane container = gameCardsContainer.get(i);
             container.setOpacity(1);
             container.setDisable(false);
             // set card image
@@ -276,11 +302,11 @@ public class FightController {
 
             //set card description
             Label cardDescription = (Label) container.getChildren().get(2);
-            cardDescription.setText(hand.get(i).getDescription());
+            cardDescription.setText(cardsToDisplay.get(i).getDescription());
 
             // set card cost
             Label cardCost = (Label) container.getChildren().get(3);
-            cardCost.setText(String.valueOf(hand.get(i).getCardCost()));
+            cardCost.setText(String.valueOf(cardsToDisplay.get(i).getCardCost()));
         }
     }
 
@@ -503,5 +529,67 @@ public class FightController {
 
     @FXML
     private ImageView windowBackground;
+
+    @FXML
+    private AnchorPane GameBoard;
+
+    @FXML
+    private AnchorPane winningBoard;
+
+    @FXML
+    private AnchorPane winningCard0;
+
+    @FXML
+    private AnchorPane winningCard01;
+
+    @FXML
+    private AnchorPane winningCard02;
+
+    @FXML
+    private Label winningCardCost0;
+
+    @FXML
+    private Label winningCardCost01;
+
+    @FXML
+    private Label winningCardCost02;
+
+    @FXML
+    private Label winningCardDescription0;
+
+    @FXML
+    private Label winningCardDescription01;
+
+    @FXML
+    private Label winningCardDescription02;
+
+    @FXML
+    private ImageView winningCardImage0;
+
+    @FXML
+    private ImageView winningCardImage01;
+
+    @FXML
+    private ImageView winningCardImage02;
+
+    @FXML
+    private ImageView winningCardbackground0;
+
+    @FXML
+    private ImageView winningCardbackground01;
+
+    @FXML
+    private ImageView winningCardbackground02;
+
+    @FXML
+    void pickReward(MouseEvent event) {
+    }
+
+    @FXML
+    void endFight(ActionEvent event) {
+    }
+
+    @FXML
+    private Button endFightButton;
 
 }

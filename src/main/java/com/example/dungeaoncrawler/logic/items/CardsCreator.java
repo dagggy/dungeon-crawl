@@ -9,6 +9,11 @@ public abstract class CardsCreator {
     public static int[] commonPoison = {1,3};
     public static int[] rarePoison = {2,4};
     public static int[] mythicPoison = {5,8};
+    public static String[] offensiveCardName;
+    public static String[] DefensiveCardName;
+    public static String[] HealCardName;
+    public static String[] PoisonCardName;
+    public static String[] StunCardName;
 
     public static int setCardValue(int[] cardsDamage) {
         return ThreadLocalRandom.current().nextInt(cardsDamage[0], cardsDamage[1]);
@@ -28,4 +33,5 @@ public abstract class CardsCreator {
         }
         return "do nothing";
     }
+
 }
