@@ -2,6 +2,7 @@ package com.example.dungeaoncrawler.logic;
 
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
+import com.example.dungeaoncrawler.logic.items.Potion;
 
 import java.io.InputStream;
 import java.util.*;
@@ -26,6 +27,7 @@ public class MapLoader {
                 cell.setDecoration(randomCellDecoration(10));
             }
         }
+        placeItems(map);
         return map;
     }
 
@@ -40,5 +42,18 @@ public class MapLoader {
             return cellDecorations[ThreadLocalRandom.current().nextInt(cellDecorations.length)];
         }
         return null;
+    }
+
+    public static void placeItems(GameMap map) {
+        int[][] randomItemsCoordinate = {{0, 0}, {0, 0}, {0, 0}, {0, 0}};
+
+        for (int i = 0; i < 4; i++) {
+            int[] randomPair = {ThreadLocalRandom.current().nextInt(1, 19), ThreadLocalRandom.current().nextInt(1, 19)};
+            randomItemsCoordinate[i] = randomPair;
+        }
+        map.getCell(randomItemsCoordinate[0][0], randomItemsCoordinate[0][1]).setType(CellType.HEALTH);
+        map.getCell(randomItemsCoordinate[1][0], randomItemsCoordinate[1][1]).setType(CellType.POWER);
+        map.getCell(randomItemsCoordinate[2][0], randomItemsCoordinate[2][1]).setType(CellType.ARMOR);
+        map.getCell(randomItemsCoordinate[3][0], randomItemsCoordinate[3][1]).setType(CellType.CARD);
     }
 }

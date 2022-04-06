@@ -69,6 +69,8 @@ public class GameMap implements Serializable {
         }
     }
 
+
+
     public ArrayList<Integer> getWorldPos() {
         ArrayList<Integer> worldPos = new ArrayList<>();
         worldPos.add(worldPosX);
