@@ -3,8 +3,10 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,202 +21,393 @@
             <Image url="@image/fight3.jpg" />
          </image>
       </ImageView>
-      <HBox fx:id="cardsField" layoutX="242.0" layoutY="174.0" prefHeight="382.0" prefWidth="797.0" visible="false">
+      <AnchorPane fx:id="GameBoard" layoutX="28.0" layoutY="46.0">
          <children>
-            <AnchorPane fx:id="card0" onMouseClicked="#playCard" prefHeight="382.0" prefWidth="797.0" style="-fx-background-color: fff; -fx-border-color: black;">
+            <ImageView fx:id="playerImage1" disable="false" fitHeight="150.0" fitWidth="166.0" layoutX="1061.0" layoutY="15.0" onMouseEntered="#showCharacterNextRoundDmg" onMouseExited="#hideCharacterNextRoundDmg" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../skeleton.jpg" />
+               </image>
+            </ImageView>
+            <AnchorPane fx:id="cardsField" layoutX="169.0" layoutY="83.0" prefHeight="455.0" prefWidth="861.0">
                <children>
-                  <ImageView fx:id="cardImage0" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                  <AnchorPane fx:id="card4" layoutX="70.0" layoutY="50.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-21.8" visible="false">
+                     <children>
+                        <ImageView fx:id="cardImage4" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@image/cards/swordAttack2.gif" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="card1background4" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/cardHeal.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="cardDescription4" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cardCost4" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="29.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <effect>
+                        <ColorAdjust brightness="-0.82" />
+                     </effect>
+                  </AnchorPane>
+                  <AnchorPane fx:id="card0" layoutX="185.0" layoutY="20.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-12.5" visible="false">
+                     <children>
+                        <ImageView fx:id="cardImage0" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@image/cards/swordAttack2.gif" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="card1background" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/cardHeal.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="cardDescription0" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cardCost0" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="29.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <effect>
+                        <ColorAdjust brightness="-0.82" />
+                     </effect>
+                  </AnchorPane>
+                  <AnchorPane fx:id="card1" layoutX="295.0" layoutY="14.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="166.0" rotate="-2.6" visible="false">
+                     <children>
+                        <ImageView fx:id="cardImage1" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@image/cards/shield.gif" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="cardbackground1" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/cardHeal.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="cardDescription1" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cardCost1" alignment="CENTER" layoutX="139.0" layoutY="312.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="29.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <effect>
+                        <ColorAdjust brightness="-0.82" />
+                     </effect>
+                  </AnchorPane>
+                  <AnchorPane fx:id="card2" layoutX="400.0" layoutY="18.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="2.6" visible="false">
+                     <children>
+                        <ImageView fx:id="cardImage2" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@image/cards/swordAttack.gif" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="card1background2" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/cardHeal.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="cardDescription2" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cardCost2" alignment="CENTER" layoutX="139.0" layoutY="308.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="29.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="CLOSED_HAND" />
+                     </cursor>
+                     <effect>
+                        <ColorAdjust brightness="-0.82" />
+                     </effect>
+                  </AnchorPane>
+                  <AnchorPane fx:id="card3" layoutX="496.0" layoutY="30.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="12.5" visible="false">
+                     <children>
+                        <ImageView fx:id="cardImage3" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@image/cards/poison.gif" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="card1background3" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/cardHeal.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="cardDescription3" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cardCost3" alignment="CENTER" layoutX="139.0" layoutY="313.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="29.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="CLOSED_HAND" />
+                     </cursor>
+                     <effect>
+                        <ColorAdjust brightness="-0.82" />
+                     </effect>
+                  </AnchorPane>
+                  <AnchorPane fx:id="card5" layoutX="595.0" layoutY="58.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="21.3" visible="false">
+                     <children>
+                        <ImageView fx:id="cardImage5" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@image/cards/swordAttack2.gif" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="card1background5" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/cardHeal.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="cardDescription5" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cardCost5" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="29.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <effect>
+                        <ColorAdjust brightness="-0.82" />
+                     </effect>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <VBox fx:id="playerStatus" layoutY="180.0" opacity="0.76" prefHeight="337.0" prefWidth="167.0" style="-fx-background-color: fff;">
+               <children>
+                  <TableView fx:id="PlayerAttributesDisplayContainer" prefHeight="200.0" prefWidth="170.0">
+                    <columns>
+                      <TableColumn fx:id="PlayerAttributesType" editable="false" prefWidth="130.0" sortable="false" text="Player Stats" />
+                      <TableColumn fx:id="PlayerAttributesValue" editable="false" prefWidth="37.0" sortable="false" />
+                    </columns>
+                  </TableView>
+               </children>
+            </VBox>
+            <VBox fx:id="OpponentStatus" layoutX="1061.0" layoutY="165.0" opacity="0.76" prefHeight="337.0" prefWidth="150.0" style="-fx-background-color: fff;">
+               <children>
+                  <TableView fx:id="OpponentAttributesDisplayContainer1" prefHeight="200.0" prefWidth="130.0">
+                     <columns>
+                        <TableColumn fx:id="OpponentAttributesType1" editable="false" prefWidth="112.0" sortable="false" text="Opponent Stats" />
+                        <TableColumn fx:id="OpponentsAttributesValue1" editable="false" prefWidth="55.0" sortable="false" />
+                     </columns>
+                  </TableView>
+               </children>
+            </VBox>
+            <Label fx:id="rollDice" alignment="CENTER" layoutX="472.0" layoutY="1.0" onMouseClicked="#printSumDice" prefHeight="49.0" prefWidth="284.0" style="-fx-background-color: fff;" text="Roll Dices">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="drawCards" layoutX="233.0" mnemonicParsing="false" onMouseClicked="#drawCards" prefHeight="30.0" prefWidth="200.0" text="Draw Cards">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="24.0" />
+               </font>
+            </Button>
+            <Button fx:id="endTurn" layoutX="814.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="30.0" prefWidth="200.0" text="End Turn" visible="false">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </Button>
+            <Label fx:id="FightMassage" layoutX="142.0" layoutY="565.0" prefHeight="69.0" prefWidth="941.0" style="-fx-background-color: fff;" wrapText="true">
+               <font>
+                  <Font name="Comic Sans MS" size="16.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="playerImage" fitHeight="150.0" fitWidth="200.0" layoutY="30.0" onMouseEntered="#showCharacterNextRoundDmg" onMouseExited="#hideCharacterNextRoundDmg" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/cards/getResistance.gif" />
+               </image>
+            </ImageView>
+            <AnchorPane layoutX="78.0" layoutY="152.0">
+               <children>
+                  <HBox fx:id="opponentStateDisplay1" prefHeight="0.0" prefWidth="89.0">
+                     <children>
+                        <ImageView fx:id="playerStunIcon" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../../../stun.gif" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="playerPoisonIcon" fitHeight="38.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../../../poison2.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="playerHealIcon" fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@image/cards/heal.gif" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <HBox fx:id="opponentStateDisplay" layoutX="1061.0" layoutY="137.0" prefHeight="30.0" prefWidth="69.0">
+               <children>
+                  <ImageView fx:id="opponentHealIcon" fitHeight="43.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@image/cards/heal.gif" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="opponentPoisonIcon" fitHeight="37.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../poison2.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="opponentStunIcon" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../../../stun.gif" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <ListView fx:id="matchHistory" accessibleRole="TEXT" layoutX="170.0" layoutY="667.0" prefHeight="104.0" prefWidth="941.0" />
+      <AnchorPane fx:id="winningBoard" layoutX="10.0" layoutY="10.0" prefHeight="585.0" prefWidth="1170.0" visible="false">
+         <children>
+            <Label alignment="CENTER" layoutX="391.0" layoutY="14.0" prefHeight="49.0" prefWidth="406.0" style="-fx-background-color: fff;" text="CHOSE YOUR REWARD" textAlignment="CENTER">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="31.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="winningCard0" layoutX="182.0" layoutY="138.0" onMouseClicked="#pickReward" prefHeight="382.0" prefWidth="89.0">
+               <children>
+                  <ImageView fx:id="winningCardImage0" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
                         <Image url="@image/cards/swordAttack2.gif" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="card1background" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="winningCardbackground0" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@image/cardHeal.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="cardDescription0" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="winningCardDescription0" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="cardCost0" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                  <Label fx:id="winningCardCost0" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
                      <font>
                         <Font name="Comic Sans MS Bold" size="29.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="card1" onMouseClicked="#playCard" prefHeight="382.0" prefWidth="797.0" style="-fx-background-color: fff; -fx-border-color: black;">
+            <AnchorPane fx:id="winningCard1" layoutX="504.0" layoutY="138.0" onMouseClicked="#pickReward" prefHeight="382.0" prefWidth="89.0">
                <children>
-                  <ImageView fx:id="cardImage1" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                  <ImageView fx:id="winningCardImage1" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
-                        <Image url="@image/cards/shield.gif" />
+                        <Image url="@image/cards/swordAttack2.gif" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="cardbackground1" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="winningCardbackground1" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@image/cardHeal.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="cardDescription1" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="winningCardDescription1" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="cardCost1" alignment="CENTER" layoutX="139.0" layoutY="312.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                  <Label fx:id="winningCardCost1" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
                      <font>
                         <Font name="Comic Sans MS Bold" size="29.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="card2" onMouseClicked="#playCard" prefHeight="382.0" prefWidth="797.0" style="-fx-background-color: fff; -fx-border-color: black;">
+            <AnchorPane fx:id="winningCard2" layoutX="812.0" layoutY="138.0" onMouseClicked="#pickReward" prefHeight="382.0" prefWidth="89.0">
                <children>
-                  <ImageView fx:id="cardImage2" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                  <ImageView fx:id="winningCardImage2" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                      <image>
-                        <Image url="@image/cards/swordAttack.gif" />
+                        <Image url="@image/cards/swordAttack2.gif" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="card1background2" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="winningCardbackground2" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@image/cardHeal.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="cardDescription2" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="winningCardDescription2" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Comic Sans MS Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="cardCost2" alignment="CENTER" layoutX="139.0" layoutY="308.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                  <Label fx:id="winningCardCost2" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
                      <font>
                         <Font name="Comic Sans MS Bold" size="29.0" />
                      </font>
                   </Label>
                </children>
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </AnchorPane>
-            <AnchorPane fx:id="card3" onMouseClicked="#playCard" prefHeight="382.0" prefWidth="797.0" style="-fx-background-color: fff; -fx-border-color: black;">
-               <children>
-                  <ImageView fx:id="cardImage3" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
-                     <image>
-                        <Image url="@image/cards/poison.gif" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="card1background3" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@image/cardHeal.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="cardDescription3" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font name="Comic Sans MS Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="cardCost3" alignment="CENTER" layoutX="139.0" layoutY="313.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
-                     <font>
-                        <Font name="Comic Sans MS Bold" size="29.0" />
-                     </font>
-                  </Label>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
             </AnchorPane>
          </children>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </HBox>
-      <VBox fx:id="playerStatus" layoutX="28.0" layoutY="47.0" opacity="0.76" prefHeight="516.0" prefWidth="129.0" style="-fx-background-color: fff;">
-         <children>
-            <ImageView fx:id="playerImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@image/cards/getResistance.gif" />
-               </image></ImageView>
-            <HBox fx:id="opponentStateDisplay1" prefHeight="16.0" prefWidth="159.0">
-               <children>
-                  <ImageView fx:id="opponentHeal1" fitHeight="69.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../lifeChanger.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="opponentPoison1" fitHeight="30.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../poison2.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="opponentStun1" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../stun.gif" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <TableView fx:id="PlayerAttributesDisplayContainer" prefHeight="200.0" prefWidth="200.0">
-              <columns>
-                <TableColumn fx:id="PlayerAttributesType" editable="false" prefWidth="130.0" sortable="false" text="Player Stats" />
-                <TableColumn fx:id="PlayerAttributesValue" editable="false" prefWidth="37.0" sortable="false" />
-              </columns>
-            </TableView>
-         </children>
-      </VBox>
-      <VBox fx:id="OpponentStatus" layoutX="1058.0" layoutY="47.0" opacity="0.76" prefHeight="516.0" prefWidth="120.0" style="-fx-background-color: fff;">
-         <children>
-            <ImageView fx:id="playerImage1" disable="true" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../skeleton2.jpg" />
-               </image>
-            </ImageView>
-            <HBox fx:id="opponentStateDisplay" prefHeight="16.0" prefWidth="159.0">
-               <children>
-                  <ImageView fx:id="opponentHeal" fitHeight="69.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../lifeChanger.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="opponentPoison" fitHeight="30.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../poison2.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="opponentStun" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../stun.gif" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <TableView fx:id="OpponentAttributesDisplayContainer1" prefHeight="200.0" prefWidth="200.0">
-               <columns>
-                  <TableColumn fx:id="OpponentAttributesType1" editable="false" prefWidth="124.0" sortable="false" text="Opponent Stats" />
-                  <TableColumn fx:id="OpponentsAttributesValue1" editable="false" prefWidth="43.0" sortable="false" />
-               </columns>
-            </TableView>
-         </children>
-      </VBox>
-      <Label fx:id="FightMassage" layoutX="228.0" layoutY="628.0" prefHeight="113.0" prefWidth="950.0" style="-fx-background-color: fff;" wrapText="true">
+      </AnchorPane>
+      <Button fx:id="endFightButton" layoutX="853.0" layoutY="530.0" mnemonicParsing="false" onAction="#endFight" prefHeight="41.0" prefWidth="214.0" text="End Fight!" visible="false">
          <font>
-            <Font name="Comic Sans MS" size="16.0" />
-         </font></Label>
-      <Label fx:id="rollDice" alignment="CENTER" layoutX="500.0" layoutY="47.0" onMouseClicked="#printSumDice" prefHeight="49.0" prefWidth="284.0" style="-fx-background-color: fff;" text="Roll Dices">
-         <font>
-            <Font name="Comic Sans MS Bold" size="24.0" />
-         </font></Label>
-      <Button fx:id="drawCards" layoutX="261.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#drawCards" prefHeight="30.0" prefWidth="200.0" text="Draw Cards">
-         <font>
-            <Font name="Comic Sans MS Bold" size="24.0" />
+            <Font name="Comic Sans MS" size="26.0" />
          </font>
       </Button>
-      <Button fx:id="endTurn" layoutX="842.0" layoutY="46.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="30.0" prefWidth="200.0" text="End Turn" visible="false">
+      <Label fx:id="healthInfoOpponent" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="1091.0" layoutY="183.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
          <font>
-            <Font name="Comic Sans MS Bold" size="24.0" />
+            <Font name="Comic Sans MS Bold" size="18.0" />
          </font>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </Button>
+      </Label>
+      <Label fx:id="poisonInfoOpponent" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="1120.0" layoutY="183.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="stunInfoOpponent" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="1149.0" layoutY="183.0" opacity="0.82" prefHeight="30.0" prefWidth="28.0" style="-fx-background-color: fff;" text="3" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="healthInfoPlayer" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="164.0" layoutY="198.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="poisonInfoPlayer" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="198.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="stunInfoPlayer" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="134.0" layoutY="198.0" opacity="0.82" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: fff;" text="3" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Comic Sans MS Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

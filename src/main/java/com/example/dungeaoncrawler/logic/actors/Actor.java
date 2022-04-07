@@ -126,8 +126,8 @@ public abstract class Actor implements Drawable, Serializable {
     }
 
     public String setArmor(int armor) {
-        this.armor = armor;
-        return "Armor is set on " + armor + " points\n";
+        this.armor += armor;
+        return "Armor is set on " + this.armor + " points\n";
     }
 
     public String takeDamage(int damage) {
@@ -205,6 +205,35 @@ public abstract class Actor implements Drawable, Serializable {
             nextCell.setActor(this);
             cell = nextCell;
         }
+    }
+
+    public boolean isPoison(){
+        return poison.size() > 0;
+    }
+    public int getPoisonDmg(){
+            int sum = 0;
+        if (isPoison()) {
+            for (LifeChanger poisons : poison){
+                sum -= poisons.getLifeChanger();
+            }
+        }return sum;
+    }
+
+    public boolean isHeal(){
+        return heal.size() > 0;
+    }
+
+    public int getHealPts(){
+        int sum = 0;
+        if (isHeal()) {
+            for (LifeChanger heals : heal){
+                sum += heals.getLifeChanger();
+            }
+        }return sum;
+    }
+
+    public boolean isStuned(){
+        return stun > 0;
     }
 }
 

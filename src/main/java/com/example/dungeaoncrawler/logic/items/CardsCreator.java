@@ -9,6 +9,11 @@ public abstract class CardsCreator {
     public static int[] commonPoison = {1,3};
     public static int[] rarePoison = {2,4};
     public static int[] mythicPoison = {5,8};
+    public static String[] offensiveCardName;
+    public static String[] DefensiveCardName;
+    public static String[] HealCardName;
+    public static String[] PoisonCardName;
+    public static String[] StunCardName;
 
     public static int setCardValue(int[] cardsDamage) {
         return ThreadLocalRandom.current().nextInt(cardsDamage[0], cardsDamage[1]);
@@ -25,7 +30,23 @@ public abstract class CardsCreator {
             case DISPEL -> {return "Block next " + value + " opponent spell(s)";}
             case RESISTANCE -> {return "Block next " + value + " magical damage";}
             case DECREASE_ARMOR -> {return "Decrease " + value + " opponent armor";}
+            case DISCARD -> {return "Deal opponen " + value + " physical damage, discard 1 card";}
         }
         return "do nothing";
+    }
+
+    public static String imageCardCreator(CardsType cardsType){
+        switch (cardsType){
+            case ARMOR -> {return "armor.gif";}
+            case STUN -> {return "stun.gif";}
+            case HEAL -> {return "heal.gif";}
+            case SPELL -> {return "spell.gif";}
+            case ATTACK -> {return "attack.gif";}
+            case POISON -> {return "poisonBig.gif";}
+            case DISPEL -> {return "dispel.gif";}
+            case RESISTANCE -> {return "magic.gif";}
+            case DECREASE_ARMOR -> {return "armorDown.gif";}
+            default -> {return "swordAttack.gif";}
+        }
     }
 }

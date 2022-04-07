@@ -19,6 +19,15 @@ public class Cards extends Items{
         this.description = CardsCreator.setDescription(cardsType, value);
     }
 
+    public Cards(String img, String name, Position position, CardsType cardsType, CardRarity cardRarity, int value) {
+        super(img, name, position);
+        this.cardsType = cardsType;
+        this.rarity  = cardRarity;
+        this.cardCost = setCardCost();
+        this.value = value;
+        this.description = CardsCreator.setDescription(cardsType, value);
+    }
+
     public void use() {
 
     }
