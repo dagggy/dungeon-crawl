@@ -178,7 +178,7 @@
       </AnchorPane>
       <AnchorPane layoutX="58.0" layoutY="47.0" prefHeight="640.0" prefWidth="170.0">
          <children>
-            <TextField alignment="CENTER" focusTraversable="false" prefHeight="56.0" prefWidth="170.0" text="Player deck">
+            <TextField fx:id="deckPlayerName" alignment="CENTER" focusTraversable="false" prefHeight="56.0" prefWidth="170.0" text="Player deck">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

@@ -5,26 +5,22 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public enum CardsType {
 
-    SPELL("img.png"),
-    ATTACK("cardHeal.png"),
-    POISON("poison2.png"),
-    ARMOR("img.png"),
-    RESISTANCE("cardHeal.png"),
-    DISPEL("poison2.png"),
-    DECREASE_ARMOR("img.png"),
-    HEAL("cardHeal.png"),
-    STUN("poison2.png"),
-    DISCARD("img.png");
+    SPELL ("spell", "spell.gif"),
+    ATTACK ("attack", "attack.gif"),
+    POISON ("poison", "poisonBig.gif"),
+    ARMOR ("armor", "armor.gif"),
+    RESISTANCE ("resistance", "resistance.gif"),
+    DISPEL ("dispel", "dispel.gif"),
+    DECREASE_ARMOR ("armorDown", "armorDown.gif"),
+    HEAL ("heal", "heal.gif"),
+    STUN ("stun", "stun.gif"),
+    DISCARD ("discard", "lessCard.gif");
 
-
-    private final String pngImg;
-
-    CardsType(String pngImg) {
-        this.pngImg = pngImg;
-    }
-
-    public String getPngImg() {
-        return pngImg;
+    private final String name;
+    private final String file;
+    CardsType(String name, String file) {
+        this.name = name;
+        this.file = file;
     }
 
     public static CardsType getRandomOffensive() {
@@ -38,5 +34,13 @@ public enum CardsType {
     public static CardsType getRandomeType(){
         Random random = new Random();
         return values()[random.nextInt(values().length)];
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getFile() {
+        return file;
     }
 }

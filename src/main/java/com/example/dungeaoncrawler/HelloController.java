@@ -14,14 +14,17 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.*;
@@ -58,10 +61,16 @@ public class HelloController {
     @FXML
     private VBox playerCardDeck;
 
-    public void initialize() throws IOException {
+    @FXML
+    private TextField deckPlayerName;
+
+
+    public void initialize() {
+        deckPlayerName.setText(player.getName() + "'s deck");
         canMove = true;
         printMap();
         printMinimap();
+        updateDeck();
         Thread independentEnemiesMoves = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -91,6 +100,7 @@ public class HelloController {
         gridMap.getChildren().clear();
         baseMap.getChildren().clear();
         actorMap.getChildren().clear();
+        loadStatistics();
 
         GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
         gridMap.setHgap(0);
@@ -180,6 +190,10 @@ public class HelloController {
                     printMap();
                     printMinimap();
                 }
+                case E -> {
+                    takeItem();
+                    printMap();
+                }
             }
             startFightWithEnemy();
             takeItem();
@@ -264,6 +278,7 @@ public class HelloController {
                 } else if (Objects.equals(cell.getTileName(), "key")) {
                     AlertBox.displayAlertBox("Collect Item", "Fantastic! You found secret key to closed room!",
                             "key.png");
+                    updateDeck();
                 } else {
                     AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra + 2 to " +
                             cell.getTileName() + "!", cell.getTileName() + ".png");
@@ -277,17 +292,35 @@ public class HelloController {
     public Cards collectCardAndAddToDeck() {
         CardRarity rarity = Player.drawRarity();
         CardsType cardsType = CardsType.getRandomeType();
-        Cards card = new Cards(cardsType.getPngImg(), "attack", null, cardsType, rarity);
+        Cards card = new Cards(cardsType.getFile(), cardsType.getName(), null, cardsType, rarity);
         player.addCardToDeck(card);
-        Label label = new Label();
-        Image img = new Image("E:\\OOP - Java\\dungeon-crawl-1-java-BartoszKosicki\\src\\main\\resources\\" + card.getImg());
-        ImageView view = new ImageView(img);
-        view.setFitHeight(80);
-        view.setPreserveRatio(true);
-        label.setGraphic(view);
-        playerCardDeck.getChildren().addAll(label);
-        playerCardDeck.setAlignment(Pos.TOP_CENTER);
         return card;
+    }
+
+    public void updateDeck () {
+        playerCardDeck.getChildren().clear();
+        for (Cards card : player.getDeck()) {
+            try {
+                playerCardDeck.getChildren().add(getCardPane(card));
+                playerCardDeck.setAlignment(Pos.CENTER);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Pane getCardPane (Cards card) throws IOException {
+        Pane cardPane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Card.fxml")));
+        ImageView cardImage = (ImageView) cardPane.getChildren().get(0);
+        ImageView cardBg = (ImageView) cardPane.getChildren().get(1);
+        Label description = (Label) cardPane.getChildren().get(2);
+        Label cardCost = (Label) cardPane.getChildren().get(3);
+
+        cardImage.setImage(new Image(card.getImg()));
+        description.setText(card.getDescription());
+        cardCost.setText(String.valueOf(card.getCardCost()));
+
+        return cardPane;
     }
 
     private void saveGame () {

@@ -17,8 +17,8 @@ public class Player extends Actor {
     protected ArrayList<Cards> deck = new ArrayList<>();
     protected ArrayList<Cards> playingDeck;
 
-    public Player(int health, int resistance, int armor, int getCards, Cell cell) {
-        super(health, resistance, armor,0, "player", 0, ActorType.PLAYER, cell);
+    public Player(int health, int resistance, int armor, String idUserName, int getCards, Cell cell) {
+        super(health, resistance, armor,0, idUserName, 0, ActorType.PLAYER, cell);
         this.getCards = getCards;
         this.lvl = 1;
         dice = 3;
