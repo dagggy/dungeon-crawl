@@ -41,12 +41,9 @@ public class HelloController {
     Thread independentEnemiesMoves = new Thread(new Runnable() {
         @Override
         public void run() {
-            int counter = 0;
             while (true) {
                 try {
                     Thread.currentThread().sleep(500);
-                    System.out.println(counter);
-                    counter++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -364,6 +361,7 @@ public class HelloController {
         CardsType cardsType = CardsType.getRandomeType();
         Cards card = new Cards(cardsType.getFile(), cardsType.getName(), null, cardsType, rarity);
         player.addCardToDeck(card);
+        updateDeck();
         return card;
     }
 
