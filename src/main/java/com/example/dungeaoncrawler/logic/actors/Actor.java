@@ -125,8 +125,8 @@ public abstract class Actor implements Drawable {
     }
 
     public String setArmor(int armor) {
-        this.armor = armor;
-        return "Armor is set on " + armor + " points\n";
+        this.armor += armor;
+        return "Armor is set on " + this.armor + " points\n";
     }
 
     public String takeDamage(int damage) {
