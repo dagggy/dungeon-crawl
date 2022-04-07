@@ -16,7 +16,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -35,6 +38,28 @@ public class HelloController {
     static boolean canMove = true;
     static Enemy opponent;
     static boolean isPlayerAlive = true;
+    Thread independentEnemiesMoves = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            int counter = 0;
+            while (true) {
+                try {
+                    Thread.currentThread().sleep(500);
+                    System.out.println(counter);
+                    counter++;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getEnemyMove();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        printMap();
+                    }
+                });
+            }
+        }
+    });
 
     @FXML
     private GridPane baseMap;
@@ -60,6 +85,10 @@ public class HelloController {
     @FXML
     private TextField deckPlayerName;
 
+    public void closeWindow() {
+        System.out.println("close window");
+        independentEnemiesMoves.stop();
+    }
 
     public void initialize() {
         deckPlayerName.setText(player.getName() + "'s deck");
@@ -67,26 +96,7 @@ public class HelloController {
         printMap();
         printMinimap();
         updateDeck();
-        isPlayerAlive = true;
-        Thread independentEnemiesMoves = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.currentThread().sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    getEnemyMove();
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            printMap();
-                        }
-                    });
-                }
-            }
-        });
+        independentEnemiesMoves.setDaemon(true);
         independentEnemiesMoves.start();
         loadStatistics();
     }
