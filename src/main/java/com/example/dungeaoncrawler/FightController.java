@@ -36,7 +36,7 @@ public class FightController {
     private boolean drawCard = false;
     private boolean playerTurn = true;
     private int handSize;
-    private int handSizeModification =0;
+    private int handSizeModification = 0;
     private String previousMessage="";
 
 
@@ -427,6 +427,12 @@ public class FightController {
     private ArrayList<Cards> drawRandomCards(){
         Random random = new Random();
         int cardsOnHand = handSize + handSizeModification;
+        if (cardsOnHand >= 7) {
+            cardsOnHand = 6;
+        }
+        if (cardsOnHand < 0) {
+            cardsOnHand = 0;
+        }
         handSizeModification = 0;
         ArrayList<Cards> hand = new ArrayList<>();
         ArrayList<Cards> deck = player.getPlayingDeck();
