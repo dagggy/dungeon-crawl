@@ -15,12 +15,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -280,6 +283,7 @@ public class FightController {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
+                                windowBackground.setEffect(null);
                                 opponentAttackPhase();
                             }
                         });
@@ -337,6 +341,7 @@ public class FightController {
             drawCard = false;
             endTurn.setVisible(false);
             playerTurn = false;
+            windowBackground.setEffect(null);
         }
     }
 
@@ -344,11 +349,33 @@ public class FightController {
         if (!isWinFight) {
             String attack = opponent.opponentChoseAttack();
             int value = opponent.opponentAttack(attack);
+            int healthBeforeAttack = player.getHealth();
             String message = resolveOpponentAttack(attack, value);
+            displayAttackEffects(healthBeforeAttack, attack);
             displayOpponentCondition();
             displayPlayerCondition();
             setFightMessage(message);
             displayActorInfo(player);
+        }
+    }
+
+    private void displayAttackEffects(int healthBeforeAttack, String message) {
+        if(healthBeforeAttack > player.getHealth()){
+                InnerShadow innerShadow = new InnerShadow();
+                innerShadow.setHeight(255);
+                innerShadow.setWidth(255);
+                innerShadow.setChoke(0.3);
+            if (message.equals("poison")){
+                innerShadow.setColor(Color.GREENYELLOW);
+                windowBackground.setEffect(innerShadow);
+            } else if (message.equals("damage")){
+                innerShadow.setColor(Color.RED);
+                windowBackground.setEffect(innerShadow);
+            } else if (message.equals("magic")){
+                BoxBlur blur = new BoxBlur();
+                blur.setWidth(20);
+                windowBackground.setEffect(blur);
+            }
         }
     }
 
@@ -362,7 +389,9 @@ public class FightController {
     }
 
     private void checkCharacterStatus(Actor character) {
+        int healthBeforeAttack = player.getHealth();
         character.resolveLifeChanger();
+        displayAttackEffects(healthBeforeAttack, "poison");
     }
 
     @FXML
