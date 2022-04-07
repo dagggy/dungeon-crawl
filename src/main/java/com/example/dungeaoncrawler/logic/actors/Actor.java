@@ -20,6 +20,7 @@ public abstract class Actor implements Drawable, Serializable {
     protected int dispel;
     protected int power;
     protected int exp;
+    protected int key;
     protected String name;
     protected int attackRound;
     private final ActorType actorType;
@@ -90,6 +91,14 @@ public abstract class Actor implements Drawable, Serializable {
         return heal;
     }
 
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
     public String setHeal(LifeChanger lifeChanger) {
         this.heal.add(lifeChanger);
         return "Player successfully cast healing\n";
@@ -126,7 +135,7 @@ public abstract class Actor implements Drawable, Serializable {
     }
 
     public String setArmor(int armor) {
-        this.armor += armor;
+        this.armor = armor;
         return "Armor is set on " + this.armor + " points\n";
     }
 
@@ -239,6 +248,7 @@ public abstract class Actor implements Drawable, Serializable {
     public boolean isStuned(){
         return stun > 0;
     }
+
 }
 
 //    public void move(int dx, int dy) {

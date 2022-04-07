@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public enum CardsType {
+
     SPELL ("spell", "spell.gif"),
     ATTACK ("attack", "attack.gif"),
     POISON ("poison", "poisonBig.gif"),

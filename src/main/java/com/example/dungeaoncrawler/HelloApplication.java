@@ -18,11 +18,12 @@ public class HelloApplication {
 
     static HelloController helloController;
 
-
+    public HelloApplication(Player player) {
+        HelloApplication.player = player;
+    }
 
     public void loadNewGame() {
         try {
-            player = new Player(100, 0, 0,4, null);
             worldMap = new WorldMap(1);
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(UserPanel.class.getResource("hello-view.fxml"));
@@ -37,5 +38,4 @@ public class HelloApplication {
             e.printStackTrace();
         }
     }
-
 }

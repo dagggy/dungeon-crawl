@@ -7,8 +7,8 @@ import com.example.dungeaoncrawler.logic.items.CardsCreator;
 import com.example.dungeaoncrawler.logic.items.CardsType;
 
 public class WarriorClass extends Player{
-    public WarriorClass(int health, int resistance, int armor, int getCards, Cell cell) {
-        super(health, resistance, armor, getCards, cell);
+    public WarriorClass(int health, int resistance, int armor, String idUserName, int getCards, Cell cell) {
+        super(health, resistance, armor, idUserName, getCards, cell);
     }
 
 

@@ -18,8 +18,8 @@ public class Player extends Actor {
     protected ArrayList<Cards> playingDeck;
     private int keyCount = 0;
 
-    public Player(int health, int resistance, int armor, int getCards, Cell cell) {
-        super(health, resistance, armor,0, "player", 0, ActorType.PLAYER, cell);
+    public Player(int health, int resistance, int armor, String idUserName, int getCards, Cell cell) {
+        super(health, resistance, armor,0, idUserName, 0, ActorType.PLAYER, cell);
         this.getCards = getCards;
         this.lvl = 1;
         dice = 3;
@@ -49,7 +49,6 @@ public class Player extends Actor {
         addDefensiveCardsToStartingDeck(defendsCards);
         addRandomCardsToStartingDeck(otherCards);
     }
-    //TODO talie startyowe i klasy bohatera + strona startowa
 
     private void addOffensiveCardsToStartingDeck(int cardsNumber){
         for (int i = 0; i < cardsNumber; i++) {

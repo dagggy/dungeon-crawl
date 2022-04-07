@@ -8,8 +8,8 @@ import com.example.dungeaoncrawler.logic.items.CardsType;
 
 public class MageClass extends Player{
 
-    public MageClass(int health, int resistance, int armor, int getCards, Cell cell) {
-        super(health, resistance, armor, getCards, cell);
+    public MageClass(int health, int resistance, int armor, String idUserName, int getCards, Cell cell) {
+        super(health, resistance, armor, idUserName, getCards, cell);
 
     }
 

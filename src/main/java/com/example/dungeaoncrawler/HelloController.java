@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -61,9 +62,13 @@ public class HelloController {
     @FXML
     private VBox playerCardDeck;
 
-    static long threadName;
+    @FXML
+    private TextField deckPlayerName;
+
 
     public void initialize() {
+        deckPlayerName.setText(player.getName() + "'s deck");
+        canMove = true;
         printMap();
         printMinimap();
         updateDeck();
@@ -73,7 +78,7 @@ public class HelloController {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(500);
+                        Thread.currentThread().sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -88,7 +93,6 @@ public class HelloController {
             }
         });
         independentEnemiesMoves.start();
-        threadName = independentEnemiesMoves.getId();
         loadStatistics();
     }
 
@@ -299,7 +303,9 @@ public class HelloController {
                 "Card rarity : " + newCard.getRarity() + "\n" +
                 "Description : " + newCard.getDescription() + "\n" +
                 "Value : " + newCard.getValue() + "\n", newCard.getImg());
-        updateDeck();
+        } else if (Objects.equals(cell.getTileName(), "key")) {
+                    AlertBox.displayAlertBox("Collect Item", "Fantastic! You found secret key to closed room!",
+                            "key.png");updateDeck();
     }
 
     private void getKey (Cell cell) {
@@ -317,7 +323,7 @@ public class HelloController {
 
     private void getItem (Cell cell) {
         AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra + 2 to " +
-                cell.getTileName() + "!", "img.png");
+                cell.getTileName() + "!", cell.getTileName() + ".png");
         cell.setType(CellType.EMPTY);
     }
 
