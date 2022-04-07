@@ -27,7 +27,9 @@ public class MapLoader {
                 cell.setDecoration(randomCellDecoration(10));
             }
         }
-        placeItems(map);
+        if (map.getRoomType() == RoomType.SPECIAL) {
+            placeItems(map);
+        }
         return map;
     }
 

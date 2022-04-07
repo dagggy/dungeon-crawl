@@ -1,12 +1,13 @@
 package com.example.dungeaoncrawler.logic;
 
 public enum RoomType {
-    SPAWN("p"),
+    SPAWN("S"),
     NORMAL("■"),
     SHOP("■"),
-    SPECIAL("l"),
-    LAST("s"),
-    FINAL("■");
+    SPECIAL("I"),
+    LAST("L"),
+    FINAL("F"),
+    ENDING("E");
 
     private final String symbol;
 

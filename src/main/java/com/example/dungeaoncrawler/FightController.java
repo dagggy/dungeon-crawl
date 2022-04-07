@@ -199,6 +199,9 @@ public class FightController {
         endTurn.setDisable(true);
         GameBoard.setVisible(false);
         endFightButton.setVisible(true);
+        player.onKill();
+        player.getCell().setActor(null);
+        HelloController.isPlayerAlive = false;
     }
 
     private void playerIsWon() {
@@ -459,6 +462,7 @@ public class FightController {
         player.endFight();
         Stage stage = (Stage) endFightButton.getScene().getWindow();
         opponent.getCell().setActor(null);
+        opponent.onKill();
         opponent.getCell().getGameMap().removeFromEnemyList(opponent);
         opponent = null;
         HelloController.canMove = true;

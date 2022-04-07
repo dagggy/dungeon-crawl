@@ -8,7 +8,6 @@ import com.example.dungeaoncrawler.logic.actors.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameMap implements Serializable {
@@ -40,7 +39,17 @@ public class GameMap implements Serializable {
                 cells[x][y] = new Cell(this, x, y, defaultCellType, CellDecoration.EMPTY);
             }
         }
-        placeEnemy();
+        if (roomType == RoomType.NORMAL) {
+            placeEnemy();
+        }
+
+        if (roomType == RoomType.FINAL) {
+            placeBoss();
+        }
+
+        if (roomType == RoomType.LAST){
+            placeExit();
+        }
     }
 
     public RoomType getRoomType() {
@@ -51,10 +60,8 @@ public class GameMap implements Serializable {
         int[] randomPlace = {0, 0};
         int randomCase = ThreadLocalRandom.current().nextInt(1, 4);
 
-        for (int i = 0; i < randomPlace.length; i++) {
-            int randomNumber = ThreadLocalRandom.current().nextInt(1, 19);
-            randomPlace[i] = randomNumber;
-        }
+        randomPlace[0] = ThreadLocalRandom.current().nextInt(1, 24);
+        randomPlace[1] = ThreadLocalRandom.current().nextInt(1, 19);
 
         switch (randomCase) {
             case 1 -> {Actor skeleton = new Skeleton(10, 0, 0, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
@@ -67,6 +74,16 @@ public class GameMap implements Serializable {
                     cells[randomPlace[0]][randomPlace[1]].setActor(knight);
                     enemyList.add(knight);}
         }
+    }
+
+    private void placeBoss () {
+        Actor skeletonBoss = new SkeletonBoss(1, 0, 0, 100, 2, cells[width/2][height/2]);
+        cells[width/2][height/2].setActor(skeletonBoss);
+        enemyList.add(skeletonBoss);
+    }
+
+    private void placeExit () {
+        cells[width/2][height/2].setType(CellType.TRAPDOOR);
     }
 
 
@@ -86,25 +103,25 @@ public class GameMap implements Serializable {
         this.player = player;
     }
 
-    public void addDoor(char direction) {
+    public void addDoor(char direction, CellType doorType) {
         switch (direction) {
             case 'u': {
-                cells[width / 2][0].setType(CellType.CLOSED_DOOR);
+                cells[width / 2][0].setType(doorType);
                 cells[width / 2][0].setDoorDirection('u');
                 break;
             }
             case 'd': {
-                cells[width / 2][height - 1].setType(CellType.CLOSED_DOOR);
+                cells[width / 2][height - 1].setType(doorType);
                 cells[width / 2][height - 1].setDoorDirection('d');
                 break;
             }
             case 'l': {
-                cells[0][height / 2].setType(CellType.CLOSED_DOOR);
+                cells[0][height / 2].setType(doorType);
                 cells[0][height / 2].setDoorDirection('l');
                 break;
             }
             case 'r': {
-                cells[width-1][height / 2].setType(CellType.CLOSED_DOOR);
+                cells[width-1][height / 2].setType(doorType);
                 cells[width-1][height / 2].setDoorDirection('r');
                 break;
             }

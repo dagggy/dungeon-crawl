@@ -232,7 +232,8 @@ public abstract class Actor implements Drawable, Serializable {
         }return sum;
     }
 
-    public void deleteActor() {
+    public void onKill() {
+        this.cell.setType(CellType.EMPTY);
     }
 
     public boolean isStuned(){

@@ -7,14 +7,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class HelloApplication {
     public static Player player;
     static WorldMap worldMap;
 
     static HelloController helloController;
+
+
 
     public void loadNewGame() {
         try {
@@ -33,4 +37,5 @@ public class HelloApplication {
             e.printStackTrace();
         }
     }
+
 }

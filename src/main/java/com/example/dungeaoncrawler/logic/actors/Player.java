@@ -16,6 +16,7 @@ public class Player extends Actor {
     protected int lvl;
     protected ArrayList<Cards> deck = new ArrayList<>();
     protected ArrayList<Cards> playingDeck;
+    private int keyCount = 0;
 
     public Player(int health, int resistance, int armor, int getCards, Cell cell) {
         super(health, resistance, armor,0, "player", 0, ActorType.PLAYER, cell);
@@ -139,6 +140,31 @@ public class Player extends Actor {
         return cell.getY();
     }
 
+    public void giveKeys (int amount) {
+        keyCount += amount;
+    }
+
+    public void useKeys (int cost) {
+        if (keyCount >= cost) {
+            keyCount -= cost;
+        }
+    }
+
+    public int getKeyCount () {
+        return keyCount;
+    }
+
+    public void moveToEnd () {
+        Cell nextCell = cell.getGameMap().getParentMap().moveToEnd(this);
+        cell.setActor(null);
+        cell = nextCell;
+    }
+
+    @Override
+    public void onKill () {
+        this.cell.setType(CellType.GRAVE);
+    }
+
     @Override
     public void move(int dx, int dy) {
 
@@ -147,7 +173,7 @@ public class Player extends Actor {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
-        } else if (nextCell.getType() == CellType.CLOSED_DOOR) {
+        } else if (nextCell.getType() == CellType.OPEN_DOOR) {
             cell.setActor(null);
             switch (nextCell.getDoorDirection()) {
                 case 'u' -> {

@@ -38,6 +38,7 @@ public class HelloController {
     ImageView imageView1 = new ImageView("img.png");
     static boolean canMove = true;
     static Enemy opponent;
+    static boolean isPlayerAlive = true;
 
     @FXML
     private GridPane baseMap;
@@ -60,16 +61,19 @@ public class HelloController {
     @FXML
     private VBox playerCardDeck;
 
+    static long threadName;
+
     public void initialize() {
         printMap();
         printMinimap();
         updateDeck();
+        isPlayerAlive = true;
         Thread independentEnemiesMoves = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     try {
-                        Thread.currentThread().sleep(500);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -84,6 +88,7 @@ public class HelloController {
             }
         });
         independentEnemiesMoves.start();
+        threadName = independentEnemiesMoves.getId();
         loadStatistics();
     }
 
@@ -157,7 +162,7 @@ public class HelloController {
     }
 
     public void onKeyPressed(KeyEvent keyEvent) {
-        if (canMove) {
+        if (canMove && isPlayerAlive) {
             switch (keyEvent.getCode()) {
                 case UP -> {
                     player.move(0, -1);
@@ -218,9 +223,10 @@ public class HelloController {
     public void getEnemyMove() {
         if (canMove) {
             int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-            int[] randomCoordinates = possibleMoves[new Random().nextInt(possibleMoves.length)];
 
             for (Actor actor : worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getEnemyList()) {
+
+                int[] randomCoordinates = possibleMoves[new Random().nextInt(possibleMoves.length)];
                 actor.move(randomCoordinates[0], randomCoordinates[1]);
             }
         }
@@ -251,29 +257,72 @@ public class HelloController {
         for (int[] i : neighbourField) {
             Cell cell = worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]);
             if (Objects.equals(cell.getTileName(), "health") || Objects.equals(cell.getTileName(), "power") ||
-                Objects.equals(cell.getTileName(), "armor") || Objects.equals(cell.getTileName(), "card")) {
+                    Objects.equals(cell.getTileName(), "armor") || Objects.equals(cell.getTileName(), "card") ||
+                    Objects.equals(cell.getTileName(), "key") || Objects.equals(cell.getTileName(), "closedDoor") ||
+                    Objects.equals(cell.getTileName(), "trapdoor")) {
                 switch (cell.getTileName()) {
+                    case "key" -> player.giveKeys(1);
                     case "health" -> player.setHealth(player.getHealth() + 2);
                     case "power" -> player.setPower(player.getPower() + 2);
                     case "armor" -> player.setArmor(player.getArmor() + 2);
                     case "card" -> newCard = collectCardAndAddToDeck();
                 }
                 if (Objects.equals(cell.getTileName(), "card")) {
-                    AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra card " + newCard.getName() + "!\n" +
-                            "Card type : " + newCard.getCardsType().name() + "\n" +
-                            "Card cost : " + newCard.getCardCost() + "\n" +
-                            "Card rarity : " + newCard.getRarity() + "\n" +
-                            "Description : " + newCard.getDescription() + "\n" +
-                            "Value : " + newCard.getValue() + "\n", newCard.getImg());
-                    updateDeck();
+
+                    getCard(newCard, cell);
+
+                } else if (Objects.equals(cell.getTileName(), "key")) {
+
+                    getKey(cell);
+
+                } else if (Objects.equals(cell.getTileName(), "closedDoor")) {
+
+                    useKey(cell);
+
+                } else if (Objects.equals(cell.getTileName(), "trapdoor")) {
+
+                    moveToEnd();
+
                 } else {
-                    AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra + 2 to " +
-                            cell.getTileName() + "!", "img.png");
+                    getItem(cell);
                 }
-                cell.setType(CellType.EMPTY);
+
                 loadStatistics();
             }
         }
+    }
+
+    private void getCard (Cards newCard, Cell cell) {
+        AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra card " + newCard.getName() + "!\n" +
+                "Card type : " + newCard.getCardsType().name() + "\n" +
+                "Card cost : " + newCard.getCardCost() + "\n" +
+                "Card rarity : " + newCard.getRarity() + "\n" +
+                "Description : " + newCard.getDescription() + "\n" +
+                "Value : " + newCard.getValue() + "\n", newCard.getImg());
+        updateDeck();
+    }
+
+    private void getKey (Cell cell) {
+        AlertBox.displayAlertBox("Key found!", "Hey, you've found a key! Now you can go to the final boss!", "keyBig.png");
+        cell.setType(CellType.EMPTY);
+    }
+
+    private void useKey (Cell cell) {
+        int keyCost = 1;
+        if (player.getKeyCount() >= keyCost) {
+            player.useKeys(keyCost);
+            cell.setType(CellType.OPEN_DOOR);
+        }
+    }
+
+    private void getItem (Cell cell) {
+        AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra + 2 to " +
+                cell.getTileName() + "!", "img.png");
+        cell.setType(CellType.EMPTY);
+    }
+
+    private void moveToEnd () {
+        player.moveToEnd();
     }
 
     public Cards collectCardAndAddToDeck() {
@@ -343,7 +392,8 @@ public class HelloController {
             new Statistics("Resistance", player.getResistance()),
             new Statistics("Armor", player.getArmor()),
             new Statistics("Power", player.getPower()),
-            new Statistics("Exp", player.getExp()));
+            new Statistics("Exp", player.getExp()),
+            new Statistics("Keys", player.getKeyCount()));
         return playerStatistics;
     }
 

@@ -4,7 +4,8 @@ public enum ActorType {
     PLAYER(25, 1, "player"),
     SKELETON(30, 7, "skeleton"),
     WIZARD(31, 2, "wizard"),
-    KNIGHT(29, 1, "knight");
+    KNIGHT(29, 1, "knight"),
+    ANGRY_SKELETON(31, 7, "angry skeleton");
 
     private final int x;
     private final int y;
