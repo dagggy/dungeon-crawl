@@ -48,7 +48,6 @@ public class Player extends Actor {
         addDefensiveCardsToStartingDeck(defendsCards);
         addRandomCardsToStartingDeck(otherCards);
     }
-    //TODO talie startyowe i klasy bohatera + strona startowa
 
     private void addOffensiveCardsToStartingDeck(int cardsNumber){
         for (int i = 0; i < cardsNumber; i++) {

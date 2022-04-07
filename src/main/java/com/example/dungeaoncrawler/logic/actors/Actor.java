@@ -135,7 +135,7 @@ public abstract class Actor implements Drawable, Serializable {
     }
 
     public String setArmor(int armor) {
-        this.armor += armor;
+        this.armor = armor;
         return "Armor is set on " + this.armor + " points\n";
     }
 

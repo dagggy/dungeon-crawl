@@ -86,7 +86,7 @@ public class FightController {
         OpponentAttributesType1.setCellValueFactory(cellData-> cellData.getValue().getAttributeName());
         OpponentsAttributesValue1.setCellValueFactory(cellData-> cellData.getValue().getAttributeValue().asObject());
     }
-//TODO Dispell nie działa
+
     /**
     Create List of object from characters attributes with its name and value.
      */
@@ -102,11 +102,9 @@ public class FightController {
 
     /**
      * after clicking roll dice simulate throw dice
-     * @param event mouse click
      */
-
     @FXML
-    void printSumDice(MouseEvent event) {
+    void printSumDice() {
     if (!wasRolled) {
         int sumRolled = rollDice(3);
         this.sumDiceRoll = sumRolled;
@@ -133,7 +131,7 @@ public class FightController {
     void playCard(MouseEvent event) {
         AnchorPane source = (AnchorPane) event.getSource();
         int cardIndex = Integer.parseInt(source.toString().replaceAll("[^0-9.]", ""));
-        if (canPlayCard(sumDiceRoll, hand, cardIndex)) {
+        if (canPlayCard(sumDiceRoll, hand.get(cardIndex).getCardCost())) {
             String message = resolveCardEffect(hand.get(cardIndex));
             setFightMessage(message);
             source.setOpacity(0.2);
@@ -259,19 +257,56 @@ public class FightController {
     }
 
     private void opponentMove() {
-        if (opponent.getStun() <= 0) {
-            int attackRound = opponent.getAttackRound();
-            for (int i = 0; i < attackRound; i++) {
-                opponentAttackPhase();
-                checkForWin();
-                if (i == attackRound - 1) {
-                    playerNewTurnToPlay();
+        Thread movement = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (opponent.getStun() <= 0) {
+                    int attackRound = opponent.getAttackRound();
+                    for (int i = 0; i < attackRound; i++) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                opponentAttackPhase();
+                            }
+                        });
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                checkForWin();
+                            }
+                        });
+
+                        if (i == attackRound - 1) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    playerNewTurnToPlay();
+                                }
+                            });
+                        }
+                    }
+                }else {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    opponent.setStun(-1);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                        playerNewTurnToPlay();
+                        }
+                    });
                 }
             }
-        }else {
-            opponent.setStun(-1);
-            playerNewTurnToPlay();
-        }
+        });
+        movement.start();
     }
 
     //TODO poprawić zagranie kart przy starcie rundy
@@ -316,10 +351,6 @@ public class FightController {
         character.resolveLifeChanger();
     }
 
-    public Label getDiceSum() {
-        return rollDice;
-    }
-
     @FXML
     void cardBringFront(MouseEvent event) {
         AnchorPane source = (AnchorPane) event.getSource();
@@ -338,10 +369,9 @@ public class FightController {
 
     /**
      * After clicking draw card button player draw cards and display it on card field
-     * @param event - click on drawCard button
      */
     @FXML
-    void drawCards(MouseEvent event) {
+    void drawCards() {
         if (!drawCard) {
             ArrayList<Cards> newHand = drawRandomCards();
             this.hand = newHand;
@@ -386,16 +416,6 @@ public class FightController {
         Collections.addAll(cardContainer, card0, card1, card2, card3, card4, card5);
         return cardContainer;
     }
-    //TODO reset values after end of round - enable clickers change opacity
-
-    /**
-     * Display information about throw dice sum
-     * @param throwDiceSum results throw dice sum
-     */
-    private void displayMassage(int throwDiceSum){
-        String message = "You have rolled " + throwDiceSum+"\n";
-        rollDice.setText(message);
-    }
 
     /**
      * after picking card to play
@@ -404,21 +424,21 @@ public class FightController {
      */
     private String resolveCardEffect(Cards card){
         switch (card.getCardsType()){
-            case DECREASE_ARMOR -> {return opponent.setArmor(Math.max(opponent.getArmor() - card.getValue(), 0));}
+            case DECREASE_ARMOR -> {return opponent.setArmor(opponent.getArmor() - card.getValue());}
             case RESISTANCE -> {return player.setResistance(card.getValue());}
             case DISPEL -> {return player.setDispel(card.getValue());}
             case POISON -> {return opponent.setPoison(new LifeChanger(player.getPower(), -card.getValue()));}
             case ATTACK -> {return opponent.takeDamage(card.getValue());}
             case DISCARD -> { handSizeModification -=1; return opponent.takeDamage(card.getValue());}
             case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
-            case ARMOR -> {return player.setArmor(card.getValue());}
+            case ARMOR -> {return player.setArmor(player.getArmor() + card.getValue());}
             case HEAL -> {return player.setHeal(new LifeChanger(player.getPower(), card.getValue()));}
             case STUN -> {return opponent.setStun(player.getPower());}
         } return "";
     }
 
-    private boolean canPlayCard(int roll, ArrayList<Cards> hand, int cardIndex){
-        return roll >= hand.get(cardIndex).getCardCost();
+    private boolean canPlayCard(int roll,int cardCost){
+        return roll >= cardCost;
     }
 
     /**
@@ -428,18 +448,18 @@ public class FightController {
     private ArrayList<Cards> drawRandomCards(){
         Random random = new Random();
         int cardsOnHand = handSize + handSizeModification;
-        if (cardsOnHand >= 7) {
-            cardsOnHand = 6;
-        }
-        if (cardsOnHand < 0) {
-            cardsOnHand = 0;
-        }
+        cardsOnHand = getCardsOnHand(cardsOnHand);
         handSizeModification = 0;
         ArrayList<Cards> hand = new ArrayList<>();
         ArrayList<Cards> deck = player.getPlayingDeck();
+        drawCardsOnHand(random, cardsOnHand, hand, deck);
+        return hand;
+    }
+
+    private void drawCardsOnHand(Random random, int cardsOnHand, ArrayList<Cards> hand, ArrayList<Cards> deck) {
         for (int i = 0; i < cardsOnHand; i++) {
             if (deck.size() > cardsOnHand){
-                int index =random.nextInt(deck.size());
+                int index = random.nextInt(deck.size());
                 hand.add(deck.get(index));
                 deck.remove(index);
             }
@@ -451,11 +471,20 @@ public class FightController {
                 deck.remove(index);
             }
         }
-        return hand;
+    }
+
+    private int getCardsOnHand(int cardsOnHand) {
+        if (cardsOnHand >= 7) {
+            cardsOnHand = 6;
+        }
+        if (cardsOnHand < 0) {
+            cardsOnHand = 0;
+        }
+        return cardsOnHand;
     }
 
     @FXML
-    void endFight(ActionEvent event) {
+    void endFight() {
         player.endFight();
         Stage stage = (Stage) endFightButton.getScene().getWindow();
         opponent.getCell().setActor(null);
@@ -517,11 +546,11 @@ public class FightController {
                     poisonInfoPlayer.setText(String.valueOf(player.getPoisonDmg()));
                     poisonInfoPlayer.setVisible(true);
                 }
-                if (player.getHealPts() >0) {
+                if (player.getHealPts() > 0) {
                     healthInfoPlayer.setText(String.valueOf(player.getHealPts()));
                     healthInfoPlayer.setVisible(true);
                 }
-                if (handSizeModification<0)
+                if (handSizeModification < 0)
                     extraCardsInfoPlayer.setVisible(true);
                     extraCardsInfoPlayer.setText(String.valueOf(handSizeModification));
 
