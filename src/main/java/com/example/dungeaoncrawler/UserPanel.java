@@ -23,8 +23,6 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static javafx.application.Platform.exit;
-
 public class UserPanel extends Application implements Initializable {
 
     @Override
@@ -53,7 +51,7 @@ public class UserPanel extends Application implements Initializable {
         if (Objects.equals(playerType, 0)) {
             player = new MageClass(50, 30, 0, getIdUserName(),4, null);
         } else if (Objects.equals(playerType, 1)) {
-            player = new WarriorClass(100, 0, 20, getIdUserName(), 2, null);
+            player = new WarriorClass(100, 0, 20, getIdUserName(), 3, null);
         }
         HelloApplication helloApplication = new HelloApplication(player);
         helloApplication.loadNewGame();
