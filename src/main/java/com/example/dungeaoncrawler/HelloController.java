@@ -40,6 +40,9 @@ public class HelloController {
     static Enemy opponent;
 
     @FXML
+    private GridPane baseMap;
+
+    @FXML
     private GridPane gridMap;
 
     @FXML
@@ -74,23 +77,64 @@ public class HelloController {
 
     public void printMap() {
         gridMap.getChildren().clear();
+        baseMap.getChildren().clear();
+        actorMap.getChildren().clear();
 
         GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
         gridMap.setHgap(0);
         gridMap.setVgap(0);
 
+        baseMap.setHgap(0);
+        baseMap.setVgap(0);
+
+        actorMap.setHgap(0);
+        actorMap.setVgap(0);
+
         for (int i = 0; i < gridMap.getColumnCount(); i++) {
             for (int j = 0; j < gridMap.getRowCount(); j++) {
 
-                int[] currCell = map.getCell(i, j).getCellImageCoords();
+                Cell currCell = map.getCell(i, j);
 
-                ImageView imageView = ImageHandler.getTile(tileset, currCell[0], currCell[1]);
+                int[] cellType = currCell.getCellTypeImageCoords();
+                int[] cellDecor = currCell.getCellDecorImageCoords();
+                int[] cellActor = currCell.getCellActorImageCoords();
+
+                //create the base empty tile
+                ImageView imageView = ImageHandler.getTile(tileset, 1, 1);
                 imageView.setFitWidth(32);
                 imageView.setFitHeight(32);
-                gridMap.add(imageView,i,j);
+                //add the tile to the lowest layer of the map
+                baseMap.add(imageView,i,j);
+
+                ImageView setDecor;
+
+
+                //if tile type is not null, add the tile to layer 2
+                if (cellType != null) {
+                    setDecor = ImageHandler.getTile(tileset, cellType[0], cellType[1]);
+                    setDecor.setFitWidth(32);
+                    setDecor.setFitHeight(32);
+
+                    gridMap.add(setDecor, i, j);
+                }
+                //add decor to layer 2
+                if (cellDecor != null && currCell.getType() == CellType.EMPTY) {
+                    setDecor = ImageHandler.getTile(tileset, cellDecor[0], cellDecor[1]);
+                    setDecor.setFitWidth(32);
+                    setDecor.setFitHeight(32);
+
+                    gridMap.add(setDecor, i, j);
+                }
+
+                //add actor to layer 3
+                if (cellActor != null) {
+                    ImageView setActor = ImageHandler.getTile(tileset, cellActor[0], cellActor[1]);
+                    setActor.setFitWidth(32);
+                    setActor.setFitHeight(32);
+                    actorMap.add(setActor, i, j);
+                }
             }
         }
-
     }
 
     public void printMinimap () {
