@@ -252,22 +252,22 @@
                <children>
                   <HBox fx:id="opponentStateDisplay1" layoutX="-30.0" prefHeight="0.0" prefWidth="89.0">
                      <children>
-                        <ImageView fx:id="extraCardIcon" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="extraCardIcon" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../../../reduceCardDraw.gif" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="playerStunIcon" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="playerStunIcon" fitHeight="38.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../../../stun.gif" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="playerPoisonIcon" fitHeight="38.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="playerPoisonIcon" fitHeight="38.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../../../poison2.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="playerHealIcon" fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="playerHealIcon" fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@image/cards/heal.gif" />
                            </image>
