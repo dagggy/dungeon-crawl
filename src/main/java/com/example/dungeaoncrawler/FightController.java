@@ -1,9 +1,6 @@
 package com.example.dungeaoncrawler;
 
-import com.example.dungeaoncrawler.logic.actors.Actor;
-import com.example.dungeaoncrawler.logic.actors.Player;
-import com.example.dungeaoncrawler.logic.actors.Skeleton;
-import com.example.dungeaoncrawler.logic.actors.WarriorClass;
+import com.example.dungeaoncrawler.logic.actors.*;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.CardsCreator;
@@ -41,8 +38,8 @@ public class FightController {
 
 
     public void initialize(){
-        player = new WarriorClass(150,0,5,4, null);
-        opponent = new Skeleton(100, 4, 1, 30,2, null);
+        player = new MageClass(150,10,5,6, null);
+        opponent = new Skeleton(1, 0, 1, 30,2, null);
         displayActorInfo(player);
         displayActorInfo(opponent);
         handSize = player.getCards();

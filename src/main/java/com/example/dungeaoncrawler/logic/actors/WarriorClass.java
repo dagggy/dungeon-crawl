@@ -19,7 +19,6 @@ public class WarriorClass extends Player{
         setSpellStartingCards(2, CardsType.DECREASE_ARMOR, 3);
         setSpellStartingCards(1, CardsType.HEAL, 2);
         setSpellStartingCards(2, CardsType.DISCARD, 5);
-
     }
 
     private void setSpellStartingCards(int cardsCount, CardsType cardsType, int value) {

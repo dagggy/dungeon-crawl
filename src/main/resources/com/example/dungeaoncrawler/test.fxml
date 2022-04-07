@@ -30,7 +30,34 @@
             </ImageView>
             <AnchorPane fx:id="cardsField" layoutX="169.0" layoutY="83.0" prefHeight="455.0" prefWidth="861.0">
                <children>
-                  <AnchorPane fx:id="card0" layoutX="206.0" layoutY="20.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-12.5" visible="false">
+                  <AnchorPane fx:id="card4" layoutX="70.0" layoutY="50.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-21.8">
+                     <children>
+                        <ImageView fx:id="cardImage4" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@image/cards/swordAttack2.gif" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="card1background4" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/cardHeal.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="cardDescription4" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cardCost4" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
+                           <font>
+                              <Font name="Comic Sans MS Bold" size="29.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <effect>
+                        <ColorAdjust brightness="-0.82" />
+                     </effect>
+                  </AnchorPane>
+                  <AnchorPane fx:id="card0" layoutX="185.0" layoutY="20.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-12.5">
                      <children>
                         <ImageView fx:id="cardImage0" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -57,7 +84,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card1" layoutX="311.0" layoutY="14.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="166.0" rotate="-2.6" visible="false">
+                  <AnchorPane fx:id="card1" layoutX="295.0" layoutY="14.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="166.0" rotate="-2.6">
                      <children>
                         <ImageView fx:id="cardImage1" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -84,7 +111,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card2" layoutX="406.0" layoutY="17.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="6.3" visible="false">
+                  <AnchorPane fx:id="card2" layoutX="400.0" layoutY="18.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="2.6">
                      <children>
                         <ImageView fx:id="cardImage2" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -114,7 +141,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card3" layoutX="496.0" layoutY="30.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="12.1" visible="false">
+                  <AnchorPane fx:id="card3" layoutX="496.0" layoutY="30.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="12.5">
                      <children>
                         <ImageView fx:id="cardImage3" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -144,7 +171,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card5" layoutX="576.0" layoutY="50.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="16.7" visible="false">
+                  <AnchorPane fx:id="card5" layoutX="595.0" layoutY="58.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="21.3">
                      <children>
                         <ImageView fx:id="cardImage5" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -162,33 +189,6 @@
                            </font>
                         </Label>
                         <Label fx:id="cardCost5" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
-                           <font>
-                              <Font name="Comic Sans MS Bold" size="29.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <effect>
-                        <ColorAdjust brightness="-0.82" />
-                     </effect>
-                  </AnchorPane>
-                  <AnchorPane fx:id="card4" layoutX="101.0" layoutY="45.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-21.8" visible="false">
-                     <children>
-                        <ImageView fx:id="cardImage4" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@image/cards/swordAttack2.gif" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="card1background4" fitHeight="348.0" fitWidth="202.0" layoutX="2.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@image/cardHeal.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="cardDescription4" alignment="CENTER" layoutX="17.0" layoutY="183.0" prefHeight="104.0" prefWidth="166.0" text="Gain 10 armor" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Comic Sans MS Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="cardCost4" alignment="CENTER" layoutX="139.0" layoutY="311.0" prefHeight="31.0" prefWidth="44.0" text="3" textAlignment="CENTER">
                            <font>
                               <Font name="Comic Sans MS Bold" size="29.0" />
                            </font>

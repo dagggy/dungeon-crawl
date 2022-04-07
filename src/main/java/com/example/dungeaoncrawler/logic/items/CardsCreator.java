@@ -49,5 +49,4 @@ public abstract class CardsCreator {
             default -> {return "swordAttack.gif";}
         }
     }
-
 }
