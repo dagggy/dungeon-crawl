@@ -6,6 +6,7 @@ import com.example.dungeaoncrawler.logic.items.Items;
 import java.io.Serializable;
 
 public class Cell implements Drawable, Serializable {
+
     private CellType type;
     private CellDecoration decoration;
     private Actor actor;
@@ -30,7 +31,7 @@ public class Cell implements Drawable, Serializable {
         this.type = type;
     }
 
-    public void setDecoration (CellDecoration decoration) {
+    public void setDecoration(CellDecoration decoration) {
         this.decoration = decoration;
     }
 
@@ -50,14 +51,14 @@ public class Cell implements Drawable, Serializable {
         return type.getCellImageCoords();
     }
 
-    public int[] getCellActorImageCoords () {
+    public int[] getCellActorImageCoords() {
         if (getActor() != null) {
             return actor.getActorType().getActorImageCoords();
         }
         return null;
     }
 
-    public int[] getCellDecorImageCoords () {
+    public int[] getCellDecorImageCoords() {
         if (decoration != null) {
             return decoration.getDecorationImageCoords();
         }
@@ -76,11 +77,11 @@ public class Cell implements Drawable, Serializable {
         return y;
     }
 
-    public char getDoorDirection () {
+    public char getDoorDirection() {
         return doorDirection;
     }
 
-    public void setDoorDirection (char direction) {
+    public void setDoorDirection(char direction) {
         this.doorDirection = direction;
     }
 
@@ -97,7 +98,7 @@ public class Cell implements Drawable, Serializable {
         return this.type.getTileName();
     }
 
-    public boolean getInteractableStatus () {
+    public boolean getInteractableStatus() {
         return this.type.getInteractableStatus();
     }
 }

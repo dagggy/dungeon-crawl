@@ -6,7 +6,7 @@ import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.CardsCreator;
 import com.example.dungeaoncrawler.logic.items.CardsType;
 
-public class MageClass extends Player{
+public class MageClass extends Player {
 
     public MageClass(int health, int resistance, int armor, String idUserName, int getCards, Cell cell) {
         super(health, resistance, armor, idUserName, getCards, cell);

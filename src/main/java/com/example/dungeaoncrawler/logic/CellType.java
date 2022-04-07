@@ -1,6 +1,7 @@
 package com.example.dungeaoncrawler.logic;
 
 public enum CellType {
+
     EMPTY(1, 1, "empty", false),
     WALL(7, 12, "wall", false),
     CLOSED_DOOR(8, 11, "closedDoor", true),
@@ -13,7 +14,7 @@ public enum CellType {
     TRAPDOOR(22, 1, "trapdoor", true),
     GRAVE(24, 1, "grave", false),
 
-    P1(17,14, "p1", false),
+    P1(17, 14, "p1", false),
     P2(18, 14, "p2", false),
     P3(19, 14, "p3", false),
     P4(19, 15, "p4", false),
@@ -57,10 +58,12 @@ public enum CellType {
     public int[] getCellImageCoords() {
         return new int[]{x, y};
     }
+
     public String getTileName() {
         return tileName;
     }
-    public boolean getInteractableStatus () {
+
+    public boolean getInteractableStatus() {
         return isInteractable;
     }
 }

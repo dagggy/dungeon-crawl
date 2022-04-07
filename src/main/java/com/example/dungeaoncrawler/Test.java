@@ -1,19 +1,15 @@
 package com.example.dungeaoncrawler;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
 public class Test {
 
-    public void startFight () {
+    public void startFight() {
         try {
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("test.fxml"));
@@ -26,7 +22,8 @@ public class Test {
             e.printStackTrace();
         }
     }
-    public void runFromFight (WindowEvent event) {
+
+    public void runFromFight(WindowEvent event) {
         HelloApplication.player.takeDamage(15);
         HelloController.canMove = true;
     }

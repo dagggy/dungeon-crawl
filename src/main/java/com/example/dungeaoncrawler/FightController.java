@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.Random;
 
 public class FightController {
+
     Player player;
     Enemy opponent;
     boolean wasRolled = false;
@@ -41,23 +42,22 @@ public class FightController {
     private boolean playerTurn = true;
     private int handSize;
     private int handSizeModification = 0;
-    private String previousMessage="";
+    private String previousMessage = "";
     private boolean isWinFight = false;
 
-
-    public void initialize(){
+    public void initialize() {
         setPlayer();
         setOpponent();
         displayFighters();
     }
 
-    public void displayFighters () {
+    public void displayFighters() {
         displayActorInfo(player);
         displayActorInfo(opponent);
         handSize = player.getCards();
     }
 
-    public void setPlayer () {
+    public void setPlayer() {
         this.player = HelloApplication.player;
     }
 
@@ -65,42 +65,45 @@ public class FightController {
         this.opponent = HelloController.opponent;
     }
 
-    private void displayActorInfo(Actor actor){
+    private void displayActorInfo(Actor actor) {
         if (actor instanceof Player) {
             displayPlayerInfo((Player) actor);
-        } else {displayOpponentInfo(actor);}
+        } else {
+            displayOpponentInfo(actor);
+        }
     }
 
-    private void displayPlayerInfo(Player player){
+    private void displayPlayerInfo(Player player) {
         PlayerAttributesDisplayContainer.getItems().clear();
         ObservableList<CharacterAttributes> playerAttributes = createCharacterAttributesList(player);
         PlayerAttributesDisplayContainer.setItems(playerAttributes);
-        PlayerAttributesType.setCellValueFactory(cellData-> cellData.getValue().getAttributeName());
-        PlayerAttributesValue.setCellValueFactory(cellData-> cellData.getValue().getAttributeValue().asObject());
+        PlayerAttributesType.setCellValueFactory(cellData -> cellData.getValue().getAttributeName());
+        PlayerAttributesValue.setCellValueFactory(cellData -> cellData.getValue().getAttributeValue().asObject());
     }
 
     /**
      * Fill table with player attributes and its value and display it.
+     *
      * @param opponent
      */
-    private void displayOpponentInfo(Actor opponent){
+    private void displayOpponentInfo(Actor opponent) {
         OpponentAttributesDisplayContainer1.getItems().clear();
         ObservableList<CharacterAttributes> characterAttributes = createCharacterAttributesList(opponent);
         OpponentAttributesDisplayContainer1.setItems(characterAttributes);
-        OpponentAttributesType1.setCellValueFactory(cellData-> cellData.getValue().getAttributeName());
-        OpponentsAttributesValue1.setCellValueFactory(cellData-> cellData.getValue().getAttributeValue().asObject());
+        OpponentAttributesType1.setCellValueFactory(cellData -> cellData.getValue().getAttributeName());
+        OpponentsAttributesValue1.setCellValueFactory(cellData -> cellData.getValue().getAttributeValue().asObject());
     }
 
     /**
-    Create List of object from characters attributes with its name and value.
+     * Create List of object from characters attributes with its name and value.
      */
-    private ObservableList<CharacterAttributes> createCharacterAttributesList(Actor character){
+    private ObservableList<CharacterAttributes> createCharacterAttributesList(Actor character) {
         ObservableList<CharacterAttributes> characterAttributes = FXCollections.observableArrayList();
         characterAttributes.add(new CharacterAttributes("Health", character.getHealth()));
-        characterAttributes.add (new CharacterAttributes("Armor",character.getArmor()));
-        characterAttributes.add (new CharacterAttributes("Resistance", character.getResistance()));
-        characterAttributes.add (new CharacterAttributes("Power",character.getPower()));
-        characterAttributes.add (new CharacterAttributes("Dispel",character.getDispel()));
+        characterAttributes.add(new CharacterAttributes("Armor", character.getArmor()));
+        characterAttributes.add(new CharacterAttributes("Resistance", character.getResistance()));
+        characterAttributes.add(new CharacterAttributes("Power", character.getPower()));
+        characterAttributes.add(new CharacterAttributes("Dispel", character.getDispel()));
         return characterAttributes;
     }
 
@@ -109,26 +112,28 @@ public class FightController {
      */
     @FXML
     void printSumDice() {
-    if (!wasRolled) {
-        int sumRolled = rollDice(3);
-        this.sumDiceRoll = sumRolled;
-        setDiceSum("You rolled "+ sumRolled);
-        wasRolled = true;
-       }
+        if (!wasRolled) {
+            int sumRolled = rollDice(3);
+            this.sumDiceRoll = sumRolled;
+            setDiceSum("You rolled " + sumRolled);
+            wasRolled = true;
+        }
     }
 
     /**
      * display message during fight - information about dealt dmg, healing etc.
+     *
      * @param message text message that we want to display
      */
-    public void setFightMessage(String message){
-        matchHistory.getItems().add(0,previousMessage);
+    public void setFightMessage(String message) {
+        matchHistory.getItems().add(0, previousMessage);
         previousMessage = message;
         FightMessage.setText(message);
     }
 
     /**
      * game logic after picking card to play
+     *
      * @param event click on card container
      */
     @FXML
@@ -152,7 +157,6 @@ public class FightController {
         }
     }
 
-
     @FXML
     void pickReward(MouseEvent event) {
         AnchorPane source = (AnchorPane) event.getSource();
@@ -162,30 +166,45 @@ public class FightController {
         player.endFight();
     }
 
-
     private void displayPlayerCondition() {
-        if (player.isHeal()) {playerHealIcon.setVisible(true);
-        }else playerHealIcon.setVisible(false);
+        if (player.isHeal()) {
+            playerHealIcon.setVisible(true);
+        } else playerHealIcon.setVisible(false);
 
-        if (player.isPoison()) {playerPoisonIcon.setVisible(true);
-        } else {playerPoisonIcon.setVisible(false);}
+        if (player.isPoison()) {
+            playerPoisonIcon.setVisible(true);
+        } else {
+            playerPoisonIcon.setVisible(false);
+        }
 
-        if (player.isStuned()) {playerStunIcon.setVisible(true);
-        } else {playerStunIcon.setVisible(false);}
-        if (handSizeModification < 0) {extraCardIcon.setVisible(true);}
-        else if (handSizeModification == 0) {extraCardIcon.setVisible(false);}
-        else extraCardIcon.setImage(new Image("addCardDraw.gif"));
+        if (player.isStuned()) {
+            playerStunIcon.setVisible(true);
+        } else {
+            playerStunIcon.setVisible(false);
+        }
+        if (handSizeModification < 0) {
+            extraCardIcon.setVisible(true);
+        } else if (handSizeModification == 0) {
+            extraCardIcon.setVisible(false);
+        } else extraCardIcon.setImage(new Image("addCardDraw.gif"));
     }
 
-    private void displayOpponentCondition(){
-        if (opponent.isHeal()) {opponentHealIcon.setVisible(true);
+    private void displayOpponentCondition() {
+        if (opponent.isHeal()) {
+            opponentHealIcon.setVisible(true);
         } else opponentHealIcon.setVisible(false);
 
-        if (opponent.isPoison()) {opponentPoisonIcon.setVisible(true);
-        } else {opponentPoisonIcon.setVisible(false);}
+        if (opponent.isPoison()) {
+            opponentPoisonIcon.setVisible(true);
+        } else {
+            opponentPoisonIcon.setVisible(false);
+        }
 
-        if (opponent.isStuned()) {opponentStunIcon.setVisible(true);
-        } else {opponentStunIcon.setVisible(false);}
+        if (opponent.isStuned()) {
+            opponentStunIcon.setVisible(true);
+        } else {
+            opponentStunIcon.setVisible(false);
+        }
     }
 
     private void checkForWin() {
@@ -246,7 +265,7 @@ public class FightController {
     }
 
     private void refreshCharacterAttributes(Cards card) {
-        switch(card.getCardsType()){
+        switch (card.getCardsType()) {
             case DECREASE_ARMOR, POISON, ATTACK, SPELL, STUN, DISCARD -> displayActorInfo(opponent);
             default -> displayActorInfo(player);
         }
@@ -255,7 +274,6 @@ public class FightController {
     @FXML
     void endTurn(ActionEvent event) {
         hideCardsAfterEndTurn();
-//        cardsField.setVisible(false);
         String message = "Now its next turn";
         setFightMessage(message);
         roundBeginning(opponent);
@@ -275,11 +293,11 @@ public class FightController {
                 if (opponent.getStun() <= 0) {
                     int attackRound = opponent.getAttackRound();
                     for (int i = 0; i < attackRound; i++) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -303,7 +321,7 @@ public class FightController {
                             });
                         }
                     }
-                }else {
+                } else {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -323,7 +341,6 @@ public class FightController {
         movement.start();
     }
 
-    //TODO poprawić zagranie kart przy starcie rundy
     private void roundBeginning(Actor character) {
         checkCharacterStatus(character);
         displayActorInfo(character);
@@ -333,7 +350,7 @@ public class FightController {
     }
 
     private void playerNewTurnToPlay() {
-        if(!isWinFight) {
+        if (!isWinFight) {
             roundBeginning(player);
             displayPlayerCondition();
             rollDice.setText("Roll Dices");
@@ -381,9 +398,15 @@ public class FightController {
 
     private String resolveOpponentAttack(String attack, int value) {
         switch (attack) {
-            case "magic" -> {return player.takeMagicDamage(value);}
-            case "poison" -> {return player.setPoison(new LifeChanger(opponent.getPower(), -value));}
-            case "damage" -> {return player.takeDamage(value);}
+            case "magic" -> {
+                return player.takeMagicDamage(value);
+            }
+            case "poison" -> {
+                return player.setPoison(new LifeChanger(opponent.getPower(), -value));
+            }
+            case "damage" -> {
+                return player.takeDamage(value);
+            }
         }
         return "";
     }
@@ -405,7 +428,7 @@ public class FightController {
     void setCardOpacity(MouseEvent event) {
         AnchorPane source = (AnchorPane) event.getSource();
         source.toFront();
-        ColorAdjust  colorAdjust = new ColorAdjust();
+        ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.8);
         source.setEffect(colorAdjust);
     }
@@ -428,33 +451,30 @@ public class FightController {
 
     /**
      * put cards property (image, cost, description etc.) into cards container.
+     *
      * @param cardsToDisplay list of cards object, that player draw during draw stage
      */
-    private void displayCards(ArrayList<Cards> cardsToDisplay, ArrayList<AnchorPane> gameCardsContainer ){
+    private void displayCards(ArrayList<Cards> cardsToDisplay, ArrayList<AnchorPane> gameCardsContainer) {
         for (int i = 0; i < cardsToDisplay.size(); i++) {
             AnchorPane container = gameCardsContainer.get(i);
             container.setVisible(true);
             container.setOpacity(1);
             container.setDisable(false);
-            // set card image
             ImageView cardImage = (ImageView) container.getChildren().get(0);
             cardImage.setImage(new Image(cardsToDisplay.get(i).getImg()));
 
-            //set card description
             Label cardDescription = (Label) container.getChildren().get(2);
             cardDescription.setText(cardsToDisplay.get(i).getDescription());
 
-            // set card cost
             Label cardCost = (Label) container.getChildren().get(3);
             cardCost.setText(String.valueOf(cardsToDisplay.get(i).getCardCost()));
         }
     }
 
     /**
-     *
      * @return create list card containers
      */
-    private ArrayList<AnchorPane> createCardContainerList(){
+    private ArrayList<AnchorPane> createCardContainerList() {
         ArrayList<AnchorPane> cardContainer = new ArrayList<>();
         Collections.addAll(cardContainer, card0, card1, card2, card3, card4, card5);
         return cardContainer;
@@ -462,33 +482,57 @@ public class FightController {
 
     /**
      * after picking card to play
+     *
      * @param card picked card
      * @return return message to display about card effect
      */
-    private String resolveCardEffect(Cards card){
-        switch (card.getCardsType()){
-            case DECREASE_ARMOR -> {return opponent.setArmor(opponent.getArmor() - card.getValue());}
-            case RESISTANCE -> {return player.setResistance(card.getValue());}
-            case DISPEL -> {return player.setDispel(card.getValue());}
-            case POISON -> {return opponent.setPoison(new LifeChanger(player.getPower(), -card.getValue()));}
-            case ATTACK -> {return opponent.takeDamage(card.getValue());}
-            case DISCARD -> { handSizeModification -=1; return opponent.takeDamage(card.getValue());}
-            case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
-            case ARMOR -> {return player.setArmor(player.getArmor() + card.getValue());}
-            case HEAL -> {return player.setHeal(new LifeChanger(player.getPower(), card.getValue()));}
-            case STUN -> {return opponent.setStun(player.getPower());}
-        } return "";
+    private String resolveCardEffect(Cards card) {
+        switch (card.getCardsType()) {
+            case DECREASE_ARMOR -> {
+                return opponent.setArmor(opponent.getArmor() - card.getValue());
+            }
+            case RESISTANCE -> {
+                return player.setResistance(card.getValue());
+            }
+            case DISPEL -> {
+                return player.setDispel(card.getValue());
+            }
+            case POISON -> {
+                return opponent.setPoison(new LifeChanger(player.getPower(), -card.getValue()));
+            }
+            case ATTACK -> {
+                return opponent.takeDamage(card.getValue());
+            }
+            case DISCARD -> {
+                handSizeModification -= 1;
+                return opponent.takeDamage(card.getValue());
+            }
+            case SPELL -> {
+                return opponent.takeMagicDamage(card.getValue());
+            }
+            case ARMOR -> {
+                return player.setArmor(player.getArmor() + card.getValue());
+            }
+            case HEAL -> {
+                return player.setHeal(new LifeChanger(player.getPower(), card.getValue()));
+            }
+            case STUN -> {
+                return opponent.setStun(player.getPower());
+            }
+        }
+        return "";
     }
 
-    private boolean canPlayCard(int roll,int cardCost){
+    private boolean canPlayCard(int roll, int cardCost) {
         return roll >= cardCost;
     }
 
     /**
      * draw card mechanism
+     *
      * @return all cards that are in hand
      */
-    private ArrayList<Cards> drawRandomCards(){
+    private ArrayList<Cards> drawRandomCards() {
         Random random = new Random();
         int cardsOnHand = handSize + handSizeModification;
         cardsOnHand = getCardsOnHand(cardsOnHand);
@@ -501,12 +545,11 @@ public class FightController {
 
     private void drawCardsOnHand(Random random, int cardsOnHand, ArrayList<Cards> hand, ArrayList<Cards> deck) {
         for (int i = 0; i < cardsOnHand; i++) {
-            if (deck.size() > cardsOnHand){
+            if (deck.size() > cardsOnHand) {
                 int index = random.nextInt(deck.size());
                 hand.add(deck.get(index));
                 deck.remove(index);
-            }
-            else {
+            } else {
                 player.setPlayingDeck();
                 deck = player.getPlayingDeck();
                 int index = random.nextInt(deck.size());
@@ -541,17 +584,18 @@ public class FightController {
 
     /**
      * simulate throwing cards
+     *
      * @param dices count of dice that player has
      * @return sum of all dice rolls
      */
-    private int rollDice(int dices){
+    private int rollDice(int dices) {
         Random random = new Random();
         int diceSum = 0;
         String message = "";
         for (int i = 0; i < dices; i++) {
-            int score = random.nextInt(6)+1;
+            int score = random.nextInt(6) + 1;
             diceSum += score;
-            message = (i+1) + ". Dice roll = " + score + "\n";
+            message = (i + 1) + ". Dice roll = " + score + "\n";
             setFightMessage(message);
         }
         message = "You rolled " + diceSum + "\n";
@@ -559,15 +603,15 @@ public class FightController {
         return diceSum;
     }
 
-    public void setDiceSum(String text){
+    public void setDiceSum(String text) {
         rollDice.setText(text);
     }
 
     @FXML
     void showCharacterNextRoundDmg(MouseEvent event) {
         ImageView image = (ImageView) event.getSource();
-        switch (image.getId()){
-            case "playerImage1"-> {
+        switch (image.getId()) {
+            case "playerImage1" -> {
                 if (opponent.getHealPts() > 0) {
                     healthInfoOpponent.setText(String.valueOf(opponent.getHealPts()));
                     healthInfoOpponent.setVisible(true);
@@ -581,7 +625,7 @@ public class FightController {
                     stunInfoOpponent.setVisible(true);
                 }
             }
-            case "playerImage"-> {
+            case "playerImage" -> {
                 if (player.getStun() > 0) {
                     stunInfoPlayer.setText(String.valueOf(player.getStun()));
                     stunInfoPlayer.setVisible(true);
@@ -596,7 +640,7 @@ public class FightController {
                 }
                 if (handSizeModification < 0)
                     extraCardsInfoPlayer.setVisible(true);
-                    extraCardsInfoPlayer.setText(String.valueOf(handSizeModification));
+                extraCardsInfoPlayer.setText(String.valueOf(handSizeModification));
 
             }
         }
@@ -605,13 +649,13 @@ public class FightController {
     @FXML
     void hideCharacterNextRoundDmg(MouseEvent event) {
         ImageView image = (ImageView) event.getSource();
-        switch (image.getId()){
-            case "playerImage1"-> {
+        switch (image.getId()) {
+            case "playerImage1" -> {
                 healthInfoOpponent.setVisible(false);
                 poisonInfoOpponent.setVisible(false);
                 stunInfoOpponent.setVisible(false);
             }
-            case "playerImage"-> {
+            case "playerImage" -> {
                 stunInfoPlayer.setVisible(false);
                 poisonInfoPlayer.setVisible(false);
                 healthInfoPlayer.setVisible(false);
@@ -619,7 +663,6 @@ public class FightController {
             }
         }
     }
-
 
     @FXML
     private ImageView opponentHealIcon;
@@ -735,7 +778,6 @@ public class FightController {
     @FXML
     private Button endTurn;
 
-
     @FXML
     private ImageView playerImage;
 
@@ -801,7 +843,6 @@ public class FightController {
 
     @FXML
     private ImageView winningCardbackground2;
-
 
     @FXML
     private Button endFightButton;

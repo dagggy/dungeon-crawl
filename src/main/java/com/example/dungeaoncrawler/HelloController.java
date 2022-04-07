@@ -3,10 +3,8 @@ package com.example.dungeaoncrawler;
 import com.example.dungeaoncrawler.logic.Cell;
 import com.example.dungeaoncrawler.logic.CellType;
 import com.example.dungeaoncrawler.logic.GameMap;
-import com.example.dungeaoncrawler.logic.WorldMap;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Enemy;
-import com.example.dungeaoncrawler.logic.actors.MageClass;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
@@ -14,7 +12,6 @@ import com.example.dungeaoncrawler.logic.items.CardsType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -38,9 +35,11 @@ import static com.example.dungeaoncrawler.HelloApplication.player;
 import static com.example.dungeaoncrawler.HelloApplication.worldMap;
 
 public class HelloController {
+
     static boolean canMove = true;
     static Enemy opponent;
     static boolean isPlayerAlive = true;
+    private final Image tileset = new Image("mapObjects.png", 577 * 2, 577 * 2, true, false);
     Thread independentEnemiesMoves = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -101,15 +100,13 @@ public class HelloController {
         loadStatistics();
     }
 
-    private final Image tileset = new Image("mapObjects.png", 577 * 2, 577 * 2, true, false);
-
     public void printMap() {
         gridMap.getChildren().clear();
         baseMap.getChildren().clear();
         actorMap.getChildren().clear();
         loadStatistics();
 
-        GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
+        GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0], worldMap.getCurrentPos()[1]);
         gridMap.setHgap(0);
         gridMap.setVgap(0);
 
@@ -128,17 +125,13 @@ public class HelloController {
                 int[] cellDecor = currCell.getCellDecorImageCoords();
                 int[] cellActor = currCell.getCellActorImageCoords();
 
-                //create the base empty tile
                 ImageView imageView = ImageHandler.getTile(tileset, 1, 1);
                 imageView.setFitWidth(32);
                 imageView.setFitHeight(32);
-                //add the tile to the lowest layer of the map
-                baseMap.add(imageView,i,j);
+                baseMap.add(imageView, i, j);
 
                 ImageView setDecor;
 
-
-                //if tile type is not null, add the tile to layer 2
                 if (cellType != null) {
                     setDecor = ImageHandler.getTile(tileset, cellType[0], cellType[1]);
                     setDecor.setFitWidth(32);
@@ -146,7 +139,6 @@ public class HelloController {
 
                     gridMap.add(setDecor, i, j);
                 }
-                //add decor to layer 2
                 if (cellDecor != null && currCell.getType() == CellType.EMPTY) {
                     setDecor = ImageHandler.getTile(tileset, cellDecor[0], cellDecor[1]);
                     setDecor.setFitWidth(32);
@@ -155,7 +147,6 @@ public class HelloController {
                     gridMap.add(setDecor, i, j);
                 }
 
-                //add actor to layer 3
                 if (cellActor != null) {
                     ImageView setActor = ImageHandler.getTile(tileset, cellActor[0], cellActor[1]);
                     setActor.setFitWidth(32);
@@ -166,7 +157,7 @@ public class HelloController {
         }
     }
 
-    public void printMinimap () {
+    public void printMinimap() {
         System.out.println(worldMap);
     }
 
@@ -196,6 +187,9 @@ public class HelloController {
                     takeItem();
                     printMap();
                 }
+                case M -> {
+                    AlertBox.displayAlertBox("Mini Map", String.valueOf(worldMap), "minimap.png", 100);
+                }
             }
             startFightWithEnemy();
         }
@@ -220,7 +214,6 @@ public class HelloController {
 
         for (int[] i : neighbourField) {
             if (worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]).getActor() != null) {
-                System.out.println("działa");     //rozpoczęcie walki
                 canMove = false;
                 opponent = (Enemy) worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]).getActor();
                 Test test = new Test();
@@ -245,22 +238,15 @@ public class HelloController {
                     case "armor" -> player.setArmor(player.getArmor() + 2);
                     case "card" -> newCard = collectCardAndAddToDeck();
                 }
+
                 if (Objects.equals(cell.getTileName(), "card")) {
-
                     getCard(newCard, cell);
-
                 } else if (Objects.equals(cell.getTileName(), "key")) {
-
                     getKey(cell);
-
                 } else if (Objects.equals(cell.getTileName(), "closedDoor")) {
-
                     useKey(cell);
-
                 } else if (Objects.equals(cell.getTileName(), "trapdoor")) {
-
                     moveToEnd();
-
                 } else if (Objects.equals(cell.getTileName(), "dev")) {
 
                     if (cell.getType() == CellType.KUBA) {
@@ -276,27 +262,26 @@ public class HelloController {
                 } else {
                     getItem(cell);
                 }
-
                 loadStatistics();
             }
         }
     }
 
-    private void kubaMessage () {
+    private void kubaMessage() {
         AlertBox.displayAlertBox("Kuba",
                 "Gratulacje przybyszu! Nie sądziłem że dotrzesz do końca, a jednak \n" +
-                "udało Ci się, jestem pod wrażeniem! Droga do końca mapy była naszpikowana\n" +
-                "pułapkami, ale jak widać nie dość trudna, żeby przeszkodzić Ci w spotkaniu\n" +
-                "ze mną. Twoje imię zostanie zapamiętane na długo a bardowie będą śpiewali\n" +
-                "pieśni na Twoją cześć, jednak na razie nie dowiesz się dokąd prowadzi portal,\n" +
-                "który znajduje się za mną. Niedługo Twoja odwaga zostanie poddana\n" +
-                "kolejnej próbie, zatem musisz być czujny. Nie znasz dnia ani godziny kiedy \n" +
-                "przyjdzie czas aby znowu wyruszyć w podróż i zmierzyć się z nieprzyjaznym \n" +
-                "światem pełnym wrogów. Może wtedy poznasz tajemnice, która kryje się po \n" +
-                "drugiej stronie portalu. Zatem do zobaczenia... ", "kuba.png", 300);
+                        "udało Ci się, jestem pod wrażeniem! Droga do końca mapy była naszpikowana\n" +
+                        "pułapkami, ale jak widać nie dość trudna, żeby przeszkodzić Ci w spotkaniu\n" +
+                        "ze mną. Twoje imię zostanie zapamiętane na długo a bardowie będą śpiewali\n" +
+                        "pieśni na Twoją cześć, jednak na razie nie dowiesz się dokąd prowadzi portal,\n" +
+                        "który znajduje się za mną. Niedługo Twoja odwaga zostanie poddana\n" +
+                        "kolejnej próbie, zatem musisz być czujny. Nie znasz dnia ani godziny kiedy \n" +
+                        "przyjdzie czas aby znowu wyruszyć w podróż i zmierzyć się z nieprzyjaznym \n" +
+                        "światem pełnym wrogów. Może wtedy poznasz tajemnice, która kryje się po \n" +
+                        "drugiej stronie portalu. Zatem do zobaczenia... ", "kuba.png", 300);
     }
 
-    private void bartekMessage () {
+    private void bartekMessage() {
         AlertBox.displayAlertBox("Bartek",
                 "WOW dotarłeś!!! Uczeni wyliczyli, że jest tylko jedna szansa na milion,\n" +
                         "by zaistniało coś tak całkowicie absurdalnego. Jednak magowie obliczyli,\n" +
@@ -310,7 +295,7 @@ public class HelloController {
                 "bartek.png", 300);
     }
 
-    private void krzysiekMessage () {
+    private void krzysiekMessage() {
         String name = "";
         if (Objects.equals(player.getName(), "")) {
             name = "Poszukiwaczem przygód";
@@ -319,28 +304,28 @@ public class HelloController {
         }
         AlertBox.displayAlertBox("Krzysiek",
                 "O, moi ukochani więźniowie, muszę wymyślić wam na dziś jakieś... tortury...\n" +
-                        "Oh, kim ty jesteś? " + name +"? Pierwsze słyszę, ale skoro tu dotarłeś\n" +
+                        "Oh, kim ty jesteś? " + name + "? Pierwsze słyszę, ale skoro tu dotarłeś\n" +
                         "to musisz być całkiem potężnym. Czy wiesz, że gdy zginiesz w tej krypcie to trafiasz\n" +
                         "do moich lochów? Uważaj na siebie, jeśli nie chcesz tam trafić!",
                 "krzysiek.png", 300);
     }
 
-    private void getCard (Cards newCard, Cell cell) {
+    private void getCard(Cards newCard, Cell cell) {
         AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra card " + newCard.getName() + "!\n" +
-            "Card type : " + newCard.getCardsType().name() + "\n" +
-            "Card cost : " + newCard.getCardCost() + "\n" +
-            "Card rarity : " + newCard.getRarity() + "\n" +
-            "Description : " + newCard.getDescription() + "\n" +
-            "Value : " + newCard.getValue() + "\n", newCard.getImg(), 80);
+                "Card type : " + newCard.getCardsType().name() + "\n" +
+                "Card cost : " + newCard.getCardCost() + "\n" +
+                "Card rarity : " + newCard.getRarity() + "\n" +
+                "Description : " + newCard.getDescription() + "\n" +
+                "Value : " + newCard.getValue() + "\n", newCard.getImg(), 80);
         cell.setType(CellType.EMPTY);
     }
 
-    private void getKey (Cell cell) {
+    private void getKey(Cell cell) {
         AlertBox.displayAlertBox("Key found!", "Hey, you've found a key! Now you can go to the final boss!", "keyBig.png", 80);
         cell.setType(CellType.EMPTY);
     }
 
-    private void useKey (Cell cell) {
+    private void useKey(Cell cell) {
         int keyCost = 1;
         if (player.getKeyCount() >= keyCost) {
             player.useKeys(keyCost);
@@ -348,13 +333,13 @@ public class HelloController {
         }
     }
 
-    private void getItem (Cell cell) {
+    private void getItem(Cell cell) {
         AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra + 2 to " +
                 cell.getTileName() + "!", cell.getTileName() + ".png", 80);
         cell.setType(CellType.EMPTY);
     }
 
-    private void moveToEnd () {
+    private void moveToEnd() {
         player.moveToEnd();
     }
 
@@ -367,7 +352,7 @@ public class HelloController {
         return card;
     }
 
-    public void updateDeck () {
+    public void updateDeck() {
         playerCardDeck.getChildren().clear();
         for (Cards card : player.getDeck()) {
             try {
@@ -379,7 +364,7 @@ public class HelloController {
         }
     }
 
-    public Pane getCardPane (Cards card) throws IOException {
+    public Pane getCardPane(Cards card) throws IOException {
         Pane cardPane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Card.fxml")));
         ImageView cardImage = (ImageView) cardPane.getChildren().get(0);
         ImageView cardBg = (ImageView) cardPane.getChildren().get(1);
@@ -393,7 +378,7 @@ public class HelloController {
         return cardPane;
     }
 
-    private void saveGame () {
+    private void saveGame() {
         try {
             File saveFile = new File("SAVE.sav");
             FileOutputStream saveStream = new FileOutputStream(saveFile);
@@ -422,17 +407,17 @@ public class HelloController {
 
     public ObservableList<Statistics> createPlayerStatistics() {
         ObservableList<Statistics> playerStatistics = FXCollections.observableArrayList(
-            new Statistics("Health", player.getHealth()),
-            new Statistics("Resistance", player.getResistance()),
-            new Statistics("Armor", player.getArmor()),
-            new Statistics("Power", player.getPower()),
-            new Statistics("Exp", player.getExp()),
-            new Statistics("Keys", player.getKeyCount()));
+                new Statistics("Health", player.getHealth()),
+                new Statistics("Resistance", player.getResistance()),
+                new Statistics("Armor", player.getArmor()),
+                new Statistics("Power", player.getPower()),
+                new Statistics("Exp", player.getExp()),
+                new Statistics("Keys", player.getKeyCount()));
         return playerStatistics;
     }
 
     @FXML
-    void setFocus (MouseEvent e) {
+    void setFocus(MouseEvent e) {
         gridMap.requestFocus();
     }
 }

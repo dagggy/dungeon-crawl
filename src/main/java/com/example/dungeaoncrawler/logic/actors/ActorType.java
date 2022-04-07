@@ -20,6 +20,7 @@ public enum ActorType {
     public int[] getActorImageCoords() {
         return new int[]{x, y};
     }
+
     public String getTileName() {
         return tileName;
     }

@@ -11,7 +11,7 @@ public class SkeletonBoss extends Enemy {
     }
 
     @Override
-    public void onKill () {
+    public void onKill() {
         this.cell.setType(CellType.KEY);
     }
 }

@@ -1,14 +1,10 @@
 package com.example.dungeaoncrawler.logic;
 
-import com.example.dungeaoncrawler.logic.actors.Player;
-import com.example.dungeaoncrawler.logic.actors.Skeleton;
-import com.example.dungeaoncrawler.logic.items.Potion;
-
-import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MapLoader {
+
     static Random random = new Random();
     static CellType[] values = CellType.values();
     static CellDecoration[] cellDecorations = CellDecoration.values();
@@ -20,7 +16,7 @@ public class MapLoader {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Cell cell = map.getCell(x, y);
-                if (x == 0 || x == width-1 || y == 0 || y == height-1) {
+                if (x == 0 || x == width - 1 || y == 0 || y == height - 1) {
                     cell.setType(CellType.WALL);
 
                 }
@@ -32,8 +28,6 @@ public class MapLoader {
         }
         return map;
     }
-
-//    private isConnected () {}
 
     static CellType randomCellType() {
         return values[random.nextInt(values.length)];

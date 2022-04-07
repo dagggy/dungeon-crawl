@@ -8,9 +8,6 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
-import java.net.URL;
-
-
 public class AlertBox {
 
     public static void displayAlertBox(String title, String message, String imageName, int height) {
