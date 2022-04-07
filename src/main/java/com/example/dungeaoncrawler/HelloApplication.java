@@ -14,6 +14,8 @@ public class HelloApplication {
     public static Player player;
     static WorldMap worldMap;
 
+    static HelloController helloController;
+
     public void loadNewGame() {
         try {
             player = new Player(100, 0, 0,4, null);
@@ -22,6 +24,7 @@ public class HelloApplication {
             FXMLLoader fxmlLoader = new FXMLLoader(UserPanel.class.getResource("hello-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             HelloController helloController = fxmlLoader.getController();
+            HelloApplication.helloController = helloController;
             stage.setTitle("Dungeon Crawl");
             stage.setScene(scene);
             stage.show();

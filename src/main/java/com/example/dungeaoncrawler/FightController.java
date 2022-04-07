@@ -457,6 +457,7 @@ public class FightController {
         opponent.getCell().getGameMap().removeFromEnemyList(opponent);
         opponent = null;
         HelloController.canMove = true;
+        HelloApplication.helloController.updateDeck();
         stage.close();
     }
 
