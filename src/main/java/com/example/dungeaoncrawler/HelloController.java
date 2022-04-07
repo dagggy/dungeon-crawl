@@ -6,6 +6,7 @@ import com.example.dungeaoncrawler.logic.GameMap;
 import com.example.dungeaoncrawler.logic.WorldMap;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Enemy;
+import com.example.dungeaoncrawler.logic.actors.MageClass;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
@@ -13,6 +14,7 @@ import com.example.dungeaoncrawler.logic.items.CardsType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -23,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -280,7 +283,17 @@ public class HelloController {
     }
 
     private void kubaMessage () {
-        AlertBox.displayAlertBox("Kuba", "message", "kuba.png", 300);
+        AlertBox.displayAlertBox("Kuba",
+                "Gratulacje przybyszu! Nie sądziłem że dotrzesz do końca, a jednak \n" +
+                "udało Ci się, jestem pod wrażeniem! Droga do końca mapy była naszpikowana\n" +
+                "pułapkami, ale jak widać nie dość trudna, żeby przeszkodzić Ci w spotkaniu\n" +
+                "ze mną. Twoje imię zostanie zapamiętane na długo a bardowie będą śpiewali\n" +
+                "pieśni na Twoją cześć, jednak na razie nie dowiesz się dokąd prowadzi portal,\n" +
+                "który znajduje się za mną. Niedługo Twoja odwaga zostanie poddana\n" +
+                "kolejnej próbie, zatem musisz być czujny. Nie znasz dnia ani godziny kiedy \n" +
+                "przyjdzie czas aby znowu wyruszyć w podróż i zmierzyć się z nieprzyjaznym \n" +
+                "światem pełnym wrogów. Może wtedy poznasz tajemnice, która kryje się po \n" +
+                "drugiej stronie portalu. Zatem do zobaczenia... ", "kuba.png", 300);
     }
 
     private void bartekMessage () {
@@ -298,7 +311,18 @@ public class HelloController {
     }
 
     private void krzysiekMessage () {
-        AlertBox.displayAlertBox("Krzysiek", "message", "krzysiek.png", 300);
+        String name = "";
+        if (Objects.equals(player.getName(), "")) {
+            name = "Poszukiwaczem przygód";
+        } else {
+            name = player.getName();
+        }
+        AlertBox.displayAlertBox("Krzysiek",
+                "O, moi ukochani więźniowie, muszę wymyślić wam na dziś jakieś... tortury...\n" +
+                        "Oh, kim ty jesteś? " + name +"? Pierwsze słyszę, ale skoro tu dotarłeś\n" +
+                        "to musisz być całkiem potężnym. Czy wiesz, że gdy zginiesz w tej krypcie to trafiasz\n" +
+                        "do moich lochów? Uważaj na siebie, jeśli nie chcesz tam trafić!",
+                "krzysiek.png", 300);
     }
 
     private void getCard (Cards newCard, Cell cell) {
@@ -308,6 +332,7 @@ public class HelloController {
             "Card rarity : " + newCard.getRarity() + "\n" +
             "Description : " + newCard.getDescription() + "\n" +
             "Value : " + newCard.getValue() + "\n", newCard.getImg(), 80);
+        cell.setType(CellType.EMPTY);
     }
 
     private void getKey (Cell cell) {
@@ -406,4 +431,8 @@ public class HelloController {
         return playerStatistics;
     }
 
+    @FXML
+    void setFocus (MouseEvent e) {
+        gridMap.requestFocus();
+    }
 }

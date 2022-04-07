@@ -39,6 +39,7 @@ public class FightController {
     private int handSize;
     private int handSizeModification = 0;
     private String previousMessage="";
+    private boolean isWinFight = false;
 
 
     public void initialize(){
@@ -185,10 +186,15 @@ public class FightController {
     }
 
     private void checkForWin() {
-        if (opponent.getHealth() <= 0){
-            playerIsWon();
-        } else if (player.getHealth() <= 0)
-            opponentIsWon();
+        if (!isWinFight) {
+            if (opponent.getHealth() <= 0) {
+                playerIsWon();
+                isWinFight = true;
+            } else if (player.getHealth() <= 0) {
+                opponentIsWon();
+                isWinFight = true;
+            }
+        }
     }
 
     private void opponentIsWon() {
@@ -303,7 +309,8 @@ public class FightController {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                        playerNewTurnToPlay();
+                            checkForWin();
+                            playerNewTurnToPlay();
                         }
                     });
                 }
@@ -322,23 +329,27 @@ public class FightController {
     }
 
     private void playerNewTurnToPlay() {
-        roundBeginning(player);
-        displayPlayerCondition();
-        rollDice.setText("Roll Dices");
-        wasRolled = false;
-        drawCard = false;
-        endTurn.setVisible(false);
-        playerTurn = false;
+        if(!isWinFight) {
+            roundBeginning(player);
+            displayPlayerCondition();
+            rollDice.setText("Roll Dices");
+            wasRolled = false;
+            drawCard = false;
+            endTurn.setVisible(false);
+            playerTurn = false;
+        }
     }
 
     private void opponentAttackPhase() {
-        String attack = opponent.opponentChoseAttack();
-        int value = opponent.opponentAttack(attack);
-        String message = resolveOpponentAttack(attack, value);
-        displayOpponentCondition();
-        displayPlayerCondition();
-        setFightMessage(message);
-        displayActorInfo(player);
+        if (!isWinFight) {
+            String attack = opponent.opponentChoseAttack();
+            int value = opponent.opponentAttack(attack);
+            String message = resolveOpponentAttack(attack, value);
+            displayOpponentCondition();
+            displayPlayerCondition();
+            setFightMessage(message);
+            displayActorInfo(player);
+        }
     }
 
     private String resolveOpponentAttack(String attack, int value) {

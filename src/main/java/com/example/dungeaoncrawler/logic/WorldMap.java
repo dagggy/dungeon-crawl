@@ -213,8 +213,8 @@ public class WorldMap implements Serializable {
         endMap.getEnemyList().add(endMap.getCell(2, 18).getActor());
 
         placeSquare(endMap, 1, 9, 1, 7);
-        placeSquare(endMap, 15, 23, 1, 8);
-        placeSquare(endMap, 15, 23, 11, 18);
+        placeSquare(endMap, 15, 23, 1, 7);
+        placeSquare(endMap, 15, 23, 10, 18);
 
         endMap.getCell(12, 5).setType(CellType.BARTEK);
         placeSquare(endMap, 10, 10, 1, 3);
@@ -233,8 +233,10 @@ public class WorldMap implements Serializable {
         placeBlockade(endMap, 10, 4);
         placeBlockade(endMap, 13, 4);
 
-        endMap.getCell(20, 9).setType(CellType.KUBA);
+        endMap.getCell(20, 8).setType(CellType.KUBA);
 
+        placeBlockade(endMap, 19, 9);
+        placePortal(endMap, 21, 8);
 
 
         endMap.getCell(5, 12).setType(CellType.KRZYSIEK);
@@ -254,6 +256,13 @@ public class WorldMap implements Serializable {
     private void placeBlockade (GameMap map, int xS, int yS) {
         map.getCell(xS, yS).setType(CellType.BLOCKADE1);
         map.getCell(xS+1, yS).setType(CellType.BLOCKADE2);
+    }
+
+    private void placePortal (GameMap map, int xS, int yS) {
+        map.getCell(xS, yS).setType(CellType.PORTAL1);
+        map.getCell(xS+1, yS).setType(CellType.PORTAL2);
+        map.getCell(xS, yS+1).setType(CellType.PORTAL3);
+        map.getCell(xS+1, yS+1).setType(CellType.PORTAL4);
     }
 
     /** neat little toString() override :)*/
