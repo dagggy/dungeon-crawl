@@ -4,16 +4,28 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public enum CardsType {
-    SPELL,
-    ATTACK,
-    POISON,
-    ARMOR,
-    RESISTANCE,
-    DISPEL,
-    DECREASE_ARMOR,
-    HEAL,
-    STUN,
-    DISCARD;
+
+    SPELL("img.png"),
+    ATTACK("cardHeal.png"),
+    POISON("poison2.png"),
+    ARMOR("img.png"),
+    RESISTANCE("cardHeal.png"),
+    DISPEL("poison2.png"),
+    DECREASE_ARMOR("img.png"),
+    HEAL("cardHeal.png"),
+    STUN("poison2.png"),
+    DISCARD("img.png");
+
+
+    private final String pngImg;
+
+    CardsType(String pngImg) {
+        this.pngImg = pngImg;
+    }
+
+    public String getPngImg() {
+        return pngImg;
+    }
 
     public static CardsType getRandomOffensive() {
         Random random = new Random();

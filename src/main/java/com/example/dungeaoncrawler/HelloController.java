@@ -56,6 +56,7 @@ public class HelloController {
     private VBox playerCardDeck;
 
     public void initialize() throws IOException {
+        canMove = true;
         printMap();
         printMinimap();
         Thread independentEnemiesMoves = new Thread(new Runnable() {
@@ -138,6 +139,7 @@ public class HelloController {
             }
             startFightWithEnemy();
             takeItem();
+            loadStatistics();
         }
     }
 
@@ -205,6 +207,7 @@ public class HelloController {
                     case "health" -> player.setHealth(player.getHealth() + 2);
                     case "power" -> player.setPower(player.getPower() + 2);
                     case "armor" -> player.setArmor(player.getArmor() + 2);
+                    case "key" -> player.setKey(player.getKey() + 1);
                     case "card" -> newCard = collectCardAndAddToDeck();
                 }
                 if (Objects.equals(cell.getTileName(), "card")) {
@@ -214,9 +217,12 @@ public class HelloController {
                             "Card rarity : " + newCard.getRarity() + "\n" +
                             "Description : " + newCard.getDescription() + "\n" +
                             "Value : " + newCard.getValue() + "\n", newCard.getImg());
+                } else if (Objects.equals(cell.getTileName(), "key")) {
+                    AlertBox.displayAlertBox("Collect Item", "Fantastic! You found secret key to closed room!",
+                            "key.png");
                 } else {
                     AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra + 2 to " +
-                            cell.getTileName() + "!", "img.png");
+                            cell.getTileName() + "!", cell.getTileName() + ".png");
                 }
                 cell.setType(CellType.EMPTY);
                 loadStatistics();
@@ -227,7 +233,7 @@ public class HelloController {
     public Cards collectCardAndAddToDeck() {
         CardRarity rarity = Player.drawRarity();
         CardsType cardsType = CardsType.getRandomeType();
-        Cards card = new Cards("heal.png", "attack", null, cardsType, rarity);
+        Cards card = new Cards(cardsType.getPngImg(), "attack", null, cardsType, rarity);
         player.addCardToDeck(card);
         Label label = new Label();
         Image img = new Image("E:\\OOP - Java\\dungeon-crawl-1-java-BartoszKosicki\\src\\main\\resources\\" + card.getImg());
@@ -273,7 +279,8 @@ public class HelloController {
             new Statistics("Resistance", player.getResistance()),
             new Statistics("Armor", player.getArmor()),
             new Statistics("Power", player.getPower()),
-            new Statistics("Exp", player.getExp()));
+            new Statistics("Exp", player.getExp()),
+            new Statistics("Key", player.getKey()));
         return playerStatistics;
     }
 
