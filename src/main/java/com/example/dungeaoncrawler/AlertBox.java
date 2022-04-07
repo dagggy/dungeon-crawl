@@ -8,6 +8,8 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+import java.net.URL;
+
 
 public class AlertBox {
 
@@ -21,7 +23,7 @@ public class AlertBox {
 
         Label label = new Label();
 
-        Image img = new Image("E:\\OOP - Java\\dungeon-crawl-1-java-BartoszKosicki\\src\\main\\resources\\" + imageName);
+        Image img = new Image(imageName);
         ImageView view = new ImageView(img);
         view.setFitHeight(80);
         view.setPreserveRatio(true);

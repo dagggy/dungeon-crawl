@@ -61,6 +61,7 @@ public class HelloController {
     public void initialize() throws IOException {
         printMap();
         printMinimap();
+        updateDeck();
         Thread independentEnemiesMoves = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -90,6 +91,7 @@ public class HelloController {
         gridMap.getChildren().clear();
         baseMap.getChildren().clear();
         actorMap.getChildren().clear();
+        loadStatistics();
 
         GameMap map = worldMap.getGameMap(worldMap.getCurrentPos()[0],worldMap.getCurrentPos()[1]);
         gridMap.setHgap(0);
@@ -179,9 +181,12 @@ public class HelloController {
                     printMap();
                     printMinimap();
                 }
+                case E -> {
+                    takeItem();
+                    printMap();
+                }
             }
             startFightWithEnemy();
-            takeItem();
         }
     }
 
@@ -271,17 +276,23 @@ public class HelloController {
     public Cards collectCardAndAddToDeck() {
         CardRarity rarity = Player.drawRarity();
         CardsType cardsType = CardsType.getRandomeType();
-        Cards card = new Cards("heal.png", "attack", null, cardsType, rarity);
+        Cards card = new Cards(cardsType.getFile(), cardsType.getName(), null, cardsType, rarity);
         player.addCardToDeck(card);
-        Label label = new Label();
-        Image img = new Image("E:\\OOP - Java\\dungeon-crawl-1-java-BartoszKosicki\\src\\main\\resources\\" + card.getImg());
-        ImageView view = new ImageView(img);
-        view.setFitHeight(80);
-        view.setPreserveRatio(true);
-        label.setGraphic(view);
-        playerCardDeck.getChildren().addAll(label);
-        playerCardDeck.setAlignment(Pos.TOP_CENTER);
+        updateDeck();
         return card;
+    }
+
+    public void updateDeck () {
+        for (Cards card : player.getDeck()) {
+            Label label = new Label();
+            Image img = new Image(card.getImg());
+            ImageView view = new ImageView(img);
+            view.setFitHeight(80);
+            view.setPreserveRatio(true);
+            label.setGraphic(view);
+            playerCardDeck.getChildren().addAll(label);
+            playerCardDeck.setAlignment(Pos.TOP_CENTER);
+        }
     }
 
     private void saveGame () {
