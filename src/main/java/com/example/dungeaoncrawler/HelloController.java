@@ -16,10 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -182,13 +179,8 @@ public class HelloController {
                     player.move(1, 0);
                     printMap();
                 }
-                case A -> {
-                    saveGame();
-                }
                 case S -> {
-                    loadGame();
-                    printMap();
-                    printMinimap();
+                    saveGame();
                 }
                 case E -> {
                     takeItem();
@@ -258,10 +250,7 @@ public class HelloController {
 
         for (int[] i : neighbourField) {
             Cell cell = worldMap.getGameMap(worldMap.getCurrMapX(), worldMap.getCurrMapY()).getCell(i[0], i[1]);
-            if (Objects.equals(cell.getTileName(), "health") || Objects.equals(cell.getTileName(), "power") ||
-                    Objects.equals(cell.getTileName(), "armor") || Objects.equals(cell.getTileName(), "card") ||
-                    Objects.equals(cell.getTileName(), "key") || Objects.equals(cell.getTileName(), "closedDoor") ||
-                    Objects.equals(cell.getTileName(), "trapdoor")) {
+            if (Objects.equals(cell.getInteractableStatus(), true)) {
                 switch (cell.getTileName()) {
                     case "key" -> player.giveKeys(1);
                     case "health" -> player.setHealth(player.getHealth() + 2);
@@ -285,6 +274,12 @@ public class HelloController {
 
                     moveToEnd();
 
+                } else if (Objects.equals(cell.getTileName(), "dev")) {
+                    if (cell.getType() == CellType.KUBA) {
+                        kubaMessage();
+                    }
+
+
                 } else {
                     getItem(cell);
                 }
@@ -292,6 +287,18 @@ public class HelloController {
                 loadStatistics();
             }
         }
+    }
+
+    private void kubaMessage () {
+        AlertBox.displayAlertBox("title", "message", "kuba.png");
+    }
+
+    private void bartekMessage () {
+        AlertBox.displayAlertBox("title", "message", "bartek.png");
+    }
+
+    private void krzysiekMessage () {
+        AlertBox.displayAlertBox("title", "message", "krzysiek.png");
     }
 
     private void getCard (Cards newCard, Cell cell) {

@@ -96,4 +96,8 @@ public class Cell implements Drawable, Serializable {
     public String getTileName() {
         return this.type.getTileName();
     }
+
+    public boolean getInteractableStatus () {
+        return this.type.getInteractableStatus();
+    }
 }
