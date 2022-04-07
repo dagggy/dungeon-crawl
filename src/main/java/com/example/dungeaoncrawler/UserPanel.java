@@ -27,6 +27,8 @@ import static javafx.application.Platform.exit;
 
 public class UserPanel extends Application implements Initializable {
 
+    HelloApplication helloApplication;
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("user-panel.fxml"));
@@ -55,13 +57,13 @@ public class UserPanel extends Application implements Initializable {
         } else if (Objects.equals(playerType, 1)) {
             player = new WarriorClass(100, 0, 20, getIdUserName(), 2, null);
         }
-        HelloApplication helloApplication = new HelloApplication(player);
+        helloApplication = new HelloApplication(player);
         helloApplication.loadNewGame();
     }
 
     @FXML
     void loadPreviousGame(ActionEvent event) {
-        //TODO: wczytanie gry
+        helloApplication.loadSavedGame();
     }
 
     @FXML

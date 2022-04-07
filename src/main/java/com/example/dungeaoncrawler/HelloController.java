@@ -198,29 +198,6 @@ public class HelloController {
         }
     }
 
-
-    public void loadGame () {
-        try {
-            FileInputStream loadStream = new FileInputStream("SAVE.sav");
-            ObjectInputStream loadData = new ObjectInputStream(loadStream);
-
-            worldMap = (WorldMap) loadData.readObject();
-            player = (Player) loadData.readObject();
-
-            loadData.close();
-            loadStream.close();
-        } catch (FileNotFoundException f) {
-            f.printStackTrace();
-            System.out.println(f + ": File Not Found");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println(e + ": Object Error");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        startFightWithEnemy();
-    }
-
     public void getEnemyMove() {
         if (canMove) {
             int[][] possibleMoves = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};

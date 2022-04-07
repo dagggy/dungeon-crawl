@@ -26,5 +26,10 @@
       <Button layoutX="295.0" layoutY="358.0" mnemonicParsing="false" onAction="#loadPreviousGame" prefHeight="32.0" prefWidth="161.0" text="Load Previous Game" />
       <Button layoutX="315.0" layoutY="417.0" mnemonicParsing="false" onAction="#exitGame" prefHeight="25.0" prefWidth="122.0" text="Exit" />
       <ChoiceBox fx:id="playerSelector" layoutX="299.0" layoutY="254.0" prefWidth="150.0" />
+      <Label layoutX="298.0" layoutY="231.0" prefHeight="17.0" prefWidth="150.0" text="CHOOSE CHARACTER">
+         <font>
+            <Font name="Malgun Gothic Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

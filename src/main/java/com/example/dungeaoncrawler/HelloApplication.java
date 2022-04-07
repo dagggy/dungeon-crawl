@@ -10,7 +10,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Set;
 
 public class HelloApplication {
@@ -23,10 +26,36 @@ public class HelloApplication {
         HelloApplication.player = player;
     }
 
-    public void loadNewGame() {
+    public void loadSavedGame() {
         try {
-            worldMap = new WorldMap(1);
-            stage = new Stage();
+            FileInputStream loadStream = new FileInputStream("SAVE.sav");
+            ObjectInputStream loadData = new ObjectInputStream(loadStream);
+
+            worldMap = (WorldMap) loadData.readObject();
+            player = (Player) loadData.readObject();
+
+            loadData.close();
+            loadStream.close();
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+            System.out.println(f + ": File Not Found");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e + ": Object Error");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        loadGame();
+    }
+
+    public void loadNewGame() {
+        worldMap = new WorldMap(1);
+        stage = new Stage();
+        loadGame();
+    }
+
+    public void loadGame() {
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(UserPanel.class.getResource("hello-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             HelloController helloController = fxmlLoader.getController();
@@ -41,4 +70,5 @@ public class HelloApplication {
             e.printStackTrace();
         }
     }
+
 }
