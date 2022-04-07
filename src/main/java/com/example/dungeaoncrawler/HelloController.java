@@ -275,10 +275,16 @@ public class HelloController {
                     moveToEnd();
 
                 } else if (Objects.equals(cell.getTileName(), "dev")) {
+
                     if (cell.getType() == CellType.KUBA) {
                         kubaMessage();
                     }
-
+                    if (cell.getType() == CellType.BARTEK) {
+                        bartekMessage();
+                    }
+                    if (cell.getType() == CellType.KRZYSIEK) {
+                        krzysiekMessage();
+                    }
 
                 } else {
                     getItem(cell);
@@ -290,15 +296,25 @@ public class HelloController {
     }
 
     private void kubaMessage () {
-        AlertBox.displayAlertBox("title", "message", "kuba.png");
+        AlertBox.displayAlertBox("Kuba", "message", "kuba.png", 300);
     }
 
     private void bartekMessage () {
-        AlertBox.displayAlertBox("title", "message", "bartek.png");
+        AlertBox.displayAlertBox("Bartek",
+                "WOW dotarłeś!!! Uczeni wyliczyli, że jest tylko jedna szansa na milion,\n" +
+                        "by zaistniało coś tak całkowicie absurdalnego. Jednak magowie obliczyli,\n" +
+                        "że szanse jedna na milion sprawdzają się w dziewięciu przypadkach na dziesięć.\n" +
+                        "\n" +
+                        "Gratulacje!\n" +
+                        "\n" +
+                        "Co? Schody za mną?!\n" +
+                        "Biorę je skubane na siebie!\n" +
+                        "Skopię im poręcz tak bardzo, że nie będą wiedziały którędy na górę!",
+                "bartek.png", 300);
     }
 
     private void krzysiekMessage () {
-        AlertBox.displayAlertBox("title", "message", "krzysiek.png");
+        AlertBox.displayAlertBox("Krzysiek", "message", "krzysiek.png", 300);
     }
 
     private void getCard (Cards newCard, Cell cell) {
@@ -307,11 +323,11 @@ public class HelloController {
             "Card cost : " + newCard.getCardCost() + "\n" +
             "Card rarity : " + newCard.getRarity() + "\n" +
             "Description : " + newCard.getDescription() + "\n" +
-            "Value : " + newCard.getValue() + "\n", newCard.getImg());
+            "Value : " + newCard.getValue() + "\n", newCard.getImg(), 80);
     }
 
     private void getKey (Cell cell) {
-        AlertBox.displayAlertBox("Key found!", "Hey, you've found a key! Now you can go to the final boss!", "keyBig.png");
+        AlertBox.displayAlertBox("Key found!", "Hey, you've found a key! Now you can go to the final boss!", "keyBig.png", 80);
         cell.setType(CellType.EMPTY);
     }
 
@@ -325,7 +341,7 @@ public class HelloController {
 
     private void getItem (Cell cell) {
         AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra + 2 to " +
-                cell.getTileName() + "!", cell.getTileName() + ".png");
+                cell.getTileName() + "!", cell.getTileName() + ".png", 80);
         cell.setType(CellType.EMPTY);
     }
 

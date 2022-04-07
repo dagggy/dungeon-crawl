@@ -214,7 +214,30 @@ public class WorldMap implements Serializable {
 
         placeSquare(endMap, 1, 9, 1, 7);
         placeSquare(endMap, 15, 23, 1, 8);
-        placeSquare(endMap, 15, 23, 12, 18);
+        placeSquare(endMap, 15, 23, 11, 18);
+
+        endMap.getCell(12, 5).setType(CellType.BARTEK);
+        placeSquare(endMap, 10, 10, 1, 3);
+        placeSquare(endMap, 14, 14, 1, 3);
+
+        endMap.getCell(11, 1).setType(CellType.STAIRS1);
+        endMap.getCell(12, 1).setType(CellType.STAIRS2);
+        endMap.getCell(13, 1).setType(CellType.STAIRS3);
+        endMap.getCell(11, 2).setType(CellType.STAIRS4);
+        endMap.getCell(12, 2).setType(CellType.STAIRS5);
+        endMap.getCell(13, 2).setType(CellType.STAIRS6);
+        endMap.getCell(11, 3).setType(CellType.STAIRS7);
+        endMap.getCell(12, 3).setType(CellType.STAIRS8);
+        endMap.getCell(13, 3).setType(CellType.STAIRS9);
+
+        placeBlockade(endMap, 10, 4);
+        placeBlockade(endMap, 13, 4);
+
+        endMap.getCell(20, 9).setType(CellType.KUBA);
+
+
+
+        endMap.getCell(5, 12).setType(CellType.KRZYSIEK);
 
         gameMaps[0][0] = endMap;
         gameMapStorage.add(endMap);
@@ -226,6 +249,11 @@ public class WorldMap implements Serializable {
                 map.getCell(x, y).setType(CellType.WALL);
             }
         }
+    }
+
+    private void placeBlockade (GameMap map, int xS, int yS) {
+        map.getCell(xS, yS).setType(CellType.BLOCKADE1);
+        map.getCell(xS+1, yS).setType(CellType.BLOCKADE2);
     }
 
     /** neat little toString() override :)*/

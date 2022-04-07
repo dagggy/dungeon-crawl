@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class AlertBox {
 
-    public static void displayAlertBox(String title, String message, String imageName) {
+    public static void displayAlertBox(String title, String message, String imageName, int height) {
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -25,7 +25,7 @@ public class AlertBox {
 
         Image img = new Image(imageName);
         ImageView view = new ImageView(img);
-        view.setFitHeight(80);
+        view.setFitHeight(height);
         view.setPreserveRatio(true);
         label.setGraphic(view);
         label.setText(message);
