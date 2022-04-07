@@ -18,8 +18,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -35,8 +35,6 @@ import static com.example.dungeaoncrawler.HelloApplication.player;
 import static com.example.dungeaoncrawler.HelloApplication.worldMap;
 
 public class HelloController {
-    ImageView imageView = new ImageView("img.png");
-    ImageView imageView1 = new ImageView("img.png");
     static boolean canMove = true;
     static Enemy opponent;
     static boolean isPlayerAlive = true;
@@ -298,14 +296,11 @@ public class HelloController {
 
     private void getCard (Cards newCard, Cell cell) {
         AlertBox.displayAlertBox("Collect Item", "Great, you already collect extra card " + newCard.getName() + "!\n" +
-                "Card type : " + newCard.getCardsType().name() + "\n" +
-                "Card cost : " + newCard.getCardCost() + "\n" +
-                "Card rarity : " + newCard.getRarity() + "\n" +
-                "Description : " + newCard.getDescription() + "\n" +
-                "Value : " + newCard.getValue() + "\n", newCard.getImg());
-        } else if (Objects.equals(cell.getTileName(), "key")) {
-                    AlertBox.displayAlertBox("Collect Item", "Fantastic! You found secret key to closed room!",
-                            "key.png");updateDeck();
+            "Card type : " + newCard.getCardsType().name() + "\n" +
+            "Card cost : " + newCard.getCardCost() + "\n" +
+            "Card rarity : " + newCard.getRarity() + "\n" +
+            "Description : " + newCard.getDescription() + "\n" +
+            "Value : " + newCard.getValue() + "\n", newCard.getImg());
     }
 
     private void getKey (Cell cell) {
