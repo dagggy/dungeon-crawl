@@ -30,7 +30,7 @@ public abstract class CardsCreator {
             case DISPEL -> {return "Block next " + value + " opponent spell(s)";}
             case RESISTANCE -> {return "Block next " + value + " magical damage";}
             case DECREASE_ARMOR -> {return "Decrease " + value + " opponent armor";}
-            case DISCARD -> {return "Deal opponen " + value + " physical damage, discard 1 card";}
+            case DISCARD -> {return "Deal opponent " + value + " physical damage, pick 1 card less next ";}
         }
         return "do nothing";
     }

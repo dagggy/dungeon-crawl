@@ -3,7 +3,6 @@ package com.example.dungeaoncrawler;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Enemy;
 import com.example.dungeaoncrawler.logic.actors.Player;
-import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.CardsCreator;
@@ -38,13 +37,11 @@ public class FightController {
     private boolean drawCard = false;
     private boolean playerTurn = true;
     private int handSize;
-    private int handSizeModification =0;
+    private int handSizeModification = 0;
     private String previousMessage="";
 
 
     public void initialize(){
-        player = new Player(20,0,0,4, null);
-        opponent = new Skeleton(12, 4, 1, 30,2, null);
         setPlayer();
         setOpponent();
         displayFighters();
@@ -173,6 +170,9 @@ public class FightController {
 
         if (player.isStuned()) {playerStunIcon.setVisible(true);
         } else {playerStunIcon.setVisible(false);}
+        if (handSizeModification < 0) {extraCardIcon.setVisible(true);}
+        else if (handSizeModification == 0) {extraCardIcon.setVisible(false);}
+        else extraCardIcon.setImage(new Image("addCardDraw.gif"));
     }
 
     private void displayOpponentCondition(){
@@ -409,8 +409,7 @@ public class FightController {
             case DISPEL -> {return player.setDispel(card.getValue());}
             case POISON -> {return opponent.setPoison(new LifeChanger(player.getPower(), -card.getValue()));}
             case ATTACK -> {return opponent.takeDamage(card.getValue());}
-            case DISCARD -> { handSizeModification -=1;
-                return opponent.takeDamage(card.getValue());}
+            case DISCARD -> { handSizeModification -=1; return opponent.takeDamage(card.getValue());}
             case SPELL -> {return opponent.takeMagicDamage(card.getValue());}
             case ARMOR -> {return player.setArmor(card.getValue());}
             case HEAL -> {return player.setHeal(new LifeChanger(player.getPower(), card.getValue()));}
@@ -429,6 +428,12 @@ public class FightController {
     private ArrayList<Cards> drawRandomCards(){
         Random random = new Random();
         int cardsOnHand = handSize + handSizeModification;
+        if (cardsOnHand >= 7) {
+            cardsOnHand = 6;
+        }
+        if (cardsOnHand < 0) {
+            cardsOnHand = 0;
+        }
         handSizeModification = 0;
         ArrayList<Cards> hand = new ArrayList<>();
         ArrayList<Cards> deck = player.getPlayingDeck();
@@ -516,6 +521,10 @@ public class FightController {
                     healthInfoPlayer.setText(String.valueOf(player.getHealPts()));
                     healthInfoPlayer.setVisible(true);
                 }
+                if (handSizeModification<0)
+                    extraCardsInfoPlayer.setVisible(true);
+                    extraCardsInfoPlayer.setText(String.valueOf(handSizeModification));
+
             }
         }
     }
@@ -533,6 +542,7 @@ public class FightController {
                 stunInfoPlayer.setVisible(false);
                 poisonInfoPlayer.setVisible(false);
                 healthInfoPlayer.setVisible(false);
+                extraCardsInfoPlayer.setVisible(false);
             }
         }
     }
@@ -652,6 +662,7 @@ public class FightController {
     @FXML
     private Button endTurn;
 
+
     @FXML
     private ImageView playerImage;
 
@@ -702,6 +713,9 @@ public class FightController {
 
     @FXML
     private ImageView winningCardImage1;
+
+    @FXML
+    private ImageView extraCardIcon;
 
     @FXML
     private ImageView winningCardImage2;
@@ -767,4 +781,6 @@ public class FightController {
     @FXML
     private Label healthInfoPlayer;
 
+    @FXML
+    private Label extraCardsInfoPlayer;
 }
