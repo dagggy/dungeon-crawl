@@ -10,6 +10,7 @@ import com.example.dungeaoncrawler.logic.items.CardsCreator;
 import com.example.dungeaoncrawler.logic.items.CardsType;
 import com.example.dungeaoncrawler.logic.status.CharacterAttributes;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -451,6 +452,9 @@ public class FightController {
     void endFight(ActionEvent event) {
         player.endFight();
         Stage stage = (Stage) endFightButton.getScene().getWindow();
+        opponent.getCell().setActor(null);
+        opponent.getCell().getGameMap().removeFromEnemyList(opponent);
+        opponent = null;
         HelloController.canMove = true;
         stage.close();
     }
@@ -478,7 +482,6 @@ public class FightController {
     public void setDiceSum(String text){
         rollDice.setText(text);
     }
-
 
     @FXML
     private ImageView opponentHealIcon;

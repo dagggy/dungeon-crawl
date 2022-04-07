@@ -135,4 +135,8 @@ public class GameMap implements Serializable {
     public List<Actor> getEnemyList() {
         return enemyList;
     }
+
+    public void removeFromEnemyList (Enemy enemy) {
+        enemyList.remove(enemy);
+    }
 }

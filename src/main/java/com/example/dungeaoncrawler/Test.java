@@ -1,9 +1,13 @@
 package com.example.dungeaoncrawler;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -17,9 +21,13 @@ public class Test {
             stage.setTitle("Fight!");
             stage.setScene(scene);
             stage.show();
+            stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::runFromFight);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    public void runFromFight (WindowEvent event) {
+        HelloApplication.player.takeDamage(15);
+        HelloController.canMove = true;
+    }
 }
