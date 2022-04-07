@@ -76,7 +76,7 @@ public class Player extends Actor {
         }
     }
 
-    private CardRarity drawRarity(){
+    public static CardRarity drawRarity(){
         int faith = ThreadLocalRandom.current().nextInt(0,11);
         if (faith <=6 ) return CardRarity.COMMON;
         else if (faith <=9) return CardRarity.RARE;
@@ -147,7 +147,7 @@ public class Player extends Actor {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
-        } else if (nextCell.getType() == CellType.DOOR) {
+        } else if (nextCell.getType() == CellType.CLOSED_DOOR) {
             cell.setActor(null);
             switch (nextCell.getDoorDirection()) {
                 case 'u' -> {

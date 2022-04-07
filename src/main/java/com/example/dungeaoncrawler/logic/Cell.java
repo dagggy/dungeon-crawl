@@ -1,12 +1,16 @@
 package com.example.dungeaoncrawler.logic;
 
 import com.example.dungeaoncrawler.logic.actors.Actor;
+import com.example.dungeaoncrawler.logic.items.Items;
 
-public class Cell implements Drawable {
+import java.io.Serializable;
+
+public class Cell implements Drawable, Serializable {
     private CellType type;
     private CellDecoration decoration;
     private Actor actor;
     private GameMap gameMap;
+    private Items item;
     private int x, y;
     private char doorDirection;
 
@@ -71,6 +75,14 @@ public class Cell implements Drawable {
 
     public void setDoorDirection (char direction) {
         this.doorDirection = direction;
+    }
+
+    public Items getItem() {
+        return item;
+    }
+
+    public void setItem(Items item) {
+        this.item = item;
     }
 
     @Override

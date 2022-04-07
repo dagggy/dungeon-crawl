@@ -2,7 +2,9 @@ package com.example.dungeaoncrawler.logic.actors;
 
 public enum ActorType {
     PLAYER(25, 1, "player"),
-    SKELETON(30, 7, "skeleton");
+    SKELETON(30, 7, "skeleton"),
+    WIZARD(31, 2, "wizard"),
+    KNIGHT(29, 1, "knight");
 
     private final int x;
     private final int y;

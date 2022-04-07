@@ -5,15 +5,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Test extends Application {
+import java.io.IOException;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("test.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Fight!");
-        stage.setScene(scene);
-        stage.show();
+public class Test {
+
+    public void startFight () {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("test.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setTitle("Fight!");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

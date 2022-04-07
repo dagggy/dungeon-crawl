@@ -5,10 +5,11 @@ import com.example.dungeaoncrawler.logic.CellType;
 import com.example.dungeaoncrawler.logic.Drawable;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Actor implements Drawable {
+public abstract class Actor implements Drawable, Serializable {
     protected Cell cell;
     protected int health = 10;
     protected ArrayList <LifeChanger> heal;

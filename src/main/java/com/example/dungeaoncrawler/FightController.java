@@ -1,5 +1,9 @@
 package com.example.dungeaoncrawler;
 
+import com.example.dungeaoncrawler.logic.actors.Actor;
+import com.example.dungeaoncrawler.logic.actors.Enemy;
+import com.example.dungeaoncrawler.logic.actors.Player;
+import com.example.dungeaoncrawler.logic.actors.Skeleton;
 import com.example.dungeaoncrawler.logic.actors.*;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
@@ -26,7 +30,7 @@ import java.util.Random;
 
 public class FightController {
     Player player;
-    Skeleton opponent;
+    Enemy opponent;
     boolean wasRolled = false;
     private int sumDiceRoll;
     private ArrayList<Cards> hand = new ArrayList<>();
@@ -38,11 +42,25 @@ public class FightController {
 
 
     public void initialize(){
-        player = new MageClass(150,10,5,6, null);
-        opponent = new Skeleton(1, 0, 1, 30,2, null);
+        player = new Player(20,0,0,4, null);
+        opponent = new Skeleton(12, 4, 1, 30,2, null);
+        setPlayer();
+        setOpponent();
+        displayFighters();
+    }
+
+    public void displayFighters () {
         displayActorInfo(player);
         displayActorInfo(opponent);
         handSize = player.getCards();
+    }
+
+    public void setPlayer () {
+        this.player = HelloApplication.player;
+    }
+
+    public void setOpponent() {
+        this.opponent = HelloController.opponent;
     }
 
     private void displayActorInfo(Actor actor){
@@ -104,7 +122,6 @@ public class FightController {
      * @param message text message that we want to display
      */
     public void setFightMessage(String message){
-        matchHistory.getItems().add(0,message);
         FightMassage.setText(message);
     }
 
