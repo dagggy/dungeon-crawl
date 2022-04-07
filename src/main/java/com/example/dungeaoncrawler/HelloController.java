@@ -39,6 +39,28 @@ public class HelloController {
     ImageView imageView1 = new ImageView("img.png");
     static boolean canMove = true;
     static Enemy opponent;
+    Thread independentEnemiesMoves = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            int counter = 0;
+            while (true) {
+                try {
+                    Thread.currentThread().sleep(500);
+                    System.out.println(counter);
+                    counter++;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getEnemyMove();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        printMap();
+                    }
+                });
+            }
+        }
+    });
 
     @FXML
     private GridPane baseMap;
@@ -64,6 +86,10 @@ public class HelloController {
     @FXML
     private TextField deckPlayerName;
 
+    public void closeWindow() {
+        System.out.println("close window");
+        independentEnemiesMoves.stop();
+    }
 
     public void initialize() {
         deckPlayerName.setText(player.getName() + "'s deck");
@@ -71,25 +97,9 @@ public class HelloController {
         printMap();
         printMinimap();
         updateDeck();
-        Thread independentEnemiesMoves = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.currentThread().sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    getEnemyMove();
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            printMap();
-                        }
-                    });
-                }
-            }
-        });
+
+
+        independentEnemiesMoves.setDaemon(true);
         independentEnemiesMoves.start();
         loadStatistics();
     }
