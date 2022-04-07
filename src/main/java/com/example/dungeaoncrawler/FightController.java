@@ -10,6 +10,7 @@ import com.example.dungeaoncrawler.logic.items.CardsCreator;
 import com.example.dungeaoncrawler.logic.items.CardsType;
 import com.example.dungeaoncrawler.logic.status.CharacterAttributes;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,6 +39,7 @@ public class FightController {
     private boolean playerTurn = true;
     private int handSize;
     private int handSizeModification =0;
+    private String previousMessage="";
 
 
     public void initialize(){
@@ -87,7 +89,7 @@ public class FightController {
         OpponentAttributesType1.setCellValueFactory(cellData-> cellData.getValue().getAttributeName());
         OpponentsAttributesValue1.setCellValueFactory(cellData-> cellData.getValue().getAttributeValue().asObject());
     }
-
+//TODO Dispell nie działa
     /**
     Create List of object from characters attributes with its name and value.
      */
@@ -121,7 +123,9 @@ public class FightController {
      * @param message text message that we want to display
      */
     public void setFightMessage(String message){
-        FightMassage.setText(message);
+        matchHistory.getItems().add(0,previousMessage);
+        previousMessage = message;
+        FightMessage.setText(message);
     }
 
     /**
@@ -133,18 +137,16 @@ public class FightController {
         AnchorPane source = (AnchorPane) event.getSource();
         int cardIndex = Integer.parseInt(source.toString().replaceAll("[^0-9.]", ""));
         if (canPlayCard(sumDiceRoll, hand, cardIndex)) {
-            if (hand.get(cardIndex).getCardsType() != CardsType.DISPEL || hand.get(cardIndex).getCardsType() != CardsType.DISPEL && hand.size()>1) {
-                String message = resolveCardEffect(hand.get(cardIndex));
-                setFightMessage(message);
-                source.setOpacity(0.2);
-                source.setDisable(true);
-                sumDiceRoll -= hand.get(cardIndex).getCardCost();
-                refreshCharacterAttributes(hand.get(cardIndex));
-                displayPlayerCondition();
-                displayOpponentCondition();
-                rollDice.setText(sumDiceRoll > 0 ? sumDiceRoll + " points remains" : "No points left.");
-                checkForWin();
-            }
+            String message = resolveCardEffect(hand.get(cardIndex));
+            setFightMessage(message);
+            source.setOpacity(0.2);
+            source.setDisable(true);
+            sumDiceRoll -= hand.get(cardIndex).getCardCost();
+            refreshCharacterAttributes(hand.get(cardIndex));
+            displayPlayerCondition();
+            displayOpponentCondition();
+            rollDice.setText(sumDiceRoll > 0 ? sumDiceRoll + " points remains" : "No points left.");
+            checkForWin();
         } else {
             String message = "You don't have points to play this card\n";
             setFightMessage(message);
@@ -451,6 +453,9 @@ public class FightController {
     void endFight(ActionEvent event) {
         player.endFight();
         Stage stage = (Stage) endFightButton.getScene().getWindow();
+        opponent.getCell().setActor(null);
+        opponent.getCell().getGameMap().removeFromEnemyList(opponent);
+        opponent = null;
         HelloController.canMove = true;
         stage.close();
     }
@@ -477,6 +482,58 @@ public class FightController {
 
     public void setDiceSum(String text){
         rollDice.setText(text);
+    }
+
+    @FXML
+    void showCharacterNextRoundDmg(MouseEvent event) {
+        ImageView image = (ImageView) event.getSource();
+        switch (image.getId()){
+            case "playerImage1"-> {
+                if (opponent.getHealPts() > 0) {
+                    healthInfoOpponent.setText(String.valueOf(opponent.getHealPts()));
+                    healthInfoOpponent.setVisible(true);
+                }
+                if (opponent.getPoisonDmg() > 0) {
+                    poisonInfoOpponent.setText(String.valueOf(opponent.getPoisonDmg()));
+                    poisonInfoOpponent.setVisible(true);
+                }
+                if (opponent.getStun() > 0) {
+                    stunInfoOpponent.setText(String.valueOf(opponent.getStun()));
+                    stunInfoOpponent.setVisible(true);
+                }
+            }
+            case "playerImage"-> {
+                if (player.getStun() > 0) {
+                    stunInfoPlayer.setText(String.valueOf(player.getStun()));
+                    stunInfoPlayer.setVisible(true);
+                }
+                if (player.getPoisonDmg() > 0) {
+                    poisonInfoPlayer.setText(String.valueOf(player.getPoisonDmg()));
+                    poisonInfoPlayer.setVisible(true);
+                }
+                if (player.getHealPts() >0) {
+                    healthInfoPlayer.setText(String.valueOf(player.getHealPts()));
+                    healthInfoPlayer.setVisible(true);
+                }
+            }
+        }
+    }
+
+    @FXML
+    void hideCharacterNextRoundDmg(MouseEvent event) {
+        ImageView image = (ImageView) event.getSource();
+        switch (image.getId()){
+            case "playerImage1"-> {
+                healthInfoOpponent.setVisible(false);
+                poisonInfoOpponent.setVisible(false);
+                stunInfoOpponent.setVisible(false);
+            }
+            case "playerImage"-> {
+                stunInfoPlayer.setVisible(false);
+                poisonInfoPlayer.setVisible(false);
+                healthInfoPlayer.setVisible(false);
+            }
+        }
     }
 
 
@@ -523,7 +580,7 @@ public class FightController {
     private TableColumn<CharacterAttributes, Integer> PlayerAttributesValue;
 
     @FXML
-    private Label FightMassage;
+    private Label FightMessage;
 
     @FXML
     private AnchorPane card0;
@@ -691,58 +748,6 @@ public class FightController {
     @FXML
     private ImageView card1background5;
 
-    @FXML
-    void showCharacterNextRoundDmg(MouseEvent event) {
-        ImageView image = (ImageView) event.getSource();
-        switch (image.getId()){
-            case "playerImage1"-> {
-                if (opponent.getHealPts() > 0) {
-                    healthInfoOpponent.setText(String.valueOf(opponent.getHealPts()));
-                    healthInfoOpponent.setVisible(true);
-                }
-                if (opponent.getPoisonDmg() > 0) {
-                    poisonInfoOpponent.setText(String.valueOf(opponent.getPoisonDmg()));
-                    poisonInfoOpponent.setVisible(true);
-                }
-                if (opponent.getStun() > 0) {
-                    stunInfoOpponent.setText(String.valueOf(opponent.getStun()));
-                    stunInfoOpponent.setVisible(true);
-                }
-            }
-            case "playerImage"-> {
-                if (player.getStun() > 0) {
-                    stunInfoPlayer.setText(String.valueOf(player.getStun()));
-                    stunInfoPlayer.setVisible(true);
-                }
-                if (player.getPoisonDmg() > 0) {
-                    poisonInfoPlayer.setText(String.valueOf(player.getPoisonDmg()));
-                    poisonInfoPlayer.setVisible(true);
-                }
-                if (player.getHealPts() >0) {
-                    healthInfoPlayer.setText(String.valueOf(player.getHealPts()));
-                    healthInfoPlayer.setVisible(true);
-                }
-            }
-        }
-    }
-
-
-    @FXML
-    void hideCharacterNextRoundDmg(MouseEvent event) {
-        ImageView image = (ImageView) event.getSource();
-        switch (image.getId()){
-            case "playerImage1"-> {
-                healthInfoOpponent.setVisible(false);
-                poisonInfoOpponent.setVisible(false);
-                stunInfoOpponent.setVisible(false);
-            }
-            case "playerImage"-> {
-                stunInfoPlayer.setVisible(false);
-                poisonInfoPlayer.setVisible(false);
-                healthInfoPlayer.setVisible(false);
-            }
-        }
-    }
     @FXML
     private Label stunInfoOpponent;
 

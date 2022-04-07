@@ -241,6 +241,9 @@ public abstract class Actor implements Drawable, Serializable {
         }return sum;
     }
 
+    public void deleteActor() {
+    }
+
     public boolean isStuned(){
         return stun > 0;
     }

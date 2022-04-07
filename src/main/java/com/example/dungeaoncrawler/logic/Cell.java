@@ -46,15 +46,22 @@ public class Cell implements Drawable, Serializable {
         return gameMap.getCell(x + dx, y + dy);
     }
 
-    public int[] getCellImageCoords() {
+    public int[] getCellTypeImageCoords() {
+        return type.getCellImageCoords();
+    }
+
+    public int[] getCellActorImageCoords () {
         if (getActor() != null) {
             return actor.getActorType().getActorImageCoords();
-        } else if (type != CellType.EMPTY) {
-            return type.getCellImageCoords();
-        } else if (decoration != null) {
+        }
+        return null;
+    }
+
+    public int[] getCellDecorImageCoords () {
+        if (decoration != null) {
             return decoration.getDecorationImageCoords();
         }
-        return type.getCellImageCoords();
+        return null;
     }
 
     public GameMap getGameMap() {
