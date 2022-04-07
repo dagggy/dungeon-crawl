@@ -30,7 +30,7 @@
             </ImageView>
             <AnchorPane fx:id="cardsField" layoutX="169.0" layoutY="83.0" prefHeight="455.0" prefWidth="861.0">
                <children>
-                  <AnchorPane fx:id="card4" layoutX="70.0" layoutY="50.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-21.8">
+                  <AnchorPane fx:id="card4" layoutX="70.0" layoutY="50.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-21.8" visible="false">
                      <children>
                         <ImageView fx:id="cardImage4" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -57,7 +57,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card0" layoutX="185.0" layoutY="20.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-12.5">
+                  <AnchorPane fx:id="card0" layoutX="185.0" layoutY="20.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="-12.5" visible="false">
                      <children>
                         <ImageView fx:id="cardImage0" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -84,7 +84,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card1" layoutX="295.0" layoutY="14.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="166.0" rotate="-2.6">
+                  <AnchorPane fx:id="card1" layoutX="295.0" layoutY="14.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="166.0" rotate="-2.6" visible="false">
                      <children>
                         <ImageView fx:id="cardImage1" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -111,7 +111,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card2" layoutX="400.0" layoutY="18.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="2.6">
+                  <AnchorPane fx:id="card2" layoutX="400.0" layoutY="18.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="2.6" visible="false">
                      <children>
                         <ImageView fx:id="cardImage2" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -141,7 +141,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card3" layoutX="496.0" layoutY="30.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="12.5">
+                  <AnchorPane fx:id="card3" layoutX="496.0" layoutY="30.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="0.0" rotate="12.5" visible="false">
                      <children>
                         <ImageView fx:id="cardImage3" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>
@@ -171,7 +171,7 @@
                         <ColorAdjust brightness="-0.82" />
                      </effect>
                   </AnchorPane>
-                  <AnchorPane fx:id="card5" layoutX="595.0" layoutY="58.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="21.3">
+                  <AnchorPane fx:id="card5" layoutX="595.0" layoutY="58.0" onMouseClicked="#playCard" onMouseEntered="#cardBringFront" onMouseExited="#setCardOpacity" prefHeight="382.0" prefWidth="89.0" rotate="21.3" visible="false">
                      <children>
                         <ImageView fx:id="cardImage5" fitHeight="149.0" fitWidth="166.0" layoutX="17.0" layoutY="25.0" pickOnBounds="true">
                            <image>

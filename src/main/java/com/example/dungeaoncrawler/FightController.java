@@ -4,14 +4,12 @@ import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Enemy;
 import com.example.dungeaoncrawler.logic.actors.Player;
 import com.example.dungeaoncrawler.logic.actors.Skeleton;
-import com.example.dungeaoncrawler.logic.actors.*;
 import com.example.dungeaoncrawler.logic.items.CardRarity;
 import com.example.dungeaoncrawler.logic.items.Cards;
 import com.example.dungeaoncrawler.logic.items.CardsCreator;
 import com.example.dungeaoncrawler.logic.items.CardsType;
 import com.example.dungeaoncrawler.logic.status.CharacterAttributes;
 import com.example.dungeaoncrawler.logic.status.LifeChanger;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -451,7 +450,9 @@ public class FightController {
     @FXML
     void endFight(ActionEvent event) {
         player.endFight();
-        Platform.exit();
+        Stage stage = (Stage) endFightButton.getScene().getWindow();
+        HelloController.canMove = true;
+        stage.close();
     }
 
     /**

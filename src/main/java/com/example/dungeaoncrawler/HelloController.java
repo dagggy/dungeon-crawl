@@ -1,6 +1,9 @@
 package com.example.dungeaoncrawler;
 
-import com.example.dungeaoncrawler.logic.*;
+import com.example.dungeaoncrawler.logic.Cell;
+import com.example.dungeaoncrawler.logic.CellType;
+import com.example.dungeaoncrawler.logic.GameMap;
+import com.example.dungeaoncrawler.logic.WorldMap;
 import com.example.dungeaoncrawler.logic.actors.Actor;
 import com.example.dungeaoncrawler.logic.actors.Enemy;
 import com.example.dungeaoncrawler.logic.actors.Player;
@@ -12,27 +15,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
 import java.io.*;
+import java.util.Objects;
+import java.util.Random;
 
-
-import java.util.*;
-
-import static com.example.dungeaoncrawler.HelloApplication.worldMap;
 import static com.example.dungeaoncrawler.HelloApplication.player;
+import static com.example.dungeaoncrawler.HelloApplication.worldMap;
 
 public class HelloController {
     ImageView imageView = new ImageView("img.png");
