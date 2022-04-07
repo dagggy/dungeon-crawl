@@ -10,7 +10,7 @@ public class Statistics {
     private String StatisticsName;
     private int StatisticsPoints;
 
-    public Statistics (String statisticsName, int statisticsPoints) {
+    public Statistics(String statisticsName, int statisticsPoints) {
         StatisticsName = statisticsName;
         StatisticsPoints = statisticsPoints;
     }

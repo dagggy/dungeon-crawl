@@ -1,6 +1,7 @@
 package com.example.dungeaoncrawler.logic.status;
 
 public class LifeChanger {
+
     private int rounds;
     private final int lifeChanger;
 

@@ -3,14 +3,16 @@ package com.example.dungeaoncrawler.logic;
 import com.example.dungeaoncrawler.logic.actors.*;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.example.dungeaoncrawler.HelloApplication.player;
 
-/**A war crime*/
+/**
+ * A war crime
+ */
 public class WorldMap implements Serializable {
+
     private final int floor;
     private int currMapX;
     private int currMapY;
@@ -19,11 +21,12 @@ public class WorldMap implements Serializable {
     private final GameMap[][] gameMaps = new GameMap[worldWidth][worldHeight];
     private final ArrayList<GameMap> gameMapStorage = new ArrayList<>();
 
-
-
-    /** WorldMap constructor
-     * @param floor Might be used in the future, numerical representation on the current floor (in case we go deeper) */
-    public WorldMap (int floor) {
+    /**
+     * WorldMap constructor
+     *
+     * @param floor Might be used in the future, numerical representation on the current floor (in case we go deeper)
+     */
+    public WorldMap(int floor) {
         this.floor = floor;
         placeSpawn();
         this.currMapX = gameMapStorage.get(0).getWorldPos().get(0);
@@ -47,33 +50,39 @@ public class WorldMap implements Serializable {
         placeEnd();
     }
 
-    /** Grab GameMap from WorldMap on specified coordinates
+    /**
+     * Grab GameMap from WorldMap on specified coordinates
+     *
      * @param x X location of the GameMap on the WorldMap
-     * @param y Y location of the GameMap on the WorldMap*/
-    public GameMap getGameMap (int x, int y) {
+     * @param y Y location of the GameMap on the WorldMap
+     */
+    public GameMap getGameMap(int x, int y) {
         return gameMaps[x][y];
     }
 
-    public int[] getCurrentPos () {
+    public int[] getCurrentPos() {
         return new int[]{currMapX, currMapY};
     }
 
+    /**
+     * Places the spawn GameMap in the center of the WorldMap
+     */
+    private void placeSpawn() {
 
-    /** Places the spawn GameMap in the center of the WorldMap*/
-    private void placeSpawn () {
-
-        GameMap map = MapLoader.loadMap(RoomType.SPAWN, worldWidth/2, worldHeight/2, this);
-        map.getCell(map.getWidth()/2, map.getHeight()/2).setActor(player);
-        player.setCell(map.getCell(map.getWidth()/2, map.getHeight()/2));
-        gameMaps[worldWidth/2][worldHeight/2] = map;
+        GameMap map = MapLoader.loadMap(RoomType.SPAWN, worldWidth / 2, worldHeight / 2, this);
+        map.getCell(map.getWidth() / 2, map.getHeight() / 2).setActor(player);
+        player.setCell(map.getCell(map.getWidth() / 2, map.getHeight() / 2));
+        gameMaps[worldWidth / 2][worldHeight / 2] = map;
         gameMapStorage.add(map);
 
     }
 
-
-    /** Places GameMap on the WorldMap
-     * @param roomType Used to specify what type of the room we're placing*/
-    private void placeMap (RoomType roomType) {
+    /**
+     * Places GameMap on the WorldMap
+     *
+     * @param roomType Used to specify what type of the room we're placing
+     */
+    private void placeMap(RoomType roomType) {
         ArrayList<ArrayList<ArrayList<Integer>>> possibleRoomPositions = getPossibleRoomPositions();
         ArrayList<ArrayList<Integer>> selectedCoordinates = possibleRoomPositions.get(ThreadLocalRandom.current().nextInt(0, possibleRoomPositions.size()));
 
@@ -86,13 +95,13 @@ public class WorldMap implements Serializable {
             doorType = CellType.OPEN_DOOR;
         }
 
-        if (Objects.equals(map.getWorldPos().get(0), selectedCoordinates.get(1).get(0)) && Objects.equals(map.getWorldPos().get(1)-1, selectedCoordinates.get(1).get(1))) {
+        if (Objects.equals(map.getWorldPos().get(0), selectedCoordinates.get(1).get(0)) && Objects.equals(map.getWorldPos().get(1) - 1, selectedCoordinates.get(1).get(1))) {
             gameMaps[selectedCoordinates.get(1).get(0)][selectedCoordinates.get(1).get(1)].addDoor('r', doorType);
             map.addDoor('l', CellType.OPEN_DOOR);
-        } else if (Objects.equals(map.getWorldPos().get(0), selectedCoordinates.get(1).get(0)) && Objects.equals(map.getWorldPos().get(1)+1, selectedCoordinates.get(1).get(1))) {
+        } else if (Objects.equals(map.getWorldPos().get(0), selectedCoordinates.get(1).get(0)) && Objects.equals(map.getWorldPos().get(1) + 1, selectedCoordinates.get(1).get(1))) {
             gameMaps[selectedCoordinates.get(1).get(0)][selectedCoordinates.get(1).get(1)].addDoor('l', doorType);
             map.addDoor('r', CellType.OPEN_DOOR);
-        } else if (Objects.equals(map.getWorldPos().get(0)-1, selectedCoordinates.get(1).get(0)) && Objects.equals(map.getWorldPos().get(1), selectedCoordinates.get(1).get(1))) {
+        } else if (Objects.equals(map.getWorldPos().get(0) - 1, selectedCoordinates.get(1).get(0)) && Objects.equals(map.getWorldPos().get(1), selectedCoordinates.get(1).get(1))) {
             gameMaps[selectedCoordinates.get(1).get(0)][selectedCoordinates.get(1).get(1)].addDoor('d', doorType);
             map.addDoor('u', CellType.OPEN_DOOR);
         } else {
@@ -104,14 +113,16 @@ public class WorldMap implements Serializable {
         gameMapStorage.add(map);
     }
 
-
-    /**Gets possible room positions for the current world map.
+    /**
+     * Gets possible room positions for the current world map.
      * It will not allow for a room to be adjacent to a room it's not connected to.
      * I sincerely hope no one ever reads this code.
-     * @return List of lists of pairs for room options and where they connect to*/
-    private ArrayList<ArrayList<ArrayList<Integer>>> getPossibleRoomPositions () {
+     *
+     * @return List of lists of pairs for room options and where they connect to
+     */
+    private ArrayList<ArrayList<ArrayList<Integer>>> getPossibleRoomPositions() {
         ArrayList<ArrayList<ArrayList<Integer>>> possibleRoomPositions = new ArrayList<>();
-        for (GameMap gameMap:gameMapStorage) {
+        for (GameMap gameMap : gameMapStorage) {
             if (gameMap.getRoomType() == RoomType.NORMAL || gameMap.getRoomType() == RoomType.SPAWN) {
                 ArrayList<Integer> mapPos = gameMap.getWorldPos();
                 for (int i = 0; i < 2; i++) {
@@ -171,8 +182,10 @@ public class WorldMap implements Serializable {
         return currMapY;
     }
 
-    /**Move to a different map in the map storage, place player on given position*/
-    public Cell mapMove (int x, int y, int pPosX, int pPosY, Player player) {
+    /**
+     * Move to a different map in the map storage, place player on given position
+     */
+    public Cell mapMove(int x, int y, int pPosX, int pPosY, Player player) {
         this.currMapY += y;
         this.currMapX += x;
         Cell nextCell = getGameMap(currMapX, currMapY).getCell(pPosX, pPosY);
@@ -180,7 +193,7 @@ public class WorldMap implements Serializable {
         return nextCell;
     }
 
-    public Cell moveToEnd (Player player) {
+    public Cell moveToEnd(Player player) {
         Cell nextCell = getGameMap(0, 0).getCell(12, 10);
         nextCell.setActor(player);
         currMapX = 0;
@@ -188,12 +201,14 @@ public class WorldMap implements Serializable {
         return nextCell;
     }
 
-    /** Places the true end room */
-    private void placeEnd () {
+    /**
+     * Places the true end room
+     */
+    private void placeEnd() {
         GameMap endMap = MapLoader.loadMap(RoomType.ENDING, 0, 0, this);
         endMap.getCell(3, 18).setType(CellType.P5);
         for (int i = 17; i >= 7; i--) {
-            if ((i-1) % 3 == 0 && i > 7) {
+            if ((i - 1) % 3 == 0 && i > 7) {
                 endMap.getCell(3, i).setType(CellType.P3);
                 endMap.getCell(2, i).setType(CellType.P2);
                 endMap.getCell(1, i).setType(CellType.P1);
@@ -245,7 +260,7 @@ public class WorldMap implements Serializable {
         gameMapStorage.add(endMap);
     }
 
-    private void placeSquare (GameMap map, int xS, int xE, int yS, int yE) {
+    private void placeSquare(GameMap map, int xS, int xE, int yS, int yE) {
         for (int x = xS; x <= xE; x++) {
             for (int y = yS; y <= yE; y++) {
                 map.getCell(x, y).setType(CellType.WALL);
@@ -253,24 +268,26 @@ public class WorldMap implements Serializable {
         }
     }
 
-    private void placeBlockade (GameMap map, int xS, int yS) {
+    private void placeBlockade(GameMap map, int xS, int yS) {
         map.getCell(xS, yS).setType(CellType.BLOCKADE1);
-        map.getCell(xS+1, yS).setType(CellType.BLOCKADE2);
+        map.getCell(xS + 1, yS).setType(CellType.BLOCKADE2);
     }
 
-    private void placePortal (GameMap map, int xS, int yS) {
+    private void placePortal(GameMap map, int xS, int yS) {
         map.getCell(xS, yS).setType(CellType.PORTAL1);
-        map.getCell(xS+1, yS).setType(CellType.PORTAL2);
-        map.getCell(xS, yS+1).setType(CellType.PORTAL3);
-        map.getCell(xS+1, yS+1).setType(CellType.PORTAL4);
+        map.getCell(xS + 1, yS).setType(CellType.PORTAL2);
+        map.getCell(xS, yS + 1).setType(CellType.PORTAL3);
+        map.getCell(xS + 1, yS + 1).setType(CellType.PORTAL4);
     }
 
-    /** neat little toString() override :)*/
+    /**
+     * neat little toString() override :)
+     */
     @Override
     public String toString() {
         StringBuilder returnString = new StringBuilder();
-        for (int x=0; x < worldWidth; x++) {
-            for (int y=0; y < worldHeight; y++) {
+        for (int x = 0; x < worldWidth; x++) {
+            for (int y = 0; y < worldHeight; y++) {
                 GameMap room = gameMaps[x][y];
                 if (room != null) {
                     returnString.append(room.getRoomType().getSymbol()).append("  ");

@@ -12,8 +12,8 @@ import java.util.List;
 public abstract class Actor implements Drawable, Serializable {
     protected Cell cell;
     protected int health = 10;
-    protected ArrayList <LifeChanger> heal;
-    protected ArrayList <LifeChanger> poison;
+    protected ArrayList<LifeChanger> heal;
+    protected ArrayList<LifeChanger> poison;
     protected int stun;
     protected int resistance;
     protected int armor;
@@ -42,15 +42,15 @@ public abstract class Actor implements Drawable, Serializable {
         dispel = 0;
     }
 
-    public ArrayList <LifeChanger> getPoison() {
+    public ArrayList<LifeChanger> getPoison() {
         return poison;
     }
 
     public String setPoison(LifeChanger poison) {
-        if (dispel == 0){
-        this.poison.add(poison);
-        return "Player successfully poison opponent\n";}
-        else {
+        if (dispel == 0) {
+            this.poison.add(poison);
+            return "Player successfully poison opponent\n";
+        } else {
             dispel -= 1;
             return "Opponent successfully block spell\n";
         }
@@ -68,6 +68,7 @@ public abstract class Actor implements Drawable, Serializable {
     public int getHealth() {
         return health;
     }
+
     public int getDispel() {
         return dispel;
     }
@@ -75,6 +76,7 @@ public abstract class Actor implements Drawable, Serializable {
     public void resetDispel() {
         this.dispel = 0;
     }
+
     public ActorType getActorType() {
         return actorType;
     }
@@ -87,18 +89,6 @@ public abstract class Actor implements Drawable, Serializable {
         this.health = health;
     }
 
-    public ArrayList <LifeChanger> getHeal() {
-        return heal;
-    }
-
-    public int getKey() {
-        return key;
-    }
-
-    public void setKey(int key) {
-        this.key = key;
-    }
-
     public String setHeal(LifeChanger lifeChanger) {
         this.heal.add(lifeChanger);
         return "Player successfully cast healing\n";
@@ -107,6 +97,7 @@ public abstract class Actor implements Drawable, Serializable {
     public int getStun() {
         return stun;
     }
+
     public void resetStun() {
         stun = 0;
     }
@@ -150,7 +141,7 @@ public abstract class Actor implements Drawable, Serializable {
     }
 
 
-    public String takeMagicDamage(int damage){
+    public String takeMagicDamage(int damage) {
         if (dispel > 0) {
             dispel -= 1;
             return "Opponent block your spell\n";
@@ -171,24 +162,26 @@ public abstract class Actor implements Drawable, Serializable {
     public int getExp() {
         return exp;
     }
+
     public void resolveLifeChanger() {
         checkPlayerStatus(poison);
         checkPlayerStatus(heal);
     }
 
-    private void checkPlayerStatus(ArrayList<LifeChanger> list){
-        if (list.size()>0) for (int i = 0; i < list.size(); i++) {
+    private void checkPlayerStatus(ArrayList<LifeChanger> list) {
+        if (list.size() > 0) for (int i = 0; i < list.size(); i++) {
             LifeChanger lifeChanger = list.get(i);
             health += lifeChanger.getLifeChanger();
             if (lifeChanger.getRounds() > 0) {
-                lifeChanger.setRounds(1);}
+                lifeChanger.setRounds(1);
+            }
         }
         removeLifeChangerFromList(list);
     }
 
-    private void removeLifeChangerFromList(List<LifeChanger> list){
+    private void removeLifeChangerFromList(List<LifeChanger> list) {
         List<LifeChanger> toRemove = list.stream()
-                .filter(item -> item.getRounds()<=0).toList();
+                .filter(item -> item.getRounds() <= 0).toList();
 
         for (LifeChanger lifeChanger : toRemove) {
             list.remove(lifeChanger);
@@ -216,61 +209,40 @@ public abstract class Actor implements Drawable, Serializable {
         }
     }
 
-    public boolean isPoison(){
+    public boolean isPoison() {
         return poison.size() > 0;
     }
-    public int getPoisonDmg(){
-            int sum = 0;
+
+    public int getPoisonDmg() {
+        int sum = 0;
         if (isPoison()) {
-            for (LifeChanger poisons : poison){
+            for (LifeChanger poisons : poison) {
                 sum -= poisons.getLifeChanger();
             }
-        }return sum;
+        }
+        return sum;
     }
 
-    public boolean isHeal(){
+    public boolean isHeal() {
         return heal.size() > 0;
     }
 
-    public int getHealPts(){
+    public int getHealPts() {
         int sum = 0;
         if (isHeal()) {
-            for (LifeChanger heals : heal){
+            for (LifeChanger heals : heal) {
                 sum += heals.getLifeChanger();
             }
-        }return sum;
+        }
+        return sum;
     }
 
     public void onKill() {
         this.cell.setType(CellType.EMPTY);
     }
 
-    public boolean isStuned(){
+    public boolean isStuned() {
         return stun > 0;
     }
-
 }
 
-//    public void move(int dx, int dy) {
-//        Cell nextCell = cell.getNeighbor(dx, dy);
-////        cell.setActor(null);
-//        nextCell.setActor(this);
-////        cell = nextCell;
-//    }
-
-//    public int getHealth() {
-//        return health;
-////    }
-
-//    public Cell getCell() {
-//        return cell;
-//    }
-//
-//    public int getX() {
-//        return cell.getX();
-//    }
-//
-//    public int getY() {
-//        return cell.getY();
-//    }
-//}

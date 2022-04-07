@@ -1,6 +1,7 @@
 package com.example.dungeaoncrawler.logic;
 
 public enum RoomType {
+
     SPAWN("S"),
     NORMAL("■"),
     SHOP("■"),

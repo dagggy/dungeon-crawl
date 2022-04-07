@@ -19,7 +19,7 @@ public class Player extends Actor {
     private int keyCount = 0;
 
     public Player(int health, int resistance, int armor, String idUserName, int getCards, Cell cell) {
-        super(health, resistance, armor,0, idUserName, 0, ActorType.PLAYER, cell);
+        super(health, resistance, armor, 0, idUserName, 0, ActorType.PLAYER, cell);
         this.getCards = getCards;
         this.lvl = 1;
         dice = 3;
@@ -27,7 +27,7 @@ public class Player extends Actor {
         setPlayingDeck();
     }
 
-    public void endFight(){
+    public void endFight() {
         playingDeck = new ArrayList<>(deck);
         setArmor(0);
         setResistance(0);
@@ -41,7 +41,7 @@ public class Player extends Actor {
         return "player";
     }
 
-    public void setStartingDeck(){
+    public void setStartingDeck() {
         int attackCards = 4;
         int defendsCards = 4;
         int otherCards = 2;
@@ -50,7 +50,7 @@ public class Player extends Actor {
         addRandomCardsToStartingDeck(otherCards);
     }
 
-    private void addOffensiveCardsToStartingDeck(int cardsNumber){
+    private void addOffensiveCardsToStartingDeck(int cardsNumber) {
         for (int i = 0; i < cardsNumber; i++) {
             CardRarity rarity = drawRarity();
             CardsType cardsType = CardsType.getRandomOffensive();
@@ -59,7 +59,7 @@ public class Player extends Actor {
         }
     }
 
-    private void addDefensiveCardsToStartingDeck(int cardsNumber){
+    private void addDefensiveCardsToStartingDeck(int cardsNumber) {
         for (int i = 0; i < cardsNumber; i++) {
             CardRarity rarity = drawRarity();
             CardsType cardsType = CardsType.getRandomDefence();
@@ -67,7 +67,8 @@ public class Player extends Actor {
             deck.add(new Cards(cardImg, "attack", null, cardsType, rarity));
         }
     }
-    private void addRandomCardsToStartingDeck(int cardsNumber){
+
+    private void addRandomCardsToStartingDeck(int cardsNumber) {
         for (int i = 0; i < cardsNumber; i++) {
             CardRarity rarity = drawRarity();
             CardsType cardsType = CardsType.getRandomeType();
@@ -76,10 +77,10 @@ public class Player extends Actor {
         }
     }
 
-    public static CardRarity drawRarity(){
-        int faith = ThreadLocalRandom.current().nextInt(0,11);
-        if (faith <=6 ) return CardRarity.COMMON;
-        else if (faith <=9) return CardRarity.RARE;
+    public static CardRarity drawRarity() {
+        int faith = ThreadLocalRandom.current().nextInt(0, 11);
+        if (faith <= 6) return CardRarity.COMMON;
+        else if (faith <= 9) return CardRarity.RARE;
         else return CardRarity.MYTHIC;
     }
 
@@ -139,28 +140,28 @@ public class Player extends Actor {
         return cell.getY();
     }
 
-    public void giveKeys (int amount) {
+    public void giveKeys(int amount) {
         keyCount += amount;
     }
 
-    public void useKeys (int cost) {
+    public void useKeys(int cost) {
         if (keyCount >= cost) {
             keyCount -= cost;
         }
     }
 
-    public int getKeyCount () {
+    public int getKeyCount() {
         return keyCount;
     }
 
-    public void moveToEnd () {
+    public void moveToEnd() {
         Cell nextCell = cell.getGameMap().getParentMap().moveToEnd(this);
         cell.setActor(null);
         cell = nextCell;
     }
 
     @Override
-    public void onKill () {
+    public void onKill() {
         this.cell.setType(CellType.GRAVE);
     }
 
@@ -195,4 +196,3 @@ public class Player extends Actor {
         }
     }
 }
-//    Cards(String img, String name, Position position, CardsType cardsType, CardRarity cardRarity)

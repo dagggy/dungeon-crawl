@@ -1,6 +1,7 @@
 package com.example.dungeaoncrawler.logic;
 
 public class Position {
+
     private int x;
     private int y;
 

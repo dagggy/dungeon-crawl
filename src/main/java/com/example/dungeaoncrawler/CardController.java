@@ -18,11 +18,10 @@ public class CardController {
     @FXML
     private ImageView cardImage;
 
-    CardController (String description, int cardCost, ImageView cardBg, ImageView cardImage) {
+    CardController(String description, int cardCost, ImageView cardBg, ImageView cardImage) {
         this.description.setText(description);
         this.cardCost.setText(String.valueOf(cardCost));
         this.cardBg = cardBg;
         this.cardImage = cardImage;
     }
-
 }

@@ -1,6 +1,7 @@
 package com.example.dungeaoncrawler.logic.status;
 
 public class Stun {
+
     private int rounds;
 
     public Stun(int rounds) {

@@ -27,6 +27,10 @@ public class UserPanel extends Application implements Initializable {
 
     HelloApplication helloApplication;
 
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("user-panel.fxml"));
@@ -35,10 +39,6 @@ public class UserPanel extends Application implements Initializable {
         stage.setScene(scene);
         stage.show();
         stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::endGame);
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 
     @FXML
@@ -51,7 +51,7 @@ public class UserPanel extends Application implements Initializable {
         Player player = null;
         int playerType = playerSelector.getSelectionModel().getSelectedIndex();
         if (Objects.equals(playerType, 0)) {
-            player = new MageClass(50, 30, 0, getIdUserName(),4, null);
+            player = new MageClass(50, 30, 0, getIdUserName(), 4, null);
         } else if (Objects.equals(playerType, 1)) {
             player = new WarriorClass(100, 0, 20, getIdUserName(), 3, null);
         }
@@ -65,7 +65,7 @@ public class UserPanel extends Application implements Initializable {
     }
 
     @FXML
-    void endGame (WindowEvent event) {
+    void endGame(WindowEvent event) {
         exit();
     }
 

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameMap implements Serializable {
+
     private final int width;
     private final int height;
     private Cell[][] cells;
@@ -47,7 +48,7 @@ public class GameMap implements Serializable {
             placeBoss();
         }
 
-        if (roomType == RoomType.LAST){
+        if (roomType == RoomType.LAST) {
             placeExit();
         }
     }
@@ -56,7 +57,7 @@ public class GameMap implements Serializable {
         return roomType;
     }
 
-    public void placeEnemy () {
+    public void placeEnemy() {
         int[] randomPlace = {0, 0};
         int randomCase = ThreadLocalRandom.current().nextInt(1, 4);
 
@@ -64,29 +65,33 @@ public class GameMap implements Serializable {
         randomPlace[1] = ThreadLocalRandom.current().nextInt(1, 19);
 
         switch (randomCase) {
-            case 1 -> {Actor skeleton = new Skeleton(10, 0, 0, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
-                    cells[randomPlace[0]][randomPlace[1]].setActor(skeleton);
-                    enemyList.add(skeleton);}
-            case 2 -> {Actor wizard = new Wizard(10, 15, 5, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
-                    cells[randomPlace[0]][randomPlace[1]].setActor(wizard);
-                    enemyList.add(wizard);}
-            case 3 -> {Actor knight = new Knight(10, 5, 15, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
-                    cells[randomPlace[0]][randomPlace[1]].setActor(knight);
-                    enemyList.add(knight);}
+            case 1 -> {
+                Actor skeleton = new Skeleton(10, 0, 0, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
+                cells[randomPlace[0]][randomPlace[1]].setActor(skeleton);
+                enemyList.add(skeleton);
+            }
+            case 2 -> {
+                Actor wizard = new Wizard(10, 15, 5, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
+                cells[randomPlace[0]][randomPlace[1]].setActor(wizard);
+                enemyList.add(wizard);
+            }
+            case 3 -> {
+                Actor knight = new Knight(10, 5, 15, 10, 2, cells[randomPlace[0]][randomPlace[1]]);
+                cells[randomPlace[0]][randomPlace[1]].setActor(knight);
+                enemyList.add(knight);
+            }
         }
     }
 
-    private void placeBoss () {
-        Actor skeletonBoss = new SkeletonBoss(1, 0, 0, 100, 2, cells[width/2][height/2]);
-        cells[width/2][height/2].setActor(skeletonBoss);
+    private void placeBoss() {
+        Actor skeletonBoss = new SkeletonBoss(1, 0, 0, 100, 2, cells[width / 2][height / 2]);
+        cells[width / 2][height / 2].setActor(skeletonBoss);
         enemyList.add(skeletonBoss);
     }
 
-    private void placeExit () {
-        cells[width/2][height/2].setType(CellType.TRAPDOOR);
+    private void placeExit() {
+        cells[width / 2][height / 2].setType(CellType.TRAPDOOR);
     }
-
-
 
     public ArrayList<Integer> getWorldPos() {
         ArrayList<Integer> worldPos = new ArrayList<>();
@@ -121,8 +126,8 @@ public class GameMap implements Serializable {
                 break;
             }
             case 'r': {
-                cells[width-1][height / 2].setType(doorType);
-                cells[width-1][height / 2].setDoorDirection('r');
+                cells[width - 1][height / 2].setType(doorType);
+                cells[width - 1][height / 2].setDoorDirection('r');
                 break;
             }
         }
@@ -131,7 +136,6 @@ public class GameMap implements Serializable {
     public WorldMap getParentMap() {
         return parentMap;
     }
-
 
     public Player getPlayer() {
         return player;
@@ -153,7 +157,7 @@ public class GameMap implements Serializable {
         return enemyList;
     }
 
-    public void removeFromEnemyList (Enemy enemy) {
+    public void removeFromEnemyList(Enemy enemy) {
         enemyList.remove(enemy);
     }
 }
