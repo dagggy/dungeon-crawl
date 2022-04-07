@@ -84,7 +84,7 @@ public class GameMap implements Serializable {
     }
 
     private void placeBoss() {
-        Actor skeletonBoss = new SkeletonBoss(1, 0, 0, 100, 2, cells[width / 2][height / 2]);
+        Actor skeletonBoss = new SkeletonBoss(250, 50, 50, 250, 2, cells[width / 2][height / 2]);
         cells[width / 2][height / 2].setActor(skeletonBoss);
         enemyList.add(skeletonBoss);
     }

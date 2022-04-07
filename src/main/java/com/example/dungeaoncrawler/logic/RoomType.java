@@ -5,9 +5,9 @@ public enum RoomType {
     SPAWN("S"),
     NORMAL("■"),
     SHOP("■"),
-    SPECIAL("I"),
-    LAST("L"),
-    FINAL("F"),
+    SPECIAL("□"),
+    LAST("□"),
+    FINAL("□"),
     ENDING("E");
 
     private final String symbol;
