@@ -56,7 +56,7 @@ public class HelloApplication {
             Scene scene = new Scene(fxmlLoader.load());
             HelloController helloController = fxmlLoader.getController();
             HelloApplication.helloController = helloController;
-            stage.setTitle("Dungeon Crawl");
+            stage.setTitle("CardCrawl");
             stage.setOnCloseRequest(e -> helloController.closeWindow());
             stage.setScene(scene);
             stage.show();

@@ -35,7 +35,7 @@ public class UserPanel extends Application implements Initializable {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("user-panel.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("JavaFX");
+        stage.setTitle("CardCrawl");
         stage.setScene(scene);
         stage.show();
         stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::endGame);

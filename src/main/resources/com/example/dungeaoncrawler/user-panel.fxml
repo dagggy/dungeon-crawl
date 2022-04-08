@@ -16,7 +16,7 @@
             <Image url="@../../../Dungeon_Crawl.jpg" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="183.0" layoutY="32.0" prefHeight="157.0" prefWidth="385.0" text="DUNGEON CRAWL" textFill="WHITE">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="183.0" layoutY="32.0" prefHeight="157.0" prefWidth="385.0" text="CardCrawl" textFill="WHITE">
          <font>
             <Font name="Monospaced Bold" size="32.0" />
          </font>
